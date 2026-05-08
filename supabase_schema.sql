@@ -155,18 +155,21 @@ CREATE TRIGGER update_students_updated_at BEFORE UPDATE ON public.students FOR E
 
 -- Función para crear automáticamente un perfil cuando un usuario se registra en Supabase Auth
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = public
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, full_name, email, role)
   VALUES (
     NEW.id, 
     COALESCE(NEW.raw_user_meta_data->>'full_name', 'Usuario Dojoia'),
     NEW.email,
-    COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'parent'::user_role)
+    'parent'::user_role
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
@@ -211,11 +214,12 @@ CREATE POLICY "Modules are viewable by everyone" ON public.modules FOR SELECT US
 -- 5. DATOS SEMILLA (Opcional - Insertar módulos por defecto)
 -- ==========================================
 INSERT INTO public.modules (name, slug, description, color_hex, icon_name) VALUES
-('DOJO MATH', 'dojo-math', 'Sistema matemático progresivo.', '#FF3366', 'calculator'),
 ('DOJO ENGLISH', 'dojo-english', 'Inglés práctico con speaking IA.', '#00F0FF', 'message-square'),
 ('DOJO CODE', 'dojo-code', 'Programación desde Scratch hasta Python.', '#10B981', 'code'),
 ('DOJO ROBOTICS', 'dojo-robotics', 'Robótica con simuladores y kits.', '#FFB800', 'cpu'),
-('DOJO KARATE', 'dojo-karate', 'Valores, disciplina y defensa personal.', '#FF3366', 'gamepad'),
-('DOJO READ', 'dojo-read', 'Lectura rápida y comprensión profunda.', '#8B5CF6', 'book-open'),
-('DOJO WRITE', 'dojo-write', 'Escritura creativa y concursos.', '#FF3366', 'pen-tool')
+('DOJO KARATE', 'dojo-karate', 'Valores, disciplina y defensa personal.', '#FF3366', 'gamepad')
 ON CONFLICT (slug) DO NOTHING;
+
+-- Eliminar módulos antiguos si ya existían en la base de datos
+DELETE FROM public.modules
+WHERE slug IN ('dojo-math', 'dojo-read', 'dojo-write');
