@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ export default function Login() {
         alert(error.message || 'Credenciales inválidas');
       } else {
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/';
+        navigate('/dashboard');
       }
     } catch (error) {
       alert('Error inesperado al conectar con Supabase.');
