@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 import { MapPin, Clock, Phone, Mail, ChevronRight, Star, MessageCircle, Play, X, User, ArrowRight, Shield, Award, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -37,7 +38,7 @@ const Navbar = () => {
           <a href="#contacto" className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 hover:shadow-[0_0_15px_rgba(220,38,38,0.8)] transition-all">
             Clase Gratis
           </a>
-          <a href="/login" className="text-gray-400 hover:text-white transition-colors">Login</a>
+          <Link to="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
         </div>
       </div>
     </nav>
