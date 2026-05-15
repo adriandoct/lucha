@@ -22,7 +22,7 @@ import {
   BarChart,
   Bar
 } from 'recharts';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const dataIngresos = [
   { name: 'Ene', ingresos: 4000, meta: 2400 },
@@ -43,7 +43,7 @@ const dataRiesgo = [
   { name: 'Grado 6', riesgo: 18 },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -51,7 +51,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
