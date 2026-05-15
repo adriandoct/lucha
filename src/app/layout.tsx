@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DOJOIA | Disciplina + Conocimiento + Futuro",
-  description: "Plataforma educativa premium con IA. Formamos campeones para el futuro en Matemáticas, Inglés, Programación, Robótica y Valores.",
+  title: "DOJOIA | Dashboard Ejecutivo",
+  description: "Plataforma educativa premium con IA integrada. Gestión avanzada para directores y docentes.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
+      <body className="dark-theme">
         {children}
       </body>
     </html>

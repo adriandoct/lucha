@@ -1,7 +1,18 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import styles from "../dashboard.module.css";
-import { Compass, Trophy, Store, Settings, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  Calendar,
+  Settings,
+  LogOut,
+  BrainCircuit,
+  CreditCard,
+  Video,
+  FileText
+} from "lucide-react";
 import Link from "next/link";
 
 export default async function DashboardLayout({
@@ -19,42 +30,73 @@ export default async function DashboardLayout({
     return redirect("/login");
   }
 
-  // Get user profile data
-  // In a real app we would query the `profiles` table and `students` table here
-  // For the demo layout we will use placeholder data if table is empty
-
+  // Admin/Director layout based on requested modules
   return (
     <div className={styles.dashboardLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.logo}>
-          <span>DOJO</span><span>IA</span>
+          <div className={styles.logoIcon}>
+            <BrainCircuit size={24} />
+          </div>
+          <div>
+            <span className={styles.logoText}>DOJO</span>
+            <span className={styles.logoAccent}>IA</span>
+          </div>
         </div>
         
         <nav className={styles.navMenu}>
+          <div className={styles.navSectionTitle}>Principal</div>
           <Link href="/dashboard" className={`${styles.navItem} ${styles.active}`}>
-            <Compass size={20} />
-            <span>Los 8 Caminos</span>
+            <LayoutDashboard size={20} />
+            <span>Dashboard</span>
           </Link>
-          <Link href="/dashboard/torneos" className={styles.navItem}>
-            <Trophy size={20} />
-            <span>Torneos</span>
+          <Link href="/dashboard/ia" className={styles.navItem}>
+            <BrainCircuit size={20} />
+            <span>IA Integrada</span>
           </Link>
-          <Link href="/dashboard/tienda" className={styles.navItem}>
-            <Store size={20} />
-            <span>Tienda Dojo</span>
+
+          <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Académico</div>
+          <Link href="/dashboard/alumnos" className={styles.navItem}>
+            <Users size={20} />
+            <span>Alumnos y Padres</span>
           </Link>
+          <Link href="/dashboard/estructura" className={styles.navItem}>
+            <GraduationCap size={20} />
+            <span>Estructura Académica</span>
+          </Link>
+          <Link href="/dashboard/asistencia" className={styles.navItem}>
+            <Calendar size={20} />
+            <span>Asistencia Inteligente</span>
+          </Link>
+          
+          <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Recursos</div>
+          <Link href="/dashboard/archivos" className={styles.navItem}>
+            <FileText size={20} />
+            <span>Archivo Digital</span>
+          </Link>
+          <Link href="/dashboard/clases" className={styles.navItem}>
+            <Video size={20} />
+            <span>Aula Virtual</span>
+          </Link>
+          <Link href="/dashboard/pagos" className={styles.navItem}>
+            <CreditCard size={20} />
+            <span>Finanzas</span>
+          </Link>
+
+          <div style={{ flex: 1 }}></div>
+
           <Link href="/dashboard/settings" className={styles.navItem}>
             <Settings size={20} />
-            <span>Ajustes</span>
+            <span>Configuración</span>
           </Link>
         </nav>
 
         <div className={styles.sidebarFooter}>
           <div className={styles.userProfile}>
-            <div className={styles.avatar}>A</div>
+            <div className={styles.avatar}>D</div>
             <div className={styles.userInfo}>
-              <h4>{user.user_metadata?.full_name || "Alumno DOJOIA"}</h4>
-              <p>Nivel Inicial</p>
+              <h4>{user.user_metadata?.full_name || "Director"}</h4>
+              <p>Super Admin</p>
             </div>
           </div>
           <form action="/auth/signout" method="post" style={{ marginTop: '1rem' }}>
