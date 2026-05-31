@@ -76,43 +76,42 @@ export default function Home() {
 
   const plans = [
     {
-      name: "Dojo Básico",
-      price: "$39",
-      desc: "Perfecto para academias pequeñas que inician su digitalización.",
+      name: "Mensualidad Regular",
+      price: "$500 MXN",
+      desc: "Ideal para entrenamiento constante y monitoreo automatizado.",
       features: [
-        "Hasta 50 Karatekas",
-        "Registro de asistencias con QR",
-        "Dashboard con estadísticas",
-        "Exportación a Excel / PDF",
-        "Soporte estándar"
-      ],
-      popular: false
-    },
-    {
-      name: "Dojo Profesional",
-      price: "$89",
-      desc: "La experiencia completa con notificaciones automáticas.",
-      features: [
-        "Hasta 200 Karatekas",
-        "Registro QR + Soporte Offline",
-        "Envío de WhatsApp Automático",
-        "Importador Excel/CSV Dinámico",
-        "Simulador de Chat Integrado",
-        "Reportes mensuales automáticos"
+        "Entrenamientos entre semana",
+        "Clases los Fines de Semana (Katas especiales)",
+        "Videos cortos de entrenamiento exclusivos",
+        "Registro de asistencia con código QR",
+        "Monitoreo de asistencia y rendimiento",
+        "WhatsApp Chatbot interactivo"
       ],
       popular: true
     },
     {
-      name: "Dojo Shito-Ryu Elite",
-      price: "$179",
-      desc: "Diseñado para franquicias, múltiples dojos o grandes academias.",
+      name: "Trimestre Dojoia",
+      price: "$1,400 MXN",
+      desc: "Ahorra pagando un trimestre completo de preparación marcial.",
       features: [
-        "Karatekas ilimitados",
-        "Soporte multi-dojo/sucursales",
-        "WhatsApp Business API Integrada",
-        "Personalización de marca (Dogo White/Red)",
-        "Soporte técnico preferente 24/7",
-        "Integración con torniquetes mecánicos (próximamente)"
+        "Todos los beneficios de Mensualidad Regular",
+        "Clases los fines de semana incluidas",
+        "Acceso ilimitado a biblioteca de videos",
+        "Prioridad en exámenes de graduación",
+        "Ahorro de $100 pesos de cuota"
+      ],
+      popular: false
+    },
+    {
+      name: "Semestre Shito-Ryu",
+      price: "$2,700 MXN",
+      desc: "Compromiso absoluto en el tatami para aspirantes a cinta negra.",
+      features: [
+        "Todos los beneficios de Trimestre Dojoia",
+        "Acceso ilimitado a biblioteca de videos",
+        "Soporte preferencial para competencias",
+        "Descuento en seminarios especiales",
+        "Ahorro de $300 pesos de cuota"
       ],
       popular: false
     }
@@ -128,11 +127,11 @@ export default function Home() {
           <nav className={styles.nav}>
             <Link href="#como-funciona" className={styles.navLink}>Metodología</Link>
             <Link href="#funciones" className={styles.navLink}>Funciones</Link>
-            <Link href="#planes" className={styles.navLink}>Planes</Link>
+            <Link href="#planes" className={styles.navLink}>Tarifas</Link>
           </nav>
           <div className={styles.nav}>
-            <Link href="/login" className={styles.btnSecondary}>Panel Administrativo</Link>
-            <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>Prueba Gratis</Link>
+            <Link href="/login" className={styles.btnSecondary}>Iniciar Sesión</Link>
+            <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>Registrarse</Link>
           </div>
         </div>
       </header>
@@ -143,15 +142,15 @@ export default function Home() {
           <div className={`${styles.heroText} animate-fade-in`}>
             <h1>Control Inteligente<br />para tu <span style={{ color: 'var(--brand-red)' }}>Dojo Shito-Ryu</span></h1>
             <p>
-              Digitaliza la asistencia de tu academia de Karate Do. Escaneo QR en tiempo real, 
-              alertas instantáneas a padres por WhatsApp y estadísticas automatizadas con el espíritu del Karate tradicional y tecnología del futuro.
+              Digitaliza la asistencia y monitorea el rendimiento de tu academia de Karate Do. 
+              Escaneo QR en tiempo real, videos exclusivos entre semana, clases presenciales los fines de semana y alertas automatizadas por WhatsApp mediante Inteligencia Artificial.
             </p>
             <div className={styles.heroButtons}>
               <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>
-                Registrar Academia <ChevronRight size={20} />
+                Registrarse Ahora <ChevronRight size={20} />
               </Link>
               <Link href="/login" className={styles.btnSecondary}>
-                <PlayCircle size={20} className="mr-2" style={{ verticalAlign: 'middle', marginRight: '6px' }} /> Ver Demo Panel
+                <PlayCircle size={20} className="mr-2" style={{ verticalAlign: 'middle', marginRight: '6px' }} /> Probar Demo
               </Link>
             </div>
           </div>
@@ -160,32 +159,20 @@ export default function Home() {
             <div className={styles.heroDecor1} style={{ background: 'var(--brand-red)' }}></div>
             <div className={styles.heroDecor2} style={{ background: 'var(--brand-accent)' }}></div>
             
-            <div className={styles.heroCard}>
-              <div className={styles.statsRow}>
-                <div className={styles.stat}>
-                  <div className={styles.statValue} style={{ color: 'var(--brand-red)' }}>🥋 Negro</div>
-                  <div className={styles.statLabel}>Grado Máximo</div>
+            <div className={styles.heroCard} style={{ padding: '0', overflow: 'hidden', border: '2px solid var(--brand-red)', background: 'var(--bg-secondary)', width: '100%', maxWidth: '420px' }}>
+              <img 
+                src="/karate-hero.png" 
+                alt="Karate Shito-Ryu" 
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+              <div style={{ padding: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ fontWeight: 'bold', color: 'var(--brand-red)', fontSize: '1.1rem' }}>🥋 Shito-Ryu Do</span>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: 'bold' }}>$500 MXN / mes</span>
                 </div>
-                <div className={styles.stat}>
-                  <div className={styles.statValue}>142</div>
-                  <div className={styles.statValue} style={{ fontSize: '0.8rem', color: 'var(--success)' }}>98.2% Presentes</div>
-                </div>
-                <div className={styles.stat}>
-                  <div className={styles.statValue}>Oss!</div>
-                  <div className={styles.statLabel}>Filosofía</div>
-                </div>
-              </div>
-              
-              <div className={styles.aiCoach} style={{ background: 'rgba(225, 29, 72, 0.05)', borderColor: 'rgba(225, 29, 72, 0.2)' }}>
-                <div className={styles.aiIcon} style={{ background: 'var(--brand-red)' }}>
-                  <Sparkles size={24} color="#FFF" />
-                </div>
-                <div className={styles.aiText}>
-                  <h4 style={{ color: 'var(--brand-red)' }}>Notificación WhatsApp:</h4>
-                  <p style={{ fontStyle: 'italic' }}>
-                    "Hola Adriana López. Le informamos que Mateo García López (Verde - 6° Kyu) ENTRÓ al entrenamiento a las 5:12 PM. ¡Oss!"
-                  </p>
-                </div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                  Entrenamiento de Katas tradicionales, Bunkai práctico y Kumite de competencia olímpica WKF.
+                </p>
               </div>
             </div>
           </div>
@@ -240,8 +227,8 @@ export default function Home() {
                   <Tv size={24} />
                 </div>
                 <div className={styles.featureText}>
-                  <h4>Escaneo Inteligente Kamiza</h4>
-                  <p>Coloca una tablet o teléfono en el ingreso del Dojo y permite que los karatekas escaneen su QR de forma autónoma al saludar al Kamiza.</p>
+                  <h4>Videos Cortos entre Semana</h4>
+                  <p>Accede a videos educativos grabados por el Sensei para perfeccionar técnicas fundamentales desde tu casa durante los días de semana.</p>
                 </div>
               </div>
               
@@ -250,8 +237,8 @@ export default function Home() {
                   <GraduationCap size={24} />
                 </div>
                 <div className={styles.featureText}>
-                  <h4>Monitoreo de Cinturones y Katas</h4>
-                  <p>Filtra asistencias por nivel de cinturón y programa técnico, asegurando que tus competidores de Kata y Kumite tengan su asistencia al día para torneos.</p>
+                  <h4>Clases los Fines de Semana</h4>
+                  <p>Sábados y Domingos de entrenamiento presencial dedicados al temario de Katas oficiales y Kumite libre competitivo.</p>
                 </div>
               </div>
               
@@ -260,8 +247,8 @@ export default function Home() {
                   <CheckCircle2 size={24} />
                 </div>
                 <div className={styles.featureText}>
-                  <h4>Tranquilidad Familiar</h4>
-                  <p>Los padres de familia reciben un mensaje instantáneo en su celular al iniciar y finalizar la clase, eliminando la incertidumbre del traslado.</p>
+                  <h4>Chatbot Inteligente en WhatsApp</h4>
+                  <p>Monitoreo diario de asistencia y reportes de rendimiento técnico directo al celular del tutor.</p>
                 </div>
               </div>
             </div>
@@ -272,14 +259,14 @@ export default function Home() {
       <section id="planes" className={styles.plans}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2>Optimiza tu <span style={{ color: 'var(--brand-red)' }}>Academia</span></h2>
-            <p>Planes diseñados para adaptarse a la cantidad de tatamis y alumnos de tu Dojo.</p>
+            <h2>Tarifas del <span style={{ color: 'var(--brand-red)' }}>Dojo</span></h2>
+            <p>Planes diseñados con cobros transparentes en pesos mexicanos para tu membresía.</p>
           </div>
           
           <div className={styles.plansGrid}>
             {plans.map((plan, i) => (
               <div key={i} className={`${styles.planCard} ${plan.popular ? styles.popular : ''}`} style={{ borderColor: plan.popular ? 'var(--brand-red)' : 'var(--border-color)' }}>
-                {plan.popular && <div className={styles.popularBadge} style={{ background: 'var(--brand-red)' }}>RECOMENDADO</div>}
+                {plan.popular && <div className={styles.popularBadge} style={{ background: 'var(--brand-red)' }}>MÁS POPULAR</div>}
                 <h3 className={styles.planName}>{plan.name}</h3>
                 <div className={styles.planPrice}>
                   {plan.price}<span>/mes</span>
@@ -296,7 +283,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <Link href="/register" className={plan.popular ? styles.btnPrimary : styles.btnSecondary} style={{ background: plan.popular ? 'var(--brand-red)' : 'transparent', border: plan.popular ? 'none' : '1px solid var(--border-color)', textAlign: 'center' }}>
-                  Seleccionar Plan
+                  Comenzar Entrenamiento
                 </Link>
               </div>
             ))}
@@ -319,14 +306,14 @@ export default function Home() {
               <ul>
                 <li><Link href="#funciones">Funciones</Link></li>
                 <li><Link href="#como-funciona">Metodología</Link></li>
-                <li><Link href="#planes">Planes</Link></li>
+                <li><Link href="#planes">Tarifas</Link></li>
               </ul>
             </div>
             
             <div className={styles.footerCol}>
               <h4>Recursos</h4>
               <ul>
-                <li><Link href="/login">Panel Sensei</Link></li>
+                <li><Link href="/login">Portal Sensei</Link></li>
                 <li><Link href="/register">Registro Dojo</Link></li>
                 <li><Link href="#">Soporte Técnico</Link></li>
               </ul>

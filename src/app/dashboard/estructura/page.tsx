@@ -38,7 +38,8 @@ export default function EstructuraPage() {
     { id: "s2", name: "Infantil Intermedios (Cintas Naranjas y Verdes)", days: "Lunes y Miércoles", time: "17:00 - 18:00", instructor: "Sensei Carlos Martínez", group: "Niños 8-12 años" },
     { id: "s3", name: "Juvenil y Adultos Avanzados (Cintas Azules a Negras)", days: "Martes y Jueves", time: "18:00 - 19:30", instructor: "Sensei Carlos Martínez", group: "13 años en adelante" },
     { id: "s4", name: "Kumite Competitivo (Todos los niveles)", days: "Viernes", time: "17:00 - 19:00", instructor: "Sensei Carlos Martínez", group: "Selectivo del Dojo" },
-    { id: "s5", name: "Clase Especial de Cinturones Negros y Katas Avanzados", days: "Sábado", time: "09:00 - 11:00", instructor: "Sensei Carlos Martínez", group: "Avanzados / Profesores" },
+    { id: "s5", name: "Clase Especial de Katas (Fin de Semana)", days: "Sábados y Domingos", time: "10:00 - 12:00", instructor: "Sensei Carlos Martínez", group: "Todos los niveles (Entrenamiento Especial)" },
+    { id: "s6", name: "Videos Cortos de Entrenamiento Técnico", days: "Entre Semana", time: "Disponible 24/7 (Online)", instructor: "Sensei AI / Chatbot", group: "Solo Alumnos Registrados" },
   ];
 
   const beltPrograms: BeltProgram[] = [
