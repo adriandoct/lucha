@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DOJOIA | Dashboard Ejecutivo",
-  description: "Plataforma educativa premium con IA integrada. Gestión avanzada para directores y docentes.",
+  title: "DOJOIA ACCESS - Control de Acceso Marcial",
+  description: "Plataforma Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
