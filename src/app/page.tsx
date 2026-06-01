@@ -167,33 +167,17 @@ export default function Home() {
         </div>
       </header>
 
-      <section className={styles.hero}>
+      <section className={styles.hero} style={{ paddingTop: '8rem', paddingBottom: '4rem', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className={styles.heroBackground}></div>
         <div className={`container ${styles.heroContent}`}>
-          <div className={`${styles.heroText} animate-fade-in`}>
-            <h1>Control Inteligente<br />para tu <span style={{ color: 'var(--brand-red)' }}>Dojo Shito-Ryu</span></h1>
-            <p>
-              Digitaliza la asistencia y monitorea el rendimiento de tu academia de Karate Do. 
-              Escaneo QR en tiempo real, videos exclusivos entre semana, clases presenciales los fines de semana y alertas automatizadas por WhatsApp mediante Inteligencia Artificial.
-            </p>
-            <div className={styles.heroButtons}>
-              <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>
-                Registrarse Ahora <ChevronRight size={20} />
-              </Link>
-              <Link href="/login" className={styles.btnSecondary}>
-                <PlayCircle size={20} className="mr-2" style={{ verticalAlign: 'middle', marginRight: '6px' }} /> Probar Demo
-              </Link>
-            </div>
-          </div>
-          
-          <div className={`${styles.heroVisual} animate-float delay-200`}>
-            <div className={styles.heroDecor1} style={{ background: 'var(--brand-red)' }}></div>
-            <div className={styles.heroDecor2} style={{ background: 'var(--brand-accent)' }}></div>
+          <div className={`${styles.heroVisual} animate-fade-in`} style={{ width: '100%', maxWidth: '960px' }}>
+            <div className={styles.heroDecor1} style={{ background: 'var(--brand-red)', filter: 'blur(60px)' }}></div>
+            <div className={styles.heroDecor2} style={{ background: 'var(--brand-accent)', filter: 'blur(70px)' }}></div>
             
-            <div className={styles.heroCard} style={{ padding: '0', overflow: 'hidden', border: '2px solid var(--brand-red)', background: 'var(--bg-secondary)', width: '100%', maxWidth: '420px', position: 'relative' }}>
+            <div className={styles.heroCard} style={{ padding: '0', overflow: 'hidden', border: '2px solid var(--brand-red)', background: 'var(--bg-secondary)', width: '100%', maxWidth: '960px', position: 'relative' }}>
               
-              {/* Carousel Image Container */}
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#000' }}>
+              {/* Carousel Image Container (Cinematic Wide Aspect Ratio) */}
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/7', overflow: 'hidden', background: '#000' }}>
                 {slides.map((slide, idx) => (
                   <img 
                     key={idx}
@@ -208,7 +192,7 @@ export default function Home() {
                       objectFit: 'cover',
                       transition: 'opacity 0.8s ease-in-out, transform 1.2s ease-in-out',
                       opacity: idx === currentSlide ? 1 : 0,
-                      transform: idx === currentSlide ? 'scale(1.03)' : 'scale(1.0)',
+                      transform: idx === currentSlide ? 'scale(1.02)' : 'scale(1.0)',
                       zIndex: idx === currentSlide ? 2 : 1
                     }}
                   />
@@ -219,14 +203,14 @@ export default function Home() {
                   onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
                   style={{
                     position: 'absolute',
-                    left: '10px',
+                    left: '15px',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.5)',
-                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'rgba(0,0,0,0.6)',
+                    border: '1px solid rgba(255,255,255,0.2)',
                     borderRadius: '50%',
-                    width: '36px',
-                    height: '36px',
+                    width: '42px',
+                    height: '42px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -234,26 +218,26 @@ export default function Home() {
                     cursor: 'pointer',
                     zIndex: 10,
                     transition: 'all 0.3s ease',
-                    backdropFilter: 'blur(4px)'
+                    backdropFilter: 'blur(6px)'
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.background = 'var(--brand-red)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
                 >
-                  <ChevronLeft size={20} />
+                  <ChevronLeft size={24} />
                 </button>
 
                 <button 
                   onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
                   style={{
                     position: 'absolute',
-                    right: '10px',
+                    right: '15px',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.5)',
-                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'rgba(0,0,0,0.6)',
+                    border: '1px solid rgba(255,255,255,0.2)',
                     borderRadius: '50%',
-                    width: '36px',
-                    height: '36px',
+                    width: '42px',
+                    height: '42px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -261,22 +245,22 @@ export default function Home() {
                     cursor: 'pointer',
                     zIndex: 10,
                     transition: 'all 0.3s ease',
-                    backdropFilter: 'blur(4px)'
+                    backdropFilter: 'blur(6px)'
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.background = 'var(--brand-red)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
                 >
-                  <ChevronRight size={20} />
+                  <ChevronRight size={24} />
                 </button>
 
                 {/* Indicators inside image */}
                 <div style={{
                   position: 'absolute',
-                  bottom: '12px',
+                  bottom: '15px',
                   left: '50%',
                   transform: 'translateX(-50%)',
                   display: 'flex',
-                  gap: '6px',
+                  gap: '8px',
                   zIndex: 10
                 }}>
                   {slides.map((_, idx) => (
@@ -284,7 +268,7 @@ export default function Home() {
                       key={idx}
                       onClick={() => setCurrentSlide(idx)}
                       style={{
-                        width: idx === currentSlide ? '20px' : '8px',
+                        width: idx === currentSlide ? '24px' : '8px',
                         height: '8px',
                         borderRadius: '4px',
                         border: 'none',
@@ -297,17 +281,31 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Slide Text Details */}
-              <div style={{ padding: '1.5rem', minHeight: '130px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontWeight: 'bold', color: 'var(--brand-red)', fontSize: '1.1rem' }}>
-                    {slides[currentSlide].tag}
-                  </span>
-                  <span style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: 'bold' }}>$500 MXN / mes</span>
+              {/* Slide Text Details & Wide CTA Layout */}
+              <div style={{ padding: '1.75rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1', minWidth: '280px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+                    <span style={{ fontWeight: 'bold', color: 'var(--brand-red)', fontSize: '1.3rem' }}>
+                      {slides[currentSlide].tag}
+                    </span>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: 'bold', background: 'rgba(16, 185, 129, 0.15)', padding: '3px 10px', borderRadius: '4px' }}>
+                      $500 MXN / mes
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                    {slides[currentSlide].desc}
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                  {slides[currentSlide].desc}
-                </p>
+                
+                {/* Embedded Wide CTA buttons */}
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)', padding: '0.8rem 1.75rem', fontSize: '1rem' }}>
+                    Registrarse Ahora <ChevronRight size={18} />
+                  </Link>
+                  <Link href="/login" className={styles.btnSecondary} style={{ padding: '0.8rem 1.75rem', fontSize: '1rem' }}>
+                    Probar Demo
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

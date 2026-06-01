@@ -115,10 +115,11 @@
 }
 
 .heroContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .heroText h1 {
@@ -155,6 +156,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .heroCard {
@@ -163,7 +166,7 @@
   border-radius: 24px;
   padding: 2rem;
   width: 100%;
-  max-width: 450px;
+  max-width: 1000px;
   position: relative;
   z-index: 2;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
