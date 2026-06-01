@@ -10,6 +10,7 @@ import {
   WifiOff, 
   ShieldAlert,
   ChevronRight,
+  ChevronLeft,
   PlayCircle,
   CheckCircle2,
   Tv,
@@ -28,6 +29,36 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const slides = [
+    {
+      src: "/karate-hero.png",
+      tag: "🥋 Shito-Ryu Do",
+      title: "Shito-Ryu Do",
+      desc: "Entrenamiento de Katas tradicionales, Bunkai práctico y Kumite de competencia olímpica WKF."
+    },
+    {
+      src: "/karate-kata.png",
+      tag: "🥋 Katas Tradicionales",
+      title: "Katas Tradicionales",
+      desc: "Perfecciona formas clásicas de Shito-Ryu como Pinan, Anan y Seienchin con precisión técnica y marcialidad."
+    },
+    {
+      src: "/karate-kumite.png",
+      tag: "🥋 Kumite Olímpico",
+      title: "Kumite Olímpico",
+      desc: "Desarrolla velocidad, reflejos y tácticas de combate deportivo WKF bajo el monitoreo y cuidado de la academia."
+    }
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4500);
+    return () => clearInterval(slideInterval);
+  }, [slides.length]);
 
   const features = [
     { 
@@ -159,19 +190,123 @@ export default function Home() {
             <div className={styles.heroDecor1} style={{ background: 'var(--brand-red)' }}></div>
             <div className={styles.heroDecor2} style={{ background: 'var(--brand-accent)' }}></div>
             
-            <div className={styles.heroCard} style={{ padding: '0', overflow: 'hidden', border: '2px solid var(--brand-red)', background: 'var(--bg-secondary)', width: '100%', maxWidth: '420px' }}>
-              <img 
-                src="/karate-hero.png" 
-                alt="Karate Shito-Ryu" 
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-              />
-              <div style={{ padding: '1.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                  <span style={{ fontWeight: 'bold', color: 'var(--brand-red)', fontSize: '1.1rem' }}>🥋 Shito-Ryu Do</span>
+            <div className={styles.heroCard} style={{ padding: '0', overflow: 'hidden', border: '2px solid var(--brand-red)', background: 'var(--bg-secondary)', width: '100%', maxWidth: '420px', position: 'relative' }}>
+              
+              {/* Carousel Image Container */}
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#000' }}>
+                {slides.map((slide, idx) => (
+                  <img 
+                    key={idx}
+                    src={slide.src} 
+                    alt={slide.title} 
+                    style={{ 
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'opacity 0.8s ease-in-out, transform 1.2s ease-in-out',
+                      opacity: idx === currentSlide ? 1 : 0,
+                      transform: idx === currentSlide ? 'scale(1.03)' : 'scale(1.0)',
+                      zIndex: idx === currentSlide ? 2 : 1
+                    }}
+                  />
+                ))}
+
+                {/* Left/Right Arrows */}
+                <button 
+                  onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+                  style={{
+                    position: 'absolute',
+                    left: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    borderRadius: '50%',
+                    width: '36px',
+                    height: '36px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    zIndex: 10,
+                    transition: 'all 0.3s ease',
+                    backdropFilter: 'blur(4px)'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--brand-red)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+
+                <button 
+                  onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    borderRadius: '50%',
+                    width: '36px',
+                    height: '36px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    zIndex: 10,
+                    transition: 'all 0.3s ease',
+                    backdropFilter: 'blur(4px)'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--brand-red)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+                >
+                  <ChevronRight size={20} />
+                </button>
+
+                {/* Indicators inside image */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  gap: '6px',
+                  zIndex: 10
+                }}>
+                  {slides.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentSlide(idx)}
+                      style={{
+                        width: idx === currentSlide ? '20px' : '8px',
+                        height: '8px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        background: idx === currentSlide ? 'var(--brand-red)' : 'rgba(255,255,255,0.5)',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Slide Text Details */}
+              <div style={{ padding: '1.5rem', minHeight: '130px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <span style={{ fontWeight: 'bold', color: 'var(--brand-red)', fontSize: '1.1rem' }}>
+                    {slides[currentSlide].tag}
+                  </span>
                   <span style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: 'bold' }}>$500 MXN / mes</span>
                 </div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                  Entrenamiento de Katas tradicionales, Bunkai práctico y Kumite de competencia olímpica WKF.
+                  {slides[currentSlide].desc}
                 </p>
               </div>
             </div>
