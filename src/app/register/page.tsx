@@ -20,8 +20,9 @@ export default async function RegisterPage({
         </Link>
 
         <div className={styles.logoContainer}>
-          <div className={styles.logo}>
-            <span>DOJOIA</span><span style={{ color: 'var(--brand-red)' }}>ACCESS</span>
+          <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <span>LION <span style={{ color: 'var(--brand-red)' }}>KAI</span></span>
           </div>
         </div>
         

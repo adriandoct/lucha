@@ -121,7 +121,7 @@ export default function Home() {
       popular: true
     },
     {
-      name: "Trimestre Dojoia",
+      name: "Trimestre Lion Kai",
       price: "$1,400 MXN",
       desc: "Ahorra pagando un trimestre completo de preparación marcial.",
       features: [
@@ -138,7 +138,7 @@ export default function Home() {
       price: "$2,700 MXN",
       desc: "Compromiso absoluto en el tatami para aspirantes a cinta negra.",
       features: [
-        "Todos los beneficios de Trimestre Dojoia",
+        "Todos los beneficios de Trimestre Lion Kai",
         "Acceso ilimitado a biblioteca de videos",
         "Soporte preferencial para competencias",
         "Descuento en seminarios especiales",
@@ -152,8 +152,9 @@ export default function Home() {
     <main className={styles.main}>
       <header className={styles.header} style={{ background: scrolled ? 'rgba(11, 14, 20, 0.95)' : 'transparent', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
         <div className={`container ${styles.headerContent}`}>
-          <div className={styles.logo}>
-            <span>DOJOIA</span><span style={{ color: 'var(--brand-red)' }}>ACCESS</span>
+          <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <span>LION <span style={{ color: 'var(--brand-red)' }}>KAI</span></span>
           </div>
           <nav className={styles.nav}>
             <Link href="#como-funciona" className={styles.navLink}>Metodología</Link>
@@ -342,15 +343,16 @@ export default function Home() {
           <div className={styles.philImage}>
             <div className={styles.philImageCircle} style={{ borderColor: 'rgba(225, 29, 72, 0.3)' }}></div>
             <div className={styles.philImageCircleInner} style={{ borderColor: 'rgba(0, 240, 255, 0.3)' }}></div>
-            <div className={styles.philLogo}>
-              SHITO<span style={{color: 'var(--brand-red)'}}>RYU</span>
+            <div className={styles.philLogo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+              <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
+              <span style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--dojo-white)' }}>LION <span style={{ color: 'var(--brand-red)' }}>KAI</span></span>
             </div>
           </div>
           
           <div className={styles.philContent}>
             <h2>Filosofía Marcial + <span style={{ color: 'var(--brand-accent)' }}>Control Digital</span></h2>
             <p>
-              El estilo Shito-Ryu une fuerza física y paz mental. DOJOIA ACCESS une la disciplina tradicional 
+              El estilo Shito-Ryu une fuerza física y paz mental. LION KAI une la disciplina tradicional 
               del saludo y la puntualidad con la velocidad y exactitud de las notificaciones móviles.
             </p>
             
@@ -428,14 +430,15 @@ export default function Home() {
         <div className="container">
           <div className={styles.footerGrid}>
             <div>
-              <div className={styles.footerLogo}>
-                <span>DOJOIA</span><span style={{ color: 'var(--brand-red)' }}>ACCESS</span>
+              <div className={styles.footerLogo} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
+                <span>LION <span style={{ color: 'var(--brand-red)' }}>KAI</span></span>
               </div>
               <p>Tecnología y tradición unidas para el control inteligente de asistencia marcial.</p>
             </div>
             
             <div className={styles.footerCol}>
-              <h4>Dojoia Access</h4>
+              <h4>Lion Kai</h4>
               <ul>
                 <li><Link href="#funciones">Funciones</Link></li>
                 <li><Link href="#como-funciona">Metodología</Link></li>
@@ -462,7 +465,7 @@ export default function Home() {
           </div>
           
           <div className={styles.footerBottom}>
-            <p>&copy; {new Date().getFullYear()} DOJOIA ACCESS Shito-Ryu. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} LION KAI Shito-Ryu. Todos los derechos reservados.</p>
             <p>Oss! 🥋</p>
           </div>
         </div>

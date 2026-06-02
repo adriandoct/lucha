@@ -36,7 +36,7 @@ interface SimulatedMessage {
 
 export default function SettingsPage() {
   const [config, setConfig] = useState<DojoConfig>({
-    dojo_name: "Dojo Dojoia Shito-Ryu",
+    dojo_name: "Lion Kai",
     sensei_principal: "Sensei Carlos Martínez",
     estilo: "Shito-Ryu",
     whatsapp_provider: "mock",
@@ -90,7 +90,7 @@ export default function SettingsPage() {
           tutor: "Adriana López",
           telefono: "+5215512345678",
           nombre: "Mateo García López",
-          message: "🥋 *Dojo Dojoia Shito-Ryu*\n\nHola *Adriana López*,\n\nLe informamos que el karateka:\n👦 *Mateo García López* (VERDE - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🥋 ¡Oss!",
+          message: "🥋 *Lion Kai*\n\nHola *Adriana López*,\n\nLe informamos que el karateka:\n👦 *Mateo García López* (VERDE - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🥋 ¡Oss!",
           timestamp: "17:12"
         }
       ]);

@@ -1,6 +1,6 @@
 {
-  "name": "DOJOIA ACCESS - Control de Acceso Marcial",
-  "short_name": "DOJOIA",
+  "name": "LION KAI - Control de Acceso Marcial",
+  "short_name": "LION KAI",
   "description": "Sistema Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
   "start_url": "/dashboard",
   "display": "standalone",
@@ -9,15 +9,15 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/globe.svg",
+      "src": "/lion-kai-logo.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/globe.svg",
+      "src": "/lion-kai-logo.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

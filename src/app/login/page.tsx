@@ -20,8 +20,9 @@ export default async function LoginPage({
         </Link>
 
         <div className={styles.logoContainer}>
-          <div className={styles.logo}>
-            <span>DOJO</span><span>IA</span>
+          <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <span>LION <span style={{ color: 'var(--dojo-red)' }}>KAI</span></span>
           </div>
         </div>
         

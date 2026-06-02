@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DOJOIA ACCESS - Control de Acceso Marcial",
+  title: "LION KAI - Control de Acceso Marcial",
   description: "Plataforma Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
   manifest: "/manifest.json",
 };
