@@ -7,8 +7,6 @@ import {
   MessageSquare, 
   LayoutDashboard, 
   Database, 
-  WifiOff, 
-  ShieldAlert,
   ChevronRight,
   ChevronLeft,
   PlayCircle,
@@ -88,20 +86,6 @@ export default function Home() {
       desc: "Sube tu hoja de cálculo (Excel o CSV) y registra toda tu nómina de alumnos con mapeo de columnas dinámico.", 
       color: "#FBBF24", 
       level: "Migración Fácil" 
-    },
-    { 
-      icon: <WifiOff />, 
-      title: "Modo Offline local", 
-      desc: "Registra entradas y salidas incluso si el Dojo pierde conexión a internet. Los datos se sincronizan al volver a estar online.", 
-      color: "#8B5CF6", 
-      level: "Resiliencia Digital" 
-    },
-    { 
-      icon: <ShieldAlert />, 
-      title: "Antiduplicados e IA", 
-      desc: "Detección inteligente de accesos repetidos en lapsos cortos y alertas ante escaneos sospechosos o credenciales inválidas.", 
-      color: "#E11D48", 
-      level: "Seguridad Dojo" 
     }
   ];
 
