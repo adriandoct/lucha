@@ -11,7 +11,11 @@ import {
   Shield,
   Award,
   Video,
-  PlaySquare
+  PlaySquare,
+  BarChart2,
+  Trophy,
+  FileText,
+  CheckSquare
 } from "lucide-react";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -88,6 +92,16 @@ export default async function DashboardLayout({
                 <Award size={20} />
                 <span>Horarios y Programa</span>
               </Link>
+
+              <Link href="/dashboard/videos" className={styles.navItem}>
+                <Video size={20} />
+                <span>Videos y Categorías</span>
+              </Link>
+
+              <Link href="/dashboard/examenes" className={styles.navItem}>
+                <CheckSquare size={20} />
+                <span>Revisar Exámenes</span>
+              </Link>
               
               <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Ajustes</div>
               
@@ -100,14 +114,34 @@ export default async function DashboardLayout({
             <>
               <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Portal Alumno</div>
 
+              <Link href="/dashboard/progreso" className={styles.navItem}>
+                <BarChart2 size={20} />
+                <span>Mi Progreso</span>
+              </Link>
+
               <Link href="/dashboard/videos" className={styles.navItem}>
                 <Video size={20} />
-                <span>Videos de Entrenamiento</span>
+                <span>Videoteca Shito-Ryu</span>
               </Link>
               
               <Link href="/dashboard/estructura" className={styles.navItem}>
                 <Calendar size={20} />
-                <span>Horarios Especiales</span>
+                <span>Calendario de Clases</span>
+              </Link>
+
+              <Link href="/dashboard/examenes" className={styles.navItem}>
+                <CheckSquare size={20} />
+                <span>Exámenes y Evidencias</span>
+              </Link>
+
+              <Link href="/dashboard/certificados" className={styles.navItem}>
+                <FileText size={20} />
+                <span>Mis Certificados</span>
+              </Link>
+
+              <Link href="/dashboard/ranking" className={styles.navItem}>
+                <Trophy size={20} />
+                <span>Ranking Dojo</span>
               </Link>
             </>
           )}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 import { 
   QrCode, 
   MessageSquare, 
@@ -19,6 +20,86 @@ import styles from "./page.module.css";
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const [featuredVideo, setFeaturedVideo] = useState({
+    titulo: "Presentación del Dojo Shito-Ryu",
+    descripcion: "Una demostración de nuestra práctica habitual, que combina katas tradicionales con técnicas de combate y defensa personal adaptadas para todas las edades.",
+    url: "https://assets.mixkit.co/videos/preview/mixkit-karate-fighter-training-in-the-gym-40059-large.mp4",
+    thumbnail: "/karate-hero.png",
+    instructor: "Sensei Carlos Martínez",
+    nivel: "Todos los niveles"
+  });
+
+  useEffect(() => {
+    const fetchHomepageVideo = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from("videos")
+          .select("*")
+          .eq("tipo", "inicio")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (data && data.length > 0) {
+          const vid = data[0];
+          setFeaturedVideo({
+            titulo: vid.titulo,
+            descripcion: vid.descripcion || "",
+            url: vid.url,
+            thumbnail: vid.thumbnail || "/karate-hero.png",
+            instructor: vid.instructor || "Sensei Carlos Martínez",
+            nivel: vid.nivel || "Todos los niveles"
+          });
+          localStorage.setItem("dojo_homepage_video", JSON.stringify(vid));
+        } else {
+          const cached = localStorage.getItem("dojo_homepage_video");
+          if (cached) {
+            const vid = JSON.parse(cached);
+            setFeaturedVideo({
+              titulo: vid.titulo,
+              descripcion: vid.descripcion || "",
+              url: vid.url,
+              thumbnail: vid.thumbnail || "/karate-hero.png",
+              instructor: vid.instructor || "Sensei Carlos Martínez",
+              nivel: vid.nivel || "Todos los niveles"
+            });
+          } else {
+            const cachedVideos = localStorage.getItem("dojo_videos");
+            if (cachedVideos) {
+              const list = JSON.parse(cachedVideos);
+              const homeVid = list.find((v: any) => v.tipo === 'inicio');
+              if (homeVid) {
+                setFeaturedVideo({
+                  titulo: homeVid.titulo,
+                  descripcion: homeVid.descripcion || "",
+                  url: homeVid.url,
+                  thumbnail: homeVid.thumbnail || "/karate-hero.png",
+                  instructor: homeVid.instructor || "Sensei Carlos Martínez",
+                  nivel: homeVid.nivel || "Todos los niveles"
+                });
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Error fetching homepage video, checking localStorage fallback", err);
+        const cached = localStorage.getItem("dojo_homepage_video");
+        if (cached) {
+          const vid = JSON.parse(cached);
+          setFeaturedVideo({
+            titulo: vid.titulo,
+            descripcion: vid.descripcion || "",
+            url: vid.url,
+            thumbnail: vid.thumbnail || "/karate-hero.png",
+            instructor: vid.instructor || "Sensei Carlos Martínez",
+            nivel: vid.nivel || "Todos los niveles"
+          });
+        }
+      }
+    };
+
+    fetchHomepageVideo();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -292,6 +373,39 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECCIÓN: DOJO EN ACCIÓN (Video Destacado) */}
+      <section className={styles.dojoVideoSection}>
+        <div className="container">
+          <div className={styles.videoSectionHeader}>
+            <h2>NUESTRO DOJO EN <span style={{ color: 'var(--brand-red)' }}>ACCIÓN</span></h2>
+            <p>Mira una demostración del entrenamiento de Karate en nuestro dojo. Disciplina, técnica y valores en cada movimiento.</p>
+          </div>
+          
+          <div className={styles.videoPlayerContainer}>
+            <div className={styles.videoPlayerWrapper}>
+              <video 
+                src={featuredVideo.url} 
+                className={styles.homeVideoElement}
+                controls
+                poster={featuredVideo.thumbnail || "/karate-hero.png"}
+              />
+            </div>
+            
+            <div className={styles.videoInfoCard}>
+              <div className={styles.videoBadge}>VIDEO PRESENTACIÓN</div>
+              <h3>{featuredVideo.titulo}</h3>
+              <p>{featuredVideo.descripcion}</p>
+              {featuredVideo.instructor && (
+                <div className={styles.videoMetaDetails}>
+                  <span><strong>Instructor:</strong> {featuredVideo.instructor}</span>
+                  {featuredVideo.nivel && <span><strong>Nivel:</strong> {featuredVideo.nivel}</span>}
+                </div>
+              )}
             </div>
           </div>
         </div>

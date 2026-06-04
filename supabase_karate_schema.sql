@@ -180,3 +180,87 @@ INSERT INTO public.karatekas (matricula, nombre, cinturon, grado, tutor, telefon
 ('KA-2026-004', 'Valentina Ruiz Castro', 'azul', '5° Kyu', 'Patricia Castro', '+5215598765432', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200'),
 ('KA-2026-005', 'Lucas Torres Mendoza', 'marron', '2° Kyu', 'Fernando Torres', '+5215565432109', 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=200')
 ON CONFLICT (matricula) DO NOTHING;
+
+
+-- ==========================================
+-- 6. TABLAS ADICIONALES PARA ACADEMIA DIGITAL
+-- ==========================================
+
+-- Tabla de Categorías de Videos
+CREATE TABLE IF NOT EXISTS public.video_categorias (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    nombre TEXT UNIQUE NOT NULL,
+    descripcion TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Agregar relación de categoría a la tabla de videos
+ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS categoria_id UUID REFERENCES public.video_categorias(id) ON DELETE SET NULL;
+
+-- Agregar columna de puntos a los Karatekas para el Ranking de Alumnos
+ALTER TABLE public.karatekas ADD COLUMN IF NOT EXISTS puntos INTEGER DEFAULT 100;
+
+-- Tabla de Solicitudes de Examen y Evidencia en Video
+CREATE TABLE IF NOT EXISTS public.examenes_solicitudes (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    karateka_id UUID REFERENCES public.karatekas(id) ON DELETE CASCADE NOT NULL,
+    cinturon_solicitado belt_level NOT NULL,
+    grado_solicitado VARCHAR(30) NOT NULL,
+    video_evidencia_url TEXT NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'aprobado', 'rechazado')),
+    comentarios_sensei TEXT,
+    calificacion NUMERIC,
+    fecha_evaluacion TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Tabla de Certificados Oficiales
+CREATE TABLE IF NOT EXISTS public.certificados (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    exam_id UUID REFERENCES public.examenes_solicitudes(id) ON DELETE CASCADE,
+    karateka_id UUID REFERENCES public.karatekas(id) ON DELETE CASCADE NOT NULL,
+    codigo_certificado VARCHAR(50) UNIQUE NOT NULL,
+    fecha_emision DATE NOT NULL DEFAULT CURRENT_DATE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Columnas premium en configuracion_dojo
+ALTER TABLE public.configuracion_dojo ADD COLUMN IF NOT EXISTS kata_semana TEXT DEFAULT 'Pinan Shodan';
+ALTER TABLE public.configuracion_dojo ADD COLUMN IF NOT EXISTS video_semana_id UUID REFERENCES public.videos(id) ON DELETE SET NULL;
+ALTER TABLE public.configuracion_dojo ADD COLUMN IF NOT EXISTS recordatorio_sabado TEXT DEFAULT '🥋 *Entrenamiento Especial de Sábado*\n\nHola *{tutor}*,\n\nTe recordamos que este sábado tenemos clase presencial en el dojo.\n\n📖 *Kata de la semana:* {kata_semana}\n🎥 *Video de estudio:* {video_url}\n\nPor favor, asegúrate de que *{nombre}* repase el video técnico antes del sábado para aprovechar al máximo la clase práctica. ¡Oss!';
+
+-- Habilitar RLS en las nuevas tablas
+ALTER TABLE public.video_categorias ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.examenes_solicitudes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.certificados ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de RLS para video_categorias
+CREATE POLICY "Lectura pública de categorias" ON public.video_categorias FOR SELECT USING (true);
+CREATE POLICY "Senseis pueden gestionar categorias" ON public.video_categorias FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
+);
+
+-- Políticas de RLS para examenes_solicitudes
+CREATE POLICY "Lectura general de solicitudes" ON public.examenes_solicitudes FOR SELECT USING (true);
+CREATE POLICY "Karatekas pueden insertar sus solicitudes" ON public.examenes_solicitudes FOR INSERT WITH CHECK (true);
+CREATE POLICY "Karatekas pueden actualizar sus solicitudes" ON public.examenes_solicitudes FOR UPDATE USING (true);
+CREATE POLICY "Senseis pueden gestionar todas las solicitudes" ON public.examenes_solicitudes FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
+);
+
+-- Políticas de RLS para certificados
+CREATE POLICY "Lectura pública de certificados" ON public.certificados FOR SELECT USING (true);
+CREATE POLICY "Senseis pueden gestionar certificados" ON public.certificados FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
+);
+
+-- Seed Categories
+INSERT INTO public.video_categorias (id, nombre, descripcion) VALUES
+('1a1a1a1a-1111-1111-1111-111111111111', 'Katas', 'Formas y secuencias de movimientos técnicos del estilo Shito-Ryu'),
+('2b2b2b2b-2222-2222-2222-222222222222', 'Kihon', 'Técnicas fundamentales de golpes, bloqueos y posiciones básicas'),
+('3c3c3c3c-3333-3333-3333-333333333333', 'Kumite', 'Combate deportivo y aplicación táctica de defensa personal'),
+('4d4d4d4d-4444-4444-4444-444444444444', 'Bunkai', 'Análisis práctico y explicaciones del significado de los katas'),
+('5e5e5e5e-5555-5555-5555-555555555555', 'Acondicionamiento', 'Ejercicios de fortalecimiento físico, elasticidad y velocidad')
+ON CONFLICT (nombre) DO NOTHING;
+

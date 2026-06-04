@@ -23,6 +23,9 @@ interface DojoConfig {
   whatsapp_phone_number_id: string;
   template_entrada: string;
   template_salida: string;
+  kata_semana?: string;
+  video_semana_id?: string;
+  recordatorio_sabado?: string;
 }
 
 interface SimulatedMessage {
@@ -43,8 +46,13 @@ export default function SettingsPage() {
     whatsapp_token: "",
     whatsapp_phone_number_id: "",
     template_entrada: "🥋 *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el karateka:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🥋 ¡Oss!",
-    template_salida: "🥋 *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el karateka:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🥋 ¡Oss!"
+    template_salida: "🥋 *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el karateka:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🥋 ¡Oss!",
+    kata_semana: "Pinan Shodan",
+    video_semana_id: "",
+    recordatorio_sabado: "🥋 *Entrenamiento Especial de Sábado*\n\nHola *{tutor}*,\n\nTe recordamos que este sábado tenemos clase presencial en el dojo.\n\n📖 *Kata de la semana:* {kata_semana}\n🎥 *Video de estudio:* {video_url}\n\nPor favor, asegúrate de que *{nombre}* repase el video técnico antes del sábado para aprovechar al máximo la clase práctica. ¡Oss!"
   });
+
+  const [videos, setVideos] = useState<any[]>([]);
 
   const [simulatedMessages, setSimulatedMessages] = useState<SimulatedMessage[]>([]);
   const [saving, setSaving] = useState(false);
@@ -100,11 +108,28 @@ export default function SettingsPage() {
   useEffect(() => {
     loadConfig();
     loadSimulatedMessages();
+    loadVideosList();
 
     // Set up polling for simulated messages so scans are shown in real-time
     const interval = setInterval(loadSimulatedMessages, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  const loadVideosList = async () => {
+    try {
+      const { data } = await supabase.from("videos").select("*").eq("tipo", "entrenamiento");
+      if (data && data.length > 0) {
+        setVideos(data);
+      } else {
+        const cached = localStorage.getItem("dojo_videos");
+        if (cached) {
+          setVideos(JSON.parse(cached).filter((v: any) => v.tipo === "entrenamiento"));
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load videos in settings.", e);
+    }
+  };
 
   const handleInputChange = (key: keyof DojoConfig, val: string) => {
     setConfig(prev => ({
@@ -140,6 +165,65 @@ export default function SettingsPage() {
       alert("Se guardó localmente en memoria.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSendSaturdayReminder = async () => {
+    try {
+      // 1. Get student list
+      let studentsList: any[] = [];
+      const { data } = await supabase.from("karatekas").select("*").eq("activo", true);
+      if (data && data.length > 0) {
+        studentsList = data;
+      } else {
+        const cachedObj = localStorage.getItem("local_karatekas");
+        if (cachedObj) {
+          studentsList = JSON.parse(cachedObj);
+        }
+      }
+      
+      if (studentsList.length === 0) {
+        alert("No hay karatekas registrados para enviar recordatorios.");
+        return;
+      }
+
+      // Find selected video URL
+      const selectedVid = videos.find(v => v.id === config.video_semana_id) || videos[0] || { url: "https://assets.mixkit.co/videos/preview/mixkit-man-undergoing-a-karate-training-40058-large.mp4" };
+      const videoUrl = selectedVid.url;
+
+      // 2. Generate messages
+      const newMessages = studentsList.map(st => {
+        let text = config.recordatorio_sabado || "";
+        text = text.replace(/{dojo_name}/g, config.dojo_name)
+                   .replace(/{tutor}/g, st.tutor)
+                   .replace(/{nombre}/g, st.nombre)
+                   .replace(/{kata_semana}/g, config.kata_semana || "Pinan Shodan")
+                   .replace(/{video_url}/g, videoUrl);
+
+        return {
+          id: `sat_${Date.now()}_${st.id}`,
+          tutor: st.tutor,
+          telefono: st.telefono,
+          nombre: st.nombre,
+          message: text,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+      });
+
+      // 3. Save to simulated messages
+      const existing = localStorage.getItem("simulated_whatsapp_messages");
+      const currentList = existing ? JSON.parse(existing) : [];
+      const updatedList = [...newMessages, ...currentList];
+      localStorage.setItem("simulated_whatsapp_messages", JSON.stringify(updatedList));
+      setSimulatedMessages(updatedList);
+
+      // Save config to db / local
+      await handleSave();
+      
+      alert(`¡Recordatorios Flipped Dojo enviados a ${studentsList.length} alumnos por WhatsApp con éxito!`);
+    } catch (err) {
+      console.error(err);
+      alert("Error al enviar recordatorios.");
     }
   };
 
@@ -234,6 +318,66 @@ export default function SettingsPage() {
                 onChange={(e) => handleInputChange("whatsapp_token", e.target.value)}
               />
             </div>
+          </div>
+        </div>
+
+        <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
+          <h2>
+            <MessageSquare size={22} style={{ color: 'var(--brand-gold)' }} />
+            Dojo Invertido (Flipped Dojo) - Planificación del Sábado
+          </h2>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            Configura las asignaciones técnicas y envía automáticamente por WhatsApp el material de estudio para la clase presencial.
+          </p>
+
+          <div className={styles.formGrid} style={{ marginTop: '1rem' }}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Kata de la Semana</label>
+              <input 
+                type="text" 
+                className={styles.input} 
+                placeholder="e.g. Pinan Shodan" 
+                value={config.kata_semana || ""}
+                onChange={(e) => handleInputChange("kata_semana", e.target.value)}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Video de Estudio</label>
+              <select 
+                className={styles.selectInput}
+                value={config.video_semana_id || ""}
+                onChange={(e) => handleInputChange("video_semana_id", e.target.value)}
+              >
+                <option value="">-- Selecciona un Video Corto --</option>
+                {videos.map(v => (
+                  <option key={v.id} value={v.id}>{v.titulo}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.formGroupFull}>
+              <label className={styles.label}>Plantilla del Recordatorio (WhatsApp)</label>
+              <textarea 
+                className={styles.textarea}
+                rows={4}
+                value={config.recordatorio_sabado || ""}
+                onChange={(e) => handleInputChange("recordatorio_sabado", e.target.value)}
+              />
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                Variables: <code>{"{dojo_name}, {tutor}, {nombre}, {kata_semana}, {video_url}"}</code>
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <button 
+              className="btn-primary" 
+              style={{ background: 'var(--brand-gold)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              onClick={handleSendSaturdayReminder}
+            >
+              <Smartphone size={18} /> Enviar a Todos los Alumnos 💬
+            </button>
           </div>
         </div>
 
