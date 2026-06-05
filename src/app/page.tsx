@@ -19,6 +19,16 @@ import {
 } from "lucide-react";
 import styles from "./page.module.css";
 
+// Helper function to extract YouTube ID and build embed URL
+function getYouTubeEmbedUrl(url: string) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) 
+    ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1` 
+    : null;
+}
+
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [featuredVideo, setFeaturedVideo] = useState({
@@ -188,6 +198,16 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    let timer: any;
+    if (isPlayerOpen && selectedVideo && getYouTubeEmbedUrl(selectedVideo.url)) {
+      timer = setTimeout(() => {
+        setShowTeaser(true);
+      }, 120000); // 2 minutes
+    }
+    return () => clearTimeout(timer);
+  }, [isPlayerOpen, selectedVideo]);
 
   const slides = [
     {
@@ -468,16 +488,26 @@ export default function Home() {
           
           <div className={styles.videoPlayerContainer}>
             <div className={styles.videoPlayerWrapper}>
-              <video 
-                src={featuredVideo.url} 
-                className={styles.homeVideoElement}
-                controls
-                autoPlay
-                muted
-                loop
-                playsInline
-                poster={featuredVideo.thumbnail || "/karate-hero.png"}
-              />
+              {getYouTubeEmbedUrl(featuredVideo.url) ? (
+                <iframe
+                  src={getYouTubeEmbedUrl(featuredVideo.url) || undefined}
+                  title={featuredVideo.titulo}
+                  style={{ width: '100%', height: '100%', border: 'none' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video 
+                  src={featuredVideo.url} 
+                  className={styles.homeVideoElement}
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster={featuredVideo.thumbnail || "/karate-hero.png"}
+                />
+              )}
             </div>
             
             <div className={styles.videoInfoCard}>
@@ -715,13 +745,23 @@ export default function Home() {
             </div>
 
             <div className={styles.videoWrapper}>
-              <video 
-                src={selectedVideo.url} 
-                autoPlay 
-                controls={!showTeaser}
-                onTimeUpdate={handleTimeUpdate}
-                style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
-              />
+              {showTeaser ? null : getYouTubeEmbedUrl(selectedVideo.url) ? (
+                <iframe
+                  src={getYouTubeEmbedUrl(selectedVideo.url) || undefined}
+                  title={selectedVideo.titulo}
+                  style={{ width: '100%', height: '100%', border: 'none', aspectRatio: '16/9' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video 
+                  src={selectedVideo.url} 
+                  autoPlay 
+                  controls={!showTeaser}
+                  onTimeUpdate={handleTimeUpdate}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
+                />
+              )}
 
               {showTeaser && (
                 <div className={styles.teaserOverlay}>

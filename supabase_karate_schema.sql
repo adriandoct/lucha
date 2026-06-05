@@ -326,3 +326,29 @@ INSERT INTO public.video_categorias (id, nombre, descripcion) VALUES
 ('5e5e5e5e-5555-5555-5555-555555555555', 'Acondicionamiento', 'Ejercicios de fortalecimiento físico, elasticidad y velocidad')
 ON CONFLICT (nombre) DO NOTHING;
 
+
+-- ==========================================
+-- 7. CONFIGURACIÓN DE STORAGE (Botes de Almacenamiento)
+-- ==========================================
+
+-- Crear el bucket 'videos' si no existe
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('videos', 'videos', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Políticas de RLS de Storage para lectura pública de videos
+DROP POLICY IF EXISTS "Acceso público de lectura de videos" ON storage.objects;
+CREATE POLICY "Acceso público de lectura de videos" ON storage.objects
+    FOR SELECT USING (bucket_id = 'videos');
+
+-- Políticas de RLS de Storage para subida de videos (Senseis)
+DROP POLICY IF EXISTS "Permitir subida a senseis" ON storage.objects;
+CREATE POLICY "Permitir subida a senseis" ON storage.objects
+    FOR INSERT WITH CHECK (
+        bucket_id = 'videos' 
+        AND EXISTS (
+            SELECT 1 FROM public.profiles 
+            WHERE id = auth.uid() AND role = 'sensei'
+        )
+    );
+

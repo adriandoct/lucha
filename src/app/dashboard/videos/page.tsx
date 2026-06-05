@@ -46,6 +46,16 @@ const getCookie = (name: string): string => {
   return '';
 };
 
+// Helper function to extract YouTube ID and build embed URL
+function getYouTubeEmbedUrl(url: string) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) 
+    ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1` 
+    : null;
+}
+
 // Default seed videos if no database records or localStorage cached data exists
 const DEFAULT_VIDEOS: TrainingVideo[] = [
   {
@@ -869,13 +879,23 @@ export default function VideosPage() {
 
             <div className={styles.videoWrapper}>
               {/* Actual Video Player Element */}
-              <video 
-                src={selectedVideo.url} 
-                className={styles.videoElement} 
-                autoPlay={isPlaying}
-                controls
-                style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
-              />
+              {getYouTubeEmbedUrl(selectedVideo.url) ? (
+                <iframe
+                  src={getYouTubeEmbedUrl(selectedVideo.url) || undefined}
+                  title={selectedVideo.titulo}
+                  style={{ width: '100%', height: '100%', border: 'none', aspectRatio: '16/9' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video 
+                  src={selectedVideo.url} 
+                  className={styles.videoElement} 
+                  autoPlay={isPlaying}
+                  controls
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
+                />
+              )}
 
               {/* HUD Controls Overlay (Custom styled fallback overlay) */}
               <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '1rem', background: 'linear-gradient(to top, rgba(0,0,0,0.85), transparent)', display: 'none', flexDirection: 'column', gap: '0.5rem', zIndex: 10 }}>
