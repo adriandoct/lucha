@@ -8,20 +8,52 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ==========================================
 -- 1. ENUMS (Tipos de datos de Karate)
 -- ==========================================
-CREATE TYPE user_role AS ENUM ('sensei', 'sempai', 'tutor', 'karateka');
-CREATE TYPE belt_level AS ENUM (
-  'blanco',        -- 10 Kyu y 9 Kyu
-  'amarillo',      -- 8 Kyu
-  'naranja',       -- 7 Kyu
-  'verde',         -- 6 Kyu
-  'azul',          -- 5 Kyu
-  'marron',        -- 4 Kyu a 1 Kyu
-  'negro'          -- 1 Dan en adelante
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
+        CREATE TYPE user_role AS ENUM ('sensei', 'sempai', 'tutor', 'karateka');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'belt_level') THEN
+        CREATE TYPE belt_level AS ENUM (
+          'blanco',        -- 10 Kyu y 9 Kyu
+          'amarillo',      -- 8 Kyu
+          'naranja',       -- 7 Kyu
+          'verde',         -- 6 Kyu
+          'azul',          -- 5 Kyu
+          'marron',        -- 4 Kyu a 1 Kyu
+          'negro'          -- 1 Dan en adelante
+        );
+    END IF;
+END$$;
 
 -- ==========================================
 -- 2. TABLAS PRINCIPALES
 -- ==========================================
+
+-- TABLA DE VIDEOS (Entrenamiento e Inicio)
+CREATE TABLE IF NOT EXISTS public.videos (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    titulo TEXT NOT NULL,
+    descripcion TEXT,
+    url TEXT NOT NULL,
+    tipo VARCHAR(20) NOT NULL DEFAULT 'entrenamiento', -- 'inicio' (Página de Inicio), 'entrenamiento' (Portal del Alumno)
+    instructor TEXT DEFAULT 'Sensei Carlos Martínez',
+    nivel VARCHAR(30) DEFAULT 'Todos los niveles',
+    duracion VARCHAR(10) DEFAULT '05:00',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Habilitar RLS para videos
+ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de RLS para videos
+DROP POLICY IF EXISTS "Lectura pública de videos" ON public.videos;
+CREATE POLICY "Lectura pública de videos" ON public.videos FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Senseis pueden gestionar videos" ON public.videos;
+CREATE POLICY "Senseis pueden gestionar videos" ON public.videos FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
+);
 
 -- PERFILES DE USUARIOS DEL SISTEMA (Sensei, Sempai, etc.)
 CREATE TABLE IF NOT EXISTS public.profiles (
@@ -102,8 +134,13 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS update_profiles_updated_at ON public.profiles;
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_karatekas_updated_at ON public.karatekas;
 CREATE TRIGGER update_karatekas_updated_at BEFORE UPDATE ON public.karatekas FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_configuracion_dojo_updated_at ON public.configuracion_dojo;
 CREATE TRIGGER update_configuracion_dojo_updated_at BEFORE UPDATE ON public.configuracion_dojo FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 -- Función para insertar perfil automático al crear cuenta en Supabase Auth
@@ -140,9 +177,13 @@ ALTER TABLE public.configuracion_dojo ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.horarios_clases ENABLE ROW LEVEL SECURITY;
 
 -- Políticas
+DROP POLICY IF EXISTS "Permitir lectura general de perfiles" ON public.profiles;
 CREATE POLICY "Permitir lectura general de perfiles" ON public.profiles FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Permitir actualizar propio perfil" ON public.profiles;
 CREATE POLICY "Permitir actualizar propio perfil" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Senseis y Sempais pueden gestionar karatekas" ON public.karatekas;
 CREATE POLICY "Senseis y Sempais pueden gestionar karatekas" ON public.karatekas 
     FOR ALL USING (
         EXISTS (
@@ -151,16 +192,24 @@ CREATE POLICY "Senseis y Sempais pueden gestionar karatekas" ON public.karatekas
         )
     );
 
+DROP POLICY IF EXISTS "Lectura pública de karatekas" ON public.karatekas;
 CREATE POLICY "Lectura pública de karatekas" ON public.karatekas FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Lectura y escritura general de asistencias" ON public.asistencias_karate;
 CREATE POLICY "Lectura y escritura general de asistencias" ON public.asistencias_karate FOR ALL USING (true);
 
+DROP POLICY IF EXISTS "Lectura pública de configuración dojo" ON public.configuracion_dojo;
 CREATE POLICY "Lectura pública de configuración dojo" ON public.configuracion_dojo FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Solo Sensei puede modificar configuración" ON public.configuracion_dojo;
 CREATE POLICY "Solo Sensei puede modificar configuración" ON public.configuracion_dojo FOR UPDATE USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
 );
 
+DROP POLICY IF EXISTS "Lectura de clases para todos" ON public.horarios_clases;
 CREATE POLICY "Lectura de clases para todos" ON public.horarios_clases FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Gestión de clases para Sensei" ON public.horarios_clases;
 CREATE POLICY "Gestión de clases para Sensei" ON public.horarios_clases FOR ALL USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
 );
@@ -236,21 +285,34 @@ ALTER TABLE public.examenes_solicitudes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.certificados ENABLE ROW LEVEL SECURITY;
 
 -- Políticas de RLS para video_categorias
+DROP POLICY IF EXISTS "Lectura pública de categorias" ON public.video_categorias;
 CREATE POLICY "Lectura pública de categorias" ON public.video_categorias FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Senseis pueden gestionar categorias" ON public.video_categorias;
 CREATE POLICY "Senseis pueden gestionar categorias" ON public.video_categorias FOR ALL USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
 );
 
 -- Políticas de RLS para examenes_solicitudes
+DROP POLICY IF EXISTS "Lectura general de solicitudes" ON public.examenes_solicitudes;
 CREATE POLICY "Lectura general de solicitudes" ON public.examenes_solicitudes FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Karatekas pueden insertar sus solicitudes" ON public.examenes_solicitudes;
 CREATE POLICY "Karatekas pueden insertar sus solicitudes" ON public.examenes_solicitudes FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Karatekas pueden actualizar sus solicitudes" ON public.examenes_solicitudes;
 CREATE POLICY "Karatekas pueden actualizar sus solicitudes" ON public.examenes_solicitudes FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Senseis pueden gestionar todas las solicitudes" ON public.examenes_solicitudes;
 CREATE POLICY "Senseis pueden gestionar todas las solicitudes" ON public.examenes_solicitudes FOR ALL USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
 );
 
 -- Políticas de RLS para certificados
+DROP POLICY IF EXISTS "Lectura pública de certificados" ON public.certificados;
 CREATE POLICY "Lectura pública de certificados" ON public.certificados FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Senseis pueden gestionar certificados" ON public.certificados;
 CREATE POLICY "Senseis pueden gestionar certificados" ON public.certificados FOR ALL USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
 );

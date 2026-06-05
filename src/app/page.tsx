@@ -472,6 +472,10 @@ export default function Home() {
                 src={featuredVideo.url} 
                 className={styles.homeVideoElement}
                 controls
+                autoPlay
+                muted
+                loop
+                playsInline
                 poster={featuredVideo.thumbnail || "/karate-hero.png"}
               />
             </div>
