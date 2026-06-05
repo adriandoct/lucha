@@ -823,3 +823,228 @@
   }
 }
 
+/* Demo Video Gallery */
+.demoGallerySection {
+  padding: 8rem 0;
+  background: var(--dojo-black);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.demoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.demoCard {
+  background: var(--dojo-black-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+}
+
+.demoCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--brand-red);
+  box-shadow: 0 15px 30px rgba(225, 29, 72, 0.25);
+}
+
+.demoThumbnailContainer {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #000;
+}
+
+.demoThumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.demoCard:hover .demoThumbnail {
+  transform: scale(1.05);
+}
+
+.demoPlayIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--brand-red);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.demoCard:hover .demoPlayIcon {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.demoDuration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.demoMeta {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.demoMeta h3 {
+  font-size: 1.1rem;
+  color: var(--dojo-white);
+  font-weight: 600;
+}
+
+.demoMeta p {
+  font-size: 0.85rem;
+  color: var(--dojo-white-dim);
+  line-height: 1.4;
+}
+
+.demoMetaFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--dojo-white-dim);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+/* Modal and Teaser styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 1.5rem;
+}
+
+.playerCard {
+  background: #12161a;
+  border: 2px solid var(--brand-red);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 720px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(225, 29, 72, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.playerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.playerHeader h2 {
+  font-size: 1.2rem;
+  color: var(--dojo-white);
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+
+.teaserOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 14, 20, 0.95);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  z-index: 50;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.teaserContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 480px;
+}
+
+.teaserBadge {
+  background: rgba(217, 119, 6, 0.15);
+  border: 1px solid #d97706;
+  color: #fbbf24;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  letter-spacing: 1px;
+}
+
+.teaserTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dojo-white);
+}
+
+.teaserText {
+  font-size: 0.9rem;
+  color: var(--dojo-white-dim);
+  line-height: 1.5;
+}
+
+.teaserButtons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+

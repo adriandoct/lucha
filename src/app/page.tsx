@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   Tv,
   GraduationCap,
-  Sparkles
+  Sparkles,
+  X
 } from "lucide-react";
 import styles from "./page.module.css";
 
@@ -29,10 +30,16 @@ export default function Home() {
     nivel: "Todos los niveles"
   });
 
+  const [demoVideos, setDemoVideos] = useState<any[]>([]);
+  const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
+  const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(false);
+
+  const supabase = createClient();
+
   useEffect(() => {
     const fetchHomepageVideo = async () => {
       try {
-        const supabase = createClient();
         const { data, error } = await supabase
           .from("videos")
           .select("*")
@@ -98,8 +105,81 @@ export default function Home() {
       }
     };
 
+    const fetchDemoVideos = async () => {
+      try {
+        const { data } = await supabase
+          .from("videos")
+          .select("*")
+          .eq("tipo", "entrenamiento")
+          .order("created_at", { ascending: false });
+
+        if (data && data.length > 0) {
+          setDemoVideos(data);
+        } else {
+          const cached = localStorage.getItem("dojo_videos");
+          if (cached) {
+            setDemoVideos(JSON.parse(cached).filter((v: any) => v.tipo === "entrenamiento"));
+          } else {
+            const defaults = [
+              {
+                id: "v1",
+                titulo: "Pinan Shodan - Kata Completo y Detalles",
+                descripcion: "Guía paso a paso del primer kata de la serie Pinan. Posiciones de cadera, Zenkutsu Dachi y bloqueos altos.",
+                duracion: "05:12",
+                instructor: "Sensei Carlos Martínez",
+                nivel: "Principiantes",
+                url: "https://assets.mixkit.co/videos/preview/mixkit-man-undergoing-a-karate-training-40058-large.mp4",
+                tipo: "entrenamiento",
+                thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
+              },
+              {
+                id: "v2",
+                titulo: "Bunkai Aplicado de Pinan Nidan",
+                descripcion: "Aplicación práctica para la defensa personal de las técnicas de golpe y bloqueo contenidas en Pinan Nidan.",
+                duracion: "07:45",
+                instructor: "Sensei Carlos Martínez",
+                nivel: "Intermedios",
+                url: "https://assets.mixkit.co/videos/preview/mixkit-karate-fighter-training-in-the-gym-40059-large.mp4",
+                tipo: "entrenamiento",
+                thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
+              },
+              {
+                id: "v3",
+                titulo: "Tácticas de Kumite WKF: Kizami Zuki",
+                descripcion: "Perfecciona la velocidad y el alcance del golpe de puño adelantado en combate deportivo con reglamento oficial.",
+                duracion: "04:30",
+                instructor: "Sempai Carlos Ruiz",
+                nivel: "Avanzados",
+                url: "https://assets.mixkit.co/videos/preview/mixkit-man-undergoing-a-karate-training-40058-large.mp4",
+                tipo: "entrenamiento",
+                thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+              }
+            ];
+            setDemoVideos(defaults);
+          }
+        }
+      } catch (err) {
+        console.warn("Error loading training videos for demo", err);
+      }
+    };
+
     fetchHomepageVideo();
+    fetchDemoVideos();
   }, []);
+
+  const handleOpenDemoVideo = (vid: any) => {
+    setSelectedVideo(vid);
+    setIsPlayerOpen(true);
+    setShowTeaser(false);
+  };
+
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    if (video.currentTime >= 120) { // Limit to 2 minutes (120 seconds)
+      video.pause();
+      setShowTeaser(true);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -411,6 +491,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SECCIÓN: GALERÍA DE DEMOSTRACIÓN (Videos Cortos) */}
+      <section className={styles.demoGallerySection}>
+        <div className="container">
+          <div className={styles.videoSectionHeader}>
+            <h2>VIDEOS CORTOS DE <span style={{ color: 'var(--brand-red)' }}>ENTRENAMIENTO</span></h2>
+            <p>
+              Explora una muestra del contenido técnico exclusivo que estudian nuestros alumnos antes de asistir a la clase presencial.
+            </p>
+          </div>
+
+          <div className={styles.demoGrid}>
+            {demoVideos.slice(0, 3).map((vid) => (
+              <div 
+                key={vid.id} 
+                className={styles.demoCard}
+                onClick={() => handleOpenDemoVideo(vid)}
+              >
+                <div className={styles.demoThumbnailContainer}>
+                  <img 
+                    src={vid.thumbnail || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"} 
+                    alt={vid.titulo} 
+                    className={styles.demoThumbnail} 
+                  />
+                  <div className={styles.demoPlayIcon}>
+                    <PlayCircle size={28} />
+                  </div>
+                  <span className={styles.demoDuration}>{vid.duracion}</span>
+                </div>
+                
+                <div className={styles.demoMeta}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 'bold', textTransform: 'uppercase', color: 'var(--brand-red)', letterSpacing: '1px' }}>
+                    {vid.nivel}
+                  </span>
+                  <h3>{vid.titulo}</h3>
+                  <p>{vid.descripcion?.substring(0, 85)}...</p>
+                  
+                  <div className={styles.demoMetaFooter}>
+                    <span>Sensei Carlos M.</span>
+                    <span style={{ color: '#FFB800', fontWeight: 'bold' }}>Vista previa libre (2 min)</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="funciones" className={styles.modules}>
         <div className="container">
           <div className={styles.sectionHeader}>
@@ -568,6 +695,65 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Popup Video Player Overlay for Demo Teaser */}
+      {isPlayerOpen && selectedVideo && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.playerCard}>
+            <div className={styles.playerHeader}>
+              <h2>{selectedVideo.titulo} (Vista Previa)</h2>
+              <button 
+                onClick={() => { setIsPlayerOpen(false); setSelectedVideo(null); setShowTeaser(false); }}
+                style={{ color: 'var(--dojo-white-dim)', cursor: 'pointer', border: 'none', background: 'transparent' }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className={styles.videoWrapper}>
+              <video 
+                src={selectedVideo.url} 
+                autoPlay 
+                controls={!showTeaser}
+                onTimeUpdate={handleTimeUpdate}
+                style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
+              />
+
+              {showTeaser && (
+                <div className={styles.teaserOverlay}>
+                  <div className={styles.teaserContent}>
+                    <span className={styles.teaserBadge}>🥋 TEASER DE LA ACADEMIA PREMIUM</span>
+                    <h3 className={styles.teaserTitle}>Límite de Vista Previa Alcanzado</h3>
+                    <p className={styles.teaserText}>
+                      Has visto los primeros 2 minutos de este video de entrenamiento. 
+                      Para tener acceso ilimitado a toda la videoteca técnica, registrar asistencias por QR, recibir el recordatorio del sábado por WhatsApp y competir en el ranking, únete a nuestra Academia Premium.
+                    </p>
+                    <div className={styles.teaserButtons}>
+                      <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>
+                        Registrarse Ahora <ChevronRight size={16} />
+                      </Link>
+                      <button 
+                        onClick={() => { setIsPlayerOpen(false); setSelectedVideo(null); setShowTeaser(false); }}
+                        className={styles.btnSecondary}
+                      >
+                        Cerrar Vista Previa
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div style={{ padding: '1.25rem 1.5rem', background: '#1a1f26', fontSize: '0.85rem', color: 'var(--dojo-white-dim)' }}>
+              <p>{selectedVideo.descripcion}</p>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', opacity: 0.8 }}>
+                <span><strong>Instructor:</strong> {selectedVideo.instructor}</span>
+                <span><strong>Nivel:</strong> {selectedVideo.nivel}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
