@@ -1,20 +1,39 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { NextResponse, NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
-export async function POST(req: NextRequest) {
+async function handleSignOut(req: NextRequest) {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (user) {
-    await supabase.auth.signOut();
+    if (user) {
+      await supabase.auth.signOut();
+    }
+  } catch (err) {
+    console.warn("Supabase sign out error:", err);
   }
+
+  // Clear local bypass/role cookies
+  const cookieStore = await cookies();
+  cookieStore.delete("dojoia_role");
+  cookieStore.delete("dojoia_email");
+  cookieStore.delete("dojoia_name");
 
   revalidatePath("/", "layout");
   return NextResponse.redirect(new URL("/", req.url), {
     status: 302,
   });
+}
+
+export async function POST(req: NextRequest) {
+  return handleSignOut(req);
+}
+
+export async function GET(req: NextRequest) {
+  return handleSignOut(req);
 }

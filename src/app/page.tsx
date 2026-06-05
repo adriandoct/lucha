@@ -29,6 +29,16 @@ function getYouTubeEmbedUrl(url: string) {
     : null;
 }
 
+// Client-side helper to read cookies
+const getCookie = (name: string): string => {
+  if (typeof document === 'undefined') return '';
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return decodeURIComponent(parts.pop()?.split(';').shift() || '');
+  return '';
+};
+
+
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [featuredVideo, setFeaturedVideo] = useState({
@@ -45,8 +55,27 @@ export default function Home() {
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const supabase = createClient();
+
+  useEffect(() => {
+    setIsLoggedIn(!!getCookie("dojoia_email"));
+  }, []);
+
+  const handleSignOutClient = async () => {
+    try {
+      document.cookie = "dojoia_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_email=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_name=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      
+      await fetch("/auth/signout", { method: "POST" });
+      window.location.reload();
+    } catch (e) {
+      console.error("Error signing out", e);
+      window.location.href = "/";
+    }
+  };
 
   useEffect(() => {
     const fetchHomepageVideo = async () => {
@@ -118,57 +147,86 @@ export default function Home() {
 
     const fetchDemoVideos = async () => {
       try {
-        const { data } = await supabase
-          .from("videos")
-          .select("*")
-          .eq("tipo", "entrenamiento")
-          .order("created_at", { ascending: false });
+        let dbVideos: any[] = [];
+        try {
+          const { data, error } = await supabase
+            .from("videos")
+            .select("*")
+            .eq("tipo", "entrenamiento")
+            .order("created_at", { ascending: false });
 
-        if (data && data.length > 0) {
-          setDemoVideos(data);
-        } else {
-          const cached = localStorage.getItem("dojo_videos");
-          if (cached) {
-            setDemoVideos(JSON.parse(cached).filter((v: any) => v.tipo === "entrenamiento"));
-          } else {
-            const defaults = [
-              {
-                id: "v1",
-                titulo: "Pinan Shodan - Kata Completo y Detalles",
-                descripcion: "Guía paso a paso del primer kata de la serie Pinan. Posiciones de cadera, Zenkutsu Dachi y bloqueos altos.",
-                duracion: "05:12",
-                instructor: "Sensei Carlos Martínez",
-                nivel: "Principiantes",
-                url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
-                tipo: "entrenamiento",
-                thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
-              },
-              {
-                id: "v2",
-                titulo: "Bunkai Aplicado de Pinan Nidan",
-                descripcion: "Aplicación práctica para la defensa personal de las técnicas de golpe y bloqueo contenidas en Pinan Nidan.",
-                duracion: "07:45",
-                instructor: "Sensei Carlos Martínez",
-                nivel: "Intermedios",
-                url: "https://vjs.zencdn.net/v/oceans.mp4",
-                tipo: "entrenamiento",
-                thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
-              },
-              {
-                id: "v3",
-                titulo: "Tácticas de Kumite WKF: Kizami Zuki",
-                descripcion: "Perfecciona la velocidad y el alcance del golpe de puño adelantado en combate deportivo con reglamento oficial.",
-                duracion: "04:30",
-                instructor: "Sempai Carlos Ruiz",
-                nivel: "Avanzados",
-                url: "https://www.w3schools.com/html/movie.mp4",
-                tipo: "entrenamiento",
-                thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
-              }
-            ];
-            setDemoVideos(defaults);
+          if (!error && data) {
+            dbVideos = data;
+          }
+        } catch (dbErr) {
+          console.warn("Database fetch for training videos failed, using fallback", dbErr);
+        }
+
+        let localVideos: any[] = [];
+        const cached = typeof window !== 'undefined' ? localStorage.getItem("dojo_videos") : null;
+        if (cached) {
+          try {
+            localVideos = JSON.parse(cached).filter((v: any) => v.tipo === "entrenamiento");
+          } catch (e) {
+            console.error("Parsing cached videos failed", e);
           }
         }
+
+        const defaults = [
+          {
+            id: "v1",
+            titulo: "Pinan Shodan - Kata Completo y Detalles",
+            descripcion: "Guía paso a paso del primer kata de la serie Pinan. Posiciones de cadera, Zenkutsu Dachi y bloqueos altos.",
+            duracion: "05:12",
+            instructor: "Sensei Carlos Martínez",
+            nivel: "Principiantes",
+            url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
+            tipo: "entrenamiento",
+            thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
+          },
+          {
+            id: "v2",
+            titulo: "Bunkai Aplicado de Pinan Nidan",
+            descripcion: "Aplicación práctica para la defensa personal de las técnicas de golpe y bloqueo contenidas en Pinan Nidan.",
+            duracion: "07:45",
+            instructor: "Sensei Carlos Martínez",
+            nivel: "Intermedios",
+            url: "https://vjs.zencdn.net/v/oceans.mp4",
+            tipo: "entrenamiento",
+            thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
+          },
+          {
+            id: "v3",
+            titulo: "Tácticas de Kumite WKF: Kizami Zuki",
+            descripcion: "Perfecciona la velocidad y el alcance del golpe de puño adelantado en combate deportivo con reglamento oficial.",
+            duracion: "04:30",
+            instructor: "Sempai Carlos Ruiz",
+            nivel: "Avanzados",
+            url: "https://www.w3schools.com/html/movie.mp4",
+            tipo: "entrenamiento",
+            thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+          }
+        ];
+
+        const merged: any[] = [...dbVideos];
+
+        const isDuplicate = (vid: any, list: any[]) => {
+          return list.some((item) => item.id === vid.id || item.titulo.toLowerCase() === vid.titulo.toLowerCase());
+        };
+
+        localVideos.forEach((lv) => {
+          if (!isDuplicate(lv, merged)) {
+            merged.push(lv);
+          }
+        });
+
+        defaults.forEach((dv) => {
+          if (!isDuplicate(dv, merged)) {
+            merged.push(dv);
+          }
+        });
+
+        setDemoVideos(merged);
       } catch (err) {
         console.warn("Error loading training videos for demo", err);
       }
@@ -328,10 +386,23 @@ export default function Home() {
             <Link href="#funciones" className={styles.navLink}>Funciones</Link>
             <Link href="#planes" className={styles.navLink}>Tarifas</Link>
           </nav>
-          <div className={styles.nav}>
-            <Link href="/login" className={styles.btnSecondary}>Iniciar Sesión</Link>
-            <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>Registrarse</Link>
-          </div>
+          {isLoggedIn ? (
+            <div className={styles.nav}>
+              <Link href="/dashboard" className={styles.btnSecondary}>Ir al Panel</Link>
+              <button 
+                onClick={handleSignOutClient} 
+                className={styles.btnPrimary} 
+                style={{ background: 'var(--brand-red)', border: 'none', cursor: 'pointer', outline: 'none' }}
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          ) : (
+            <div className={styles.nav}>
+              <Link href="/login" className={styles.btnSecondary}>Iniciar Sesión</Link>
+              <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>Registrarse</Link>
+            </div>
+          )}
         </div>
       </header>
 
@@ -747,7 +818,17 @@ export default function Home() {
             </div>
 
             <div className={styles.videoWrapper}>
-              {showTeaser ? null : getYouTubeEmbedUrl(selectedVideo.url) ? (
+              {videoError ? (
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center', color: '#ff4d4d', zIndex: 5 }}>
+                  <span style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</span>
+                  <h4 style={{ color: 'white', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Error al cargar el video</h4>
+                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5' }}>
+                    {selectedVideo.url.startsWith('blob:') 
+                      ? 'Este video se guardó temporalmente en la memoria de tu navegador y ya expiró. Por favor, ejecuta el script SQL en Supabase y vuelve a subirlo.' 
+                      : 'El enlace de este video no está disponible o el formato no es compatible.'}
+                  </p>
+                </div>
+              ) : showTeaser ? null : getYouTubeEmbedUrl(selectedVideo.url) ? (
                 <iframe
                   src={getYouTubeEmbedUrl(selectedVideo.url) || undefined}
                   title={selectedVideo.titulo}
@@ -764,18 +845,6 @@ export default function Home() {
                   onError={() => setVideoError(true)}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
                 />
-              )}
-
-              {videoError && !showTeaser && (
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center', color: '#ff4d4d', zIndex: 5 }}>
-                  <span style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</span>
-                  <h4 style={{ color: 'white', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Error al cargar el video</h4>
-                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5' }}>
-                    {selectedVideo.url.startsWith('blob:') 
-                      ? 'Este video se guardó temporalmente en la memoria de tu navegador y ya expiró. Por favor, ejecuta el script SQL en Supabase y vuelve a subirlo.' 
-                      : 'El enlace de este video no está disponible o el formato no es compatible.'}
-                  </p>
-                </div>
               )}
 
               {showTeaser && (
