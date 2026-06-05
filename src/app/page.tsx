@@ -44,6 +44,7 @@ export default function Home() {
   const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const supabase = createClient();
 
@@ -181,6 +182,7 @@ export default function Home() {
     setSelectedVideo(vid);
     setIsPlayerOpen(true);
     setShowTeaser(false);
+    setVideoError(false);
   };
 
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -759,8 +761,21 @@ export default function Home() {
                   autoPlay 
                   controls={!showTeaser}
                   onTimeUpdate={handleTimeUpdate}
+                  onError={() => setVideoError(true)}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
                 />
+              )}
+
+              {videoError && !showTeaser && (
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center', color: '#ff4d4d', zIndex: 5 }}>
+                  <span style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</span>
+                  <h4 style={{ color: 'white', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Error al cargar el video</h4>
+                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5' }}>
+                    {selectedVideo.url.startsWith('blob:') 
+                      ? 'Este video se guardó temporalmente en la memoria de tu navegador y ya expiró. Por favor, ejecuta el script SQL en Supabase y vuelve a subirlo.' 
+                      : 'El enlace de este video no está disponible o el formato no es compatible.'}
+                  </p>
+                </div>
               )}
 
               {showTeaser && (

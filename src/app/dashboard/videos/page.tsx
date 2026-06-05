@@ -111,6 +111,7 @@ export default function VideosPage() {
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playProgress, setPlayProgress] = useState(0);
+  const [videoError, setVideoError] = useState(false);
 
   // Admin tabs & form states
   const [activeTab, setActiveTab] = useState<'view' | 'upload'>('view');
@@ -232,12 +233,14 @@ export default function VideosPage() {
     setIsPlayerOpen(true);
     setIsPlaying(true);
     setPlayProgress(0);
+    setVideoError(false);
   };
 
   const handleCloseVideo = () => {
     setIsPlayerOpen(false);
     setSelectedVideo(null);
     setIsPlaying(false);
+    setVideoError(false);
   };
 
   // Select dynamic unsplash thumbnail based on level/type
@@ -893,8 +896,21 @@ export default function VideosPage() {
                   className={styles.videoElement} 
                   autoPlay={isPlaying}
                   controls
+                  onError={() => setVideoError(true)}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
                 />
+              )}
+
+              {videoError && (
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center', color: '#ff4d4d', zIndex: 5 }}>
+                  <span style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</span>
+                  <h4 style={{ color: 'white', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Error al cargar el video</h4>
+                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5' }}>
+                    {selectedVideo.url.startsWith('blob:') 
+                      ? 'Este video se guardó temporalmente en la memoria de tu navegador y ya expiró. Por favor, ejecuta el script SQL en Supabase y vuelve a subirlo.' 
+                      : 'El enlace de este video no está disponible o el formato no es compatible.'}
+                  </p>
+                </div>
               )}
 
               {/* HUD Controls Overlay (Custom styled fallback overlay) */}
