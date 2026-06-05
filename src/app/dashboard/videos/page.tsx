@@ -55,7 +55,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     duracion: "05:12",
     instructor: "Sensei Carlos Martínez",
     nivel: "Principiantes",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-man-undergoing-a-karate-training-40058-large.mp4",
+    url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
     tipo: "entrenamiento",
     thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
   },
@@ -66,7 +66,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     duracion: "07:45",
     instructor: "Sensei Carlos Martínez",
     nivel: "Intermedios",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-karate-fighter-training-in-the-gym-40059-large.mp4",
+    url: "https://vjs.zencdn.net/v/oceans.mp4",
     tipo: "entrenamiento",
     thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
   },
@@ -77,7 +77,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     duracion: "04:30",
     instructor: "Sempai Carlos Ruiz",
     nivel: "Avanzados",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-man-undergoing-a-karate-training-40058-large.mp4",
+    url: "https://www.w3schools.com/html/movie.mp4",
     tipo: "entrenamiento",
     thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
   }
