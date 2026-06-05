@@ -16,14 +16,12 @@ CREATE TABLE IF NOT EXISTS public.video_categorias (
 -- Habilitar RLS para categorías
 ALTER TABLE public.video_categorias ENABLE ROW LEVEL SECURITY;
 
--- Políticas de RLS para categorías
+-- Políticas de RLS para categorías (Abiertas para soportar el bypass de administrador local)
 DROP POLICY IF EXISTS "Lectura pública de categorias" ON public.video_categorias;
 CREATE POLICY "Lectura pública de categorias" ON public.video_categorias FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Senseis pueden gestionar categorias" ON public.video_categorias;
-CREATE POLICY "Senseis pueden gestionar categorias" ON public.video_categorias FOR ALL USING (
-    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
-);
+CREATE POLICY "Senseis pueden gestionar categorias" ON public.video_categorias FOR ALL USING (true);
 
 -- 3. Crear tabla de videos si no existe
 CREATE TABLE IF NOT EXISTS public.videos (
@@ -44,21 +42,12 @@ ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS categoria_id UUID REFERENCES 
 -- Habilitar Row Level Security (RLS) para videos
 ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
 
--- Políticas de RLS para videos
--- Lectura libre para cualquier usuario (incluso no registrados para ver el video de inicio)
+-- Políticas de RLS para videos (Abiertas para soportar el bypass de administrador local)
 DROP POLICY IF EXISTS "Lectura pública de videos" ON public.videos;
-CREATE POLICY "Lectura pública de videos" ON public.videos
-    FOR SELECT USING (true);
+CREATE POLICY "Lectura pública de videos" ON public.videos FOR SELECT USING (true);
 
--- Permiso total de gestión sólo para usuarios con rol 'sensei'
 DROP POLICY IF EXISTS "Senseis pueden gestionar videos" ON public.videos;
-CREATE POLICY "Senseis pueden gestionar videos" ON public.videos
-    FOR ALL USING (
-        EXISTS (
-            SELECT 1 FROM public.profiles 
-            WHERE id = auth.uid() AND role = 'sensei'
-        )
-    );
+CREATE POLICY "Senseis pueden gestionar videos" ON public.videos FOR ALL USING (true);
 
 -- 4. Semilla de Categorías por Defecto
 INSERT INTO public.video_categorias (id, nombre, descripcion) VALUES
@@ -74,42 +63,28 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('videos', 'videos', true)
 ON CONFLICT (id) DO NOTHING;
 
--- 6. Políticas de RLS de Storage para el bucket 'videos'
+-- 6. Políticas de RLS de Storage para el bucket 'videos' (Abiertas para soportar subidas desde el bypass administrador local)
 -- Permitir lectura pública de archivos en el bucket 'videos'
 DROP POLICY IF EXISTS "Acceso público de lectura de videos" ON storage.objects;
 CREATE POLICY "Acceso público de lectura de videos" ON storage.objects
     FOR SELECT USING (bucket_id = 'videos');
 
--- Permitir subida/inserción a usuarios autenticados con rol 'sensei'
+-- Permitir subida/inserción a cualquiera en el bucket 'videos'
 DROP POLICY IF EXISTS "Permitir subida a senseis" ON storage.objects;
-CREATE POLICY "Permitir subida a senseis" ON storage.objects
-    FOR INSERT WITH CHECK (
-        bucket_id = 'videos' 
-        AND EXISTS (
-            SELECT 1 FROM public.profiles 
-            WHERE id = auth.uid() AND role = 'sensei'
-        )
-    );
+DROP POLICY IF EXISTS "Permitir subida a cualquiera" ON storage.objects;
+CREATE POLICY "Permitir subida a cualquiera" ON storage.objects
+    FOR INSERT WITH CHECK (bucket_id = 'videos');
 
--- Permitir actualización a senseis
+-- Permitir actualización a cualquiera en el bucket 'videos'
 DROP POLICY IF EXISTS "Permitir actualización a senseis" ON storage.objects;
-CREATE POLICY "Permitir actualización a senseis" ON storage.objects
-    FOR UPDATE USING (
-        bucket_id = 'videos' 
-        AND EXISTS (
-            SELECT 1 FROM public.profiles 
-            WHERE id = auth.uid() AND role = 'sensei'
-        )
-    );
+DROP POLICY IF EXISTS "Permitir actualización a cualquiera" ON storage.objects;
+CREATE POLICY "Permitir actualización a cualquiera" ON storage.objects
+    FOR UPDATE USING (bucket_id = 'videos');
 
--- Permitir eliminación a senseis
+-- Permitir eliminación a cualquiera en el bucket 'videos'
 DROP POLICY IF EXISTS "Permitir borrar a senseis" ON storage.objects;
-CREATE POLICY "Permitir borrar a senseis" ON storage.objects
-    FOR DELETE USING (
-        bucket_id = 'videos' 
-        AND EXISTS (
-            SELECT 1 FROM public.profiles 
-            WHERE id = auth.uid() AND role = 'sensei'
-        )
-    );
+DROP POLICY IF EXISTS "Permitir borrar a cualquiera" ON storage.objects;
+CREATE POLICY "Permitir borrar a cualquiera" ON storage.objects
+    FOR DELETE USING (bucket_id = 'videos');
+
 
