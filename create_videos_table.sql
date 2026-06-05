@@ -1,8 +1,31 @@
 -- ==========================================================
--- DOJOIA - Tabla de Videos (Entrenamiento e Inicio)
+-- DOJOIA - Tabla de Videos, Categorías y Configuración de Storage
 -- ==========================================================
 
--- Crear la tabla de videos si no existe
+-- 1. Habilitar extensión UUID si no existe
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 2. Crear tabla de categorías si no existe
+CREATE TABLE IF NOT EXISTS public.video_categorias (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    nombre TEXT UNIQUE NOT NULL,
+    descripcion TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Habilitar RLS para categorías
+ALTER TABLE public.video_categorias ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de RLS para categorías
+DROP POLICY IF EXISTS "Lectura pública de categorias" ON public.video_categorias;
+CREATE POLICY "Lectura pública de categorias" ON public.video_categorias FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Senseis pueden gestionar categorias" ON public.video_categorias;
+CREATE POLICY "Senseis pueden gestionar categorias" ON public.video_categorias FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'sensei')
+);
+
+-- 3. Crear tabla de videos si no existe
 CREATE TABLE IF NOT EXISTS public.videos (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     titulo TEXT NOT NULL,
@@ -15,16 +38,19 @@ CREATE TABLE IF NOT EXISTS public.videos (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- Habilitar Row Level Security (RLS)
+-- Asegurar que la columna categoria_id existe en public.videos y apunta a video_categorias
+ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS categoria_id UUID REFERENCES public.video_categorias(id) ON DELETE SET NULL;
+
+-- Habilitar Row Level Security (RLS) para videos
 ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
 
--- Políticas de Seguridad
--- 1. Lectura libre para cualquier usuario (incluso no registrados para ver el video de inicio)
+-- Políticas de RLS para videos
+-- Lectura libre para cualquier usuario (incluso no registrados para ver el video de inicio)
 DROP POLICY IF EXISTS "Lectura pública de videos" ON public.videos;
 CREATE POLICY "Lectura pública de videos" ON public.videos
     FOR SELECT USING (true);
 
--- 2. Permiso total de gestión sólo para usuarios con rol 'sensei'
+-- Permiso total de gestión sólo para usuarios con rol 'sensei'
 DROP POLICY IF EXISTS "Senseis pueden gestionar videos" ON public.videos;
 CREATE POLICY "Senseis pueden gestionar videos" ON public.videos
     FOR ALL USING (
@@ -33,3 +59,57 @@ CREATE POLICY "Senseis pueden gestionar videos" ON public.videos
             WHERE id = auth.uid() AND role = 'sensei'
         )
     );
+
+-- 4. Semilla de Categorías por Defecto
+INSERT INTO public.video_categorias (id, nombre, descripcion) VALUES
+('1a1a1a1a-1111-1111-1111-111111111111', 'Katas', 'Formas y secuencias de movimientos técnicos del estilo Shito-Ryu'),
+('2b2b2b2b-2222-2222-2222-222222222222', 'Kihon', 'Técnicas fundamentales de golpes, bloqueos y posiciones básicas'),
+('3c3c3c3c-3333-3333-3333-333333333333', 'Kumite', 'Combate deportivo y aplicación táctica de defensa personal'),
+('4d4d4d4d-4444-4444-4444-444444444444', 'Bunkai', 'Análisis práctico y explicaciones del significado de los katas'),
+('5e5e5e5e-5555-5555-5555-555555555555', 'Acondicionamiento', 'Ejercicios de fortalecimiento físico, elasticidad y velocidad')
+ON CONFLICT (nombre) DO NOTHING;
+
+-- 5. Crear el bucket 'videos' de Storage si no existe
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('videos', 'videos', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 6. Políticas de RLS de Storage para el bucket 'videos'
+-- Permitir lectura pública de archivos en el bucket 'videos'
+DROP POLICY IF EXISTS "Acceso público de lectura de videos" ON storage.objects;
+CREATE POLICY "Acceso público de lectura de videos" ON storage.objects
+    FOR SELECT USING (bucket_id = 'videos');
+
+-- Permitir subida/inserción a usuarios autenticados con rol 'sensei'
+DROP POLICY IF EXISTS "Permitir subida a senseis" ON storage.objects;
+CREATE POLICY "Permitir subida a senseis" ON storage.objects
+    FOR INSERT WITH CHECK (
+        bucket_id = 'videos' 
+        AND EXISTS (
+            SELECT 1 FROM public.profiles 
+            WHERE id = auth.uid() AND role = 'sensei'
+        )
+    );
+
+-- Permitir actualización a senseis
+DROP POLICY IF EXISTS "Permitir actualización a senseis" ON storage.objects;
+CREATE POLICY "Permitir actualización a senseis" ON storage.objects
+    FOR UPDATE USING (
+        bucket_id = 'videos' 
+        AND EXISTS (
+            SELECT 1 FROM public.profiles 
+            WHERE id = auth.uid() AND role = 'sensei'
+        )
+    );
+
+-- Permitir eliminación a senseis
+DROP POLICY IF EXISTS "Permitir borrar a senseis" ON storage.objects;
+CREATE POLICY "Permitir borrar a senseis" ON storage.objects
+    FOR DELETE USING (
+        bucket_id = 'videos' 
+        AND EXISTS (
+            SELECT 1 FROM public.profiles 
+            WHERE id = auth.uid() AND role = 'sensei'
+        )
+    );
+

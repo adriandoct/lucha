@@ -394,7 +394,7 @@ export default function Home() {
                 className={styles.btnPrimary} 
                 style={{ background: 'var(--brand-red)', border: 'none', cursor: 'pointer', outline: 'none' }}
               >
-                Cerrar Sesión
+                Cierre de sesión
               </button>
             </div>
           ) : (
