@@ -734,7 +734,7 @@ export default function VideosPage() {
                 <div className={styles.formGroupFull} style={{ border: '2px dashed var(--border-color)', borderRadius: '12px', padding: '1.5rem', background: 'rgba(255,255,255,0.02)', textAlign: 'center' }}>
                   <input 
                     type="file" 
-                    accept="video/*" 
+                    accept="video/*, .mp4, .webm, .mov, .mkv, .avi, .ogg, .wmv, .flv, .3gp, .m4v" 
                     ref={fileInputRef}
                     onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
                     style={{ display: 'none' }} 
@@ -768,7 +768,7 @@ export default function VideosPage() {
                           Seleccionar Archivo de Video Local
                         </button>
                         <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-                          Formatos aceptados: MP4, WebM. Límite sugerido: 50MB.
+                          Formatos aceptados: MP4, WebM, MOV, AVI, etc. Límite sugerido: 50MB.
                         </p>
                       </div>
                     )}

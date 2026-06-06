@@ -57,6 +57,27 @@ const getCookie = (name: string): string => {
   return '';
 };
 
+const isPlayableVideoUrl = (url: string): boolean => {
+  if (!url) return false;
+  const lowercaseUrl = url.toLowerCase();
+  
+  if (lowercaseUrl.includes("youtube.com") || lowercaseUrl.includes("youtu.be") || lowercaseUrl.includes("vimeo.com")) {
+    return false;
+  }
+  
+  return lowercaseUrl.endsWith(".mp4") || 
+         lowercaseUrl.endsWith(".webm") || 
+         lowercaseUrl.endsWith(".mov") || 
+         lowercaseUrl.endsWith(".ogg") || 
+         lowercaseUrl.endsWith(".mkv") || 
+         lowercaseUrl.endsWith(".avi") || 
+         lowercaseUrl.endsWith(".3gp") || 
+         lowercaseUrl.endsWith(".m4v") || 
+         lowercaseUrl.startsWith("blob:") || 
+         lowercaseUrl.startsWith("data:video/") || 
+         lowercaseUrl.includes("/storage/v1/object/");
+};
+
 export default function ExamenesPage() {
   const [role, setRole] = useState("karateka");
   const [userName, setUserName] = useState("Karateka");
@@ -613,7 +634,7 @@ export default function ExamenesPage() {
               </h2>
 
               <div className={styles.videoContainer}>
-                {selectedRequest.video_evidencia_url.endsWith(".mp4") || selectedRequest.video_evidencia_url.includes("mixkit") ? (
+                {isPlayableVideoUrl(selectedRequest.video_evidencia_url) ? (
                   <video 
                     src={selectedRequest.video_evidencia_url} 
                     controls 
