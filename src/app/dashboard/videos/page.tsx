@@ -150,10 +150,10 @@ export default function VideosPage() {
       document.cookie = "dojoia_name=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       
       await fetch("/auth/signout", { method: "POST" });
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (e) {
       console.error("Error signing out", e);
-      window.location.href = "/login";
+      window.location.href = "/";
     }
   };
 
