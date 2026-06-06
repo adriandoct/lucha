@@ -25,7 +25,14 @@ async function handleSignOut(req: NextRequest) {
   cookieStore.delete("dojoia_name");
 
   revalidatePath("/", "layout");
-  return NextResponse.redirect(new URL("/", req.url), {
+
+  // Determine host and protocol behind reverse proxies (like Render)
+  const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || "localhost:3000";
+  const proto = req.headers.get("x-forwarded-proto") || "http";
+  const cleanProto = proto.split(",")[0].trim();
+  const baseUrl = `${cleanProto}://${host}`;
+
+  return NextResponse.redirect(new URL("/", baseUrl), {
     status: 302,
   });
 }
