@@ -835,7 +835,17 @@ export default function Home() {
                   </p>
                   {selectedVideo.url.startsWith('blob:') && (
                     <button 
-                      onClick={() => {
+                      onClick={async () => {
+                        // 1. Delete from Supabase if it is a database ID
+                        if (selectedVideo.id && !selectedVideo.id.startsWith("v_")) {
+                          try {
+                            await supabase.from("videos").delete().eq("id", selectedVideo.id);
+                          } catch (err) {
+                            console.error("Error deleting video from database:", err);
+                          }
+                        }
+
+                        // 2. Delete from local storage
                         const cached = localStorage.getItem("dojo_videos");
                         if (cached) {
                           const list = JSON.parse(cached);
@@ -844,7 +854,7 @@ export default function Home() {
                         }
                         setIsPlayerOpen(false);
                         setSelectedVideo(null);
-                        alert("Video expirado removido de la memoria local. Por favor recarga la página.");
+                        alert("Video expirado removido con éxito. La página se actualizará.");
                         window.location.reload();
                       }}
                       className="btn-primary"
