@@ -160,7 +160,7 @@ export default async function DashboardLayout({
           <form action="/auth/signout" method="post" style={{ marginTop: '1rem' }}>
             <button type="submit" className={styles.navItem} style={{ width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left' }}>
               <LogOut size={20} />
-              <span>Cierre de sesión</span>
+              <span>Cerrar Sesión</span>
             </button>
           </form>
         </div>
