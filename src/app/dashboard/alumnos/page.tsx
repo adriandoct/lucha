@@ -168,8 +168,14 @@ export default function AlumnosPage() {
     try {
       if (formId) {
         // Update in Supabase
-        await supabase.from("karatekas").update(payload).eq("id", formId);
+        const { error } = await supabase.from("karatekas").update(payload).eq("id", formId);
         
+        if (error) {
+          console.error("Error updating karateka:", error);
+          alert("Error al guardar en la base de datos: " + error.message);
+          return;
+        }
+
         // Update in local state
         const updatedList = karatekas.map(k => k.id === formId ? { ...k, ...payload } : k);
         setKaratekas(updatedList);
@@ -178,6 +184,12 @@ export default function AlumnosPage() {
         // Insert in Supabase
         const { data, error } = await supabase.from("karatekas").insert(payload).select();
         
+        if (error) {
+          console.error("Error inserting karateka:", error);
+          alert("Error al guardar en la base de datos: " + error.message);
+          return;
+        }
+
         // Update in local state
         const newKarateka = (data && data[0]) || { id: Math.random().toString(), ...payload };
         const updatedList = [...karatekas, newKarateka];
@@ -187,6 +199,7 @@ export default function AlumnosPage() {
       setIsFormOpen(false);
     } catch (err) {
       console.error(err);
+      alert("Ocurrió un error inesperado al intentar guardar el alumno.");
     }
   };
 

@@ -14,6 +14,26 @@ export async function login(formData: FormData) {
 
   // FIXED ADMIN SENSEI BYPASS
   if (email === "admin@admin.com" && password === "12345678Cecyte") {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      // Attempt standard auth login to create an active Supabase session
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        // If sign in fails (e.g. user does not exist), register the user first
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: "Sensei Carlos Martínez",
+              role: "sensei",
+            },
+          },
+        });
+        if (!signUpError) {
+          await supabase.auth.signInWithPassword({ email, password });
+        }
+      }
+    }
     cookieStore.set("dojoia_role", "sensei", { path: "/" });
     cookieStore.set("dojoia_email", "admin@admin.com", { path: "/" });
     cookieStore.set("dojoia_name", "Sensei Carlos Martínez", { path: "/" });
