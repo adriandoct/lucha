@@ -27,6 +27,8 @@ interface Karateka {
   telefono: string;
   foto_url: string;
   activo: boolean;
+  email?: string;
+  password?: string;
 }
 
 export default function AlumnosPage() {
@@ -52,6 +54,8 @@ export default function AlumnosPage() {
   const [formTutor, setFormTutor] = useState("");
   const [formTelefono, setFormTelefono] = useState("");
   const [formFotoUrl, setFormFotoUrl] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formPassword, setFormPassword] = useState("");
 
   // Importer states
   const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
@@ -123,13 +127,17 @@ export default function AlumnosPage() {
     setFormId("");
     // Generate simple matricula
     const nextNum = String(karatekas.length + 1).padStart(3, '0');
-    setFormMatricula(`KA-2026-${nextNum}`);
+    const defaultMatricula = `KA-2026-${nextNum}`;
+    setFormMatricula(defaultMatricula);
     setFormNombre("");
     setFormCinturon("blanco");
     setFormGrado("10° Kyu");
     setFormTutor("");
     setFormTelefono("");
     setFormFotoUrl("");
+    // Generate defaults for email and password
+    setFormEmail(`${defaultMatricula.toLowerCase()}@dojoia.com`);
+    setFormPassword("123456");
     setIsFormOpen(true);
   };
 
@@ -143,13 +151,15 @@ export default function AlumnosPage() {
     setFormTutor(k.tutor);
     setFormTelefono(k.telefono);
     setFormFotoUrl(k.foto_url || "");
+    setFormEmail(k.email || "");
+    setFormPassword(k.password || "");
     setIsFormOpen(true);
   };
 
   // Submit manual registration
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formNombre || !formMatricula || !formTutor || !formTelefono) {
+    if (!formNombre || !formMatricula || !formTutor || !formTelefono || !formEmail || !formPassword) {
       alert("Por favor rellena todos los campos obligatorios.");
       return;
     }
@@ -162,7 +172,9 @@ export default function AlumnosPage() {
       tutor: formTutor.trim(),
       telefono: formTelefono.trim(),
       foto_url: formFotoUrl.trim() || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200",
-      activo: true
+      activo: true,
+      email: formEmail.trim().toLowerCase(),
+      password: formPassword.trim()
     };
 
     try {
@@ -435,6 +447,11 @@ export default function AlumnosPage() {
                     </div>
                     <div>
                       <span style={{ fontWeight: 600 }}>{k.nombre}</span>
+                      {k.email && (
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>
+                          🔑 {k.email}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </td>
@@ -532,6 +549,17 @@ export default function AlumnosPage() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Teléfono WhatsApp</label>
                   <input type="tel" className={styles.input} placeholder="e.g. +5215512345678" value={formTelefono} onChange={(e) => setFormTelefono(e.target.value)} required />
+                </div>
+              </div>
+
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Correo de Acceso (Usuario)</label>
+                  <input type="email" className={styles.input} placeholder="alumno@dojoia.com" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} required />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Contraseña de Acceso</label>
+                  <input type="text" className={styles.input} placeholder="Contraseña para el alumno" value={formPassword} onChange={(e) => setFormPassword(e.target.value)} required />
                 </div>
               </div>
 

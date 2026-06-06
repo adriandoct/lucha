@@ -114,21 +114,66 @@ export default function DashboardPage() {
     if (userRole === "sensei") {
       loadSenseiData();
     } else {
-      // Find matching mock student details based on name
-      if (name.toLowerCase().includes("mateo")) {
-        setStudentMatricula("KA-2026-001");
-        setStudentBelt("verde");
-        setStudentGrado("6° Kyu");
-      } else if (name.toLowerCase().includes("sofia")) {
-        setStudentMatricula("KA-2026-002");
-        setStudentBelt("amarillo");
-        setStudentGrado("8° Kyu");
-      } else if (name.toLowerCase().includes("diego")) {
-        setStudentMatricula("KA-2026-003");
-        setStudentBelt("negro");
-        setStudentGrado("1° Dan");
-      }
-      setLoading(false);
+      // Fetch dynamic student details from database
+      const fetchStudentData = async () => {
+        try {
+          if (email) {
+            const { data, error } = await supabase
+              .from("karatekas")
+              .select("matricula, cinturon, grado")
+              .eq("email", email.toLowerCase())
+              .limit(1);
+
+            if (data && data.length > 0 && !error) {
+              setStudentMatricula(data[0].matricula);
+              setStudentBelt(data[0].cinturon);
+              setStudentGrado(data[0].grado);
+              setLoading(false);
+              return;
+            }
+          }
+
+          // Fallback by name
+          const { data: dataByName, error: errByName } = await supabase
+            .from("karatekas")
+            .select("matricula, cinturon, grado")
+            .eq("nombre", name)
+            .limit(1);
+
+          if (dataByName && dataByName.length > 0 && !errByName) {
+            setStudentMatricula(dataByName[0].matricula);
+            setStudentBelt(dataByName[0].cinturon);
+            setStudentGrado(dataByName[0].grado);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.warn("Dynamic student data fetch skipped", e);
+        }
+
+        // Standard hardcoded mock fallbacks if database fetch fails or misses
+        if (name.toLowerCase().includes("mateo")) {
+          setStudentMatricula("KA-2026-001");
+          setStudentBelt("verde");
+          setStudentGrado("6° Kyu");
+        } else if (name.toLowerCase().includes("sofia")) {
+          setStudentMatricula("KA-2026-002");
+          setStudentBelt("amarillo");
+          setStudentGrado("8° Kyu");
+        } else if (name.toLowerCase().includes("diego")) {
+          setStudentMatricula("KA-2026-003");
+          setStudentBelt("negro");
+          setStudentGrado("1° Dan");
+        } else {
+          // Default fallback
+          setStudentMatricula("KA-2026-004");
+          setStudentBelt("azul");
+          setStudentGrado("5° Kyu");
+        }
+        setLoading(false);
+      };
+
+      fetchStudentData();
     }
   }, []);
 

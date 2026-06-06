@@ -40,6 +40,27 @@ export async function login(formData: FormData) {
     return redirect("/dashboard");
   }
 
+  // CHECK DYNAMIC KARATEKA TABLE FOR STUDENT CREDENTIALS
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      const { data: student, error: studentError } = await supabase
+        .from("karatekas")
+        .select("nombre, email, password")
+        .eq("email", email.trim().toLowerCase())
+        .eq("password", password.trim())
+        .limit(1);
+
+      if (student && student.length > 0 && !studentError) {
+        cookieStore.set("dojoia_role", "karateka", { path: "/" });
+        cookieStore.set("dojoia_email", student[0].email, { path: "/" });
+        cookieStore.set("dojoia_name", student[0].nombre, { path: "/" });
+        return redirect("/dashboard");
+      }
+    } catch (dbErr) {
+      console.warn("Dynamic karateka check failed or skipped", dbErr);
+    }
+  }
+
   // STANDARD AUTH
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
