@@ -167,6 +167,19 @@ export default async function DashboardLayout({
       </aside>
 
       <main className={styles.mainContent}>
+        {/* Global Top-Right Cerrar Sesión Button */}
+        <div className="no-print" style={{ position: 'absolute', top: '2.5rem', right: '3rem', zIndex: 100 }}>
+          <form action="/auth/signout" method="post">
+            <button 
+              type="submit" 
+              className={styles.logoutBtnTop}
+              title="Cerrar Sesión"
+            >
+              <LogOut size={16} />
+              <span>Cerrar Sesión</span>
+            </button>
+          </form>
+        </div>
         {children}
       </main>
     </div>

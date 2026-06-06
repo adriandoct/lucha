@@ -305,7 +305,7 @@ export default function DashboardPage() {
             <h1>¡Hola, {userName}!</h1>
             <p>Bienvenido al Portal del Alumno. Monitoreo técnico y credenciales.</p>
           </div>
-          <div className={styles.topActions}>
+          <div className={styles.topActions} style={{ marginRight: '8.5rem' }}>
             <div className={styles.actionBtn}>
               <Bell size={20} />
             </div>
@@ -440,16 +440,13 @@ export default function DashboardPage() {
           <p>Control de acceso escolar y estado del tatami en tiempo real.</p>
         </div>
         
-        <div className={styles.topActions}>
+        <div className={styles.topActions} style={{ marginRight: '8.5rem' }}>
           <div className={styles.actionBtn}>
             <Search size={20} />
           </div>
           <div className={styles.actionBtn}>
             <Bell size={20} />
           </div>
-          <button className="btn-primary" style={{ background: 'var(--brand-red)' }} onClick={handleSignOutClient}>
-            Cerrar Sesión
-          </button>
         </div>
       </motion.div>
 

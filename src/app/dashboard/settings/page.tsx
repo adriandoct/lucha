@@ -233,235 +233,244 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Left side: Config fields */}
-      <div className={styles.settingsPanel}>
-        <div className={styles.card}>
-          <h2>
-            <Shield size={22} style={{ color: 'var(--brand-red)' }} />
-            Perfil del Dojo
-          </h2>
-          
-          <div className={styles.formGrid}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Nombre del Dojo</label>
-              <input 
-                type="text" 
-                className={styles.input} 
-                value={config.dojo_name} 
-                onChange={(e) => handleInputChange("dojo_name", e.target.value)} 
-              />
-            </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div className={styles.header}>
+        <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          Configuración del Sistema
+        </h1>
+        <p>Gestiona las credenciales de la API de WhatsApp, plantillas de mensajes y asignación del Dojo Invertido.</p>
+      </div>
+
+      <div className={styles.container}>
+        {/* Left side: Config fields */}
+        <div className={styles.settingsPanel}>
+          <div className={styles.card}>
+            <h2>
+              <Shield size={22} style={{ color: 'var(--brand-red)' }} />
+              Perfil del Dojo
+            </h2>
             
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Estilo de Karate</label>
-              <input 
-                type="text" 
-                className={styles.input} 
-                value={config.estilo} 
-                onChange={(e) => handleInputChange("estilo", e.target.value)} 
-              />
-            </div>
+            <div className={styles.formGrid}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Nombre del Dojo</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  value={config.dojo_name} 
+                  onChange={(e) => handleInputChange("dojo_name", e.target.value)} 
+                />
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Estilo de Karate</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  value={config.estilo} 
+                  onChange={(e) => handleInputChange("estilo", e.target.value)} 
+                />
+              </div>
 
-            <div className={styles.formGroupFull}>
-              <label className={styles.label}>Sensei Principal (Director/Administrador)</label>
-              <input 
-                type="text" 
-                className={styles.input} 
-                value={config.sensei_principal} 
-                onChange={(e) => handleInputChange("sensei_principal", e.target.value)} 
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.card}>
-          <h2>
-            <MessageSquare size={22} style={{ color: 'var(--brand-red)' }} />
-            Configuración de WhatsApp API
-          </h2>
-
-          <div className={styles.formGrid}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Proveedor de Envío</label>
-              <select 
-                className={styles.selectInput}
-                value={config.whatsapp_provider}
-                onChange={(e) => handleInputChange("whatsapp_provider", e.target.value as any)}
-              >
-                <option value="mock">Simulador en Pantalla (Ideal para demos)</option>
-                <option value="meta">Meta Cloud API (Oficial)</option>
-                <option value="twilio">Twilio WhatsApp API</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>ID del Número de Teléfono (Meta)</label>
-              <input 
-                type="text" 
-                className={styles.input} 
-                placeholder="e.g. 1098273645271" 
-                disabled={config.whatsapp_provider === 'mock'}
-                value={config.whatsapp_phone_number_id}
-                onChange={(e) => handleInputChange("whatsapp_phone_number_id", e.target.value)}
-              />
-            </div>
-
-            <div className={styles.formGroupFull}>
-              <label className={styles.label}>Token de Acceso / API Key</label>
-              <input 
-                type="password" 
-                className={styles.input} 
-                placeholder={config.whatsapp_provider === 'mock' ? "Bajo modo simulación (no requiere clave)" : "EAAGy..."}
-                disabled={config.whatsapp_provider === 'mock'}
-                value={config.whatsapp_token}
-                onChange={(e) => handleInputChange("whatsapp_token", e.target.value)}
-              />
+              <div className={styles.formGroupFull}>
+                <label className={styles.label}>Sensei Principal (Director/Administrador)</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  value={config.sensei_principal} 
+                  onChange={(e) => handleInputChange("sensei_principal", e.target.value)} 
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
-          <h2>
-            <MessageSquare size={22} style={{ color: 'var(--brand-gold)' }} />
-            Dojo Invertido (Flipped Dojo) - Planificación del Sábado
-          </h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            Configura las asignaciones técnicas y envía automáticamente por WhatsApp el material de estudio para la clase presencial.
-          </p>
+          <div className={styles.card}>
+            <h2>
+              <MessageSquare size={22} style={{ color: 'var(--brand-red)' }} />
+              Configuración de WhatsApp API
+            </h2>
 
-          <div className={styles.formGrid} style={{ marginTop: '1rem' }}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Kata de la Semana</label>
-              <input 
-                type="text" 
-                className={styles.input} 
-                placeholder="e.g. Pinan Shodan" 
-                value={config.kata_semana || ""}
-                onChange={(e) => handleInputChange("kata_semana", e.target.value)}
-              />
+            <div className={styles.formGrid}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Proveedor de Envío</label>
+                <select 
+                  className={styles.selectInput}
+                  value={config.whatsapp_provider}
+                  onChange={(e) => handleInputChange("whatsapp_provider", e.target.value as any)}
+                >
+                  <option value="mock">Simulador en Pantalla (Ideal para demos)</option>
+                  <option value="meta">Meta Cloud API (Oficial)</option>
+                  <option value="twilio">Twilio WhatsApp API</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>ID del Número de Teléfono (Meta)</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  placeholder="e.g. 1098273645271" 
+                  disabled={config.whatsapp_provider === 'mock'}
+                  value={config.whatsapp_phone_number_id}
+                  onChange={(e) => handleInputChange("whatsapp_phone_number_id", e.target.value)}
+                />
+              </div>
+
+              <div className={styles.formGroupFull}>
+                <label className={styles.label}>Token de Acceso / API Key</label>
+                <input 
+                  type="password" 
+                  className={styles.input} 
+                  placeholder={config.whatsapp_provider === 'mock' ? "Bajo modo simulación (no requiere clave)" : "EAAGy..."}
+                  disabled={config.whatsapp_provider === 'mock'}
+                  value={config.whatsapp_token}
+                  onChange={(e) => handleInputChange("whatsapp_token", e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
+            <h2>
+              <MessageSquare size={22} style={{ color: 'var(--brand-gold)' }} />
+              Dojo Invertido (Flipped Dojo) - Planificación del Sábado
+            </h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              Configura las asignaciones técnicas y envía automáticamente por WhatsApp el material de estudio para la clase presencial.
+            </p>
+
+            <div className={styles.formGrid} style={{ marginTop: '1rem' }}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Kata de la Semana</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  placeholder="e.g. Pinan Shodan" 
+                  value={config.kata_semana || ""}
+                  onChange={(e) => handleInputChange("kata_semana", e.target.value)}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Video de Estudio</label>
+                <select 
+                  className={styles.selectInput}
+                  value={config.video_semana_id || ""}
+                  onChange={(e) => handleInputChange("video_semana_id", e.target.value)}
+                >
+                  <option value="">-- Selecciona un Video Corto --</option>
+                  {videos.map(v => (
+                    <option key={v.id} value={v.id}>{v.titulo}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.formGroupFull}>
+                <label className={styles.label}>Plantilla del Recordatorio (WhatsApp)</label>
+                <textarea 
+                  className={styles.textarea}
+                  rows={4}
+                  value={config.recordatorio_sabado || ""}
+                  onChange={(e) => handleInputChange("recordatorio_sabado", e.target.value)}
+                />
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                  Variables: <code>{"{dojo_name}, {tutor}, {nombre}, {kata_semana}, {video_url}"}</code>
+                </p>
+              </div>
             </div>
 
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Video de Estudio</label>
-              <select 
-                className={styles.selectInput}
-                value={config.video_semana_id || ""}
-                onChange={(e) => handleInputChange("video_semana_id", e.target.value)}
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <button 
+                className="btn-primary" 
+                style={{ background: 'var(--brand-gold)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                onClick={handleSendSaturdayReminder}
               >
-                <option value="">-- Selecciona un Video Corto --</option>
-                {videos.map(v => (
-                  <option key={v.id} value={v.id}>{v.titulo}</option>
-                ))}
-              </select>
+                <Smartphone size={18} /> Enviar a Todos los Alumnos 💬
+              </button>
             </div>
+          </div>
 
-            <div className={styles.formGroupFull}>
-              <label className={styles.label}>Plantilla del Recordatorio (WhatsApp)</label>
+          <div className={styles.card}>
+            <h2>
+              <Settings size={22} style={{ color: 'var(--brand-red)' }} />
+              Plantillas de Mensajes
+            </h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Info size={14} /> Variables disponibles: <code>{"{dojo_name}, {nombre}, {cinturon}, {grado}, {tutor}, {hora}, {fecha}"}</code>
+            </p>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Plantilla: Entrada del Alumno</label>
               <textarea 
                 className={styles.textarea}
-                rows={4}
-                value={config.recordatorio_sabado || ""}
-                onChange={(e) => handleInputChange("recordatorio_sabado", e.target.value)}
+                value={config.template_entrada}
+                onChange={(e) => handleInputChange("template_entrada", e.target.value)}
               />
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                Variables: <code>{"{dojo_name}, {tutor}, {nombre}, {kata_semana}, {video_url}"}</code>
-              </p>
             </div>
-          </div>
 
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Plantilla: Salida del Alumno</label>
+              <textarea 
+                className={styles.textarea}
+                value={config.template_salida}
+                onChange={(e) => handleInputChange("template_salida", e.target.value)}
+              />
+            </div>
+
             <button 
               className="btn-primary" 
-              style={{ background: 'var(--brand-gold)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-              onClick={handleSendSaturdayReminder}
+              style={{ background: 'var(--brand-red)', alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}
+              disabled={saving}
+              onClick={handleSave}
             >
-              <Smartphone size={18} /> Enviar a Todos los Alumnos 💬
+              <Save size={18} /> {saving ? "Guardando..." : "Guardar Cambios"}
             </button>
           </div>
         </div>
 
-        <div className={styles.card}>
-          <h2>
-            <Settings size={22} style={{ color: 'var(--brand-red)' }} />
-            Plantillas de Mensajes
-          </h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <Info size={14} /> Variables disponibles: <code>{"{dojo_name}, {nombre}, {cinturon}, {grado}, {tutor}, {hora}, {fecha}"}</code>
-          </p>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Plantilla: Entrada del Alumno</label>
-            <textarea 
-              className={styles.textarea}
-              value={config.template_entrada}
-              onChange={(e) => handleInputChange("template_entrada", e.target.value)}
-            />
+        {/* Right side: Live Simulator Frame */}
+        <div className={styles.simulatorWrapper}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '300px', alignItems: 'center' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem' }}>
+              <Smartphone size={18} /> Celular del Tutor
+            </h3>
+            <button 
+              onClick={clearChatHistory}
+              style={{ fontSize: '0.75rem', color: 'var(--brand-red)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: 600 }}
+            >
+              <RefreshCw size={12} /> Limpiar Chat
+            </button>
           </div>
 
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Plantilla: Salida del Alumno</label>
-            <textarea 
-              className={styles.textarea}
-              value={config.template_salida}
-              onChange={(e) => handleInputChange("template_salida", e.target.value)}
-            />
-          </div>
-
-          <button 
-            className="btn-primary" 
-            style={{ background: 'var(--brand-red)', alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}
-            disabled={saving}
-            onClick={handleSave}
-          >
-            <Save size={18} /> {saving ? "Guardando..." : "Guardar Cambios"}
-          </button>
-        </div>
-      </div>
-
-      {/* Right side: Live Simulator Frame */}
-      <div className={styles.simulatorWrapper}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '300px', alignItems: 'center' }}>
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem' }}>
-            <Smartphone size={18} /> Celular del Tutor
-          </h3>
-          <button 
-            onClick={clearChatHistory}
-            style={{ fontSize: '0.75rem', color: 'var(--brand-red)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: 600 }}
-          >
-            <RefreshCw size={12} /> Limpiar Chat
-          </button>
-        </div>
-
-        <div className={styles.phoneFrame}>
-          <div className={styles.phoneNotch}></div>
-          
-          <div className={styles.phoneHeader}>
-            <div className={styles.phoneUserAvatar}>🥋</div>
-            <div className={styles.phoneUserInfo}>
-              <h4>Dojo {config.dojo_name.split(" ").pop()}</h4>
-              <p>Online (Sensei Bot)</p>
-            </div>
-          </div>
-
-          <div className={styles.phoneChatArea}>
-            {simulatedMessages.map((msg) => (
-              <div key={msg.id} className={styles.chatBubble}>
-                <div>{msg.message}</div>
-                <span className={styles.bubbleTime}>
-                  {msg.timestamp} <span className={styles.bubbleCheck}>✓✓</span>
-                </span>
+          <div className={styles.phoneFrame}>
+            <div className={styles.phoneNotch}></div>
+            
+            <div className={styles.phoneHeader}>
+              <div className={styles.phoneUserAvatar}>🥋</div>
+              <div className={styles.phoneUserInfo}>
+                <h4>Dojo {config.dojo_name.split(" ").pop()}</h4>
+                <p>Online (Sensei Bot)</p>
               </div>
-            ))}
-            {simulatedMessages.length === 0 && (
-              <p style={{ color: '#707070', fontSize: '0.75rem', textAlign: 'center', margin: 'auto', padding: '1rem', fontFamily: 'sans-serif' }}>
-                Esperando escaneos... Al realizar asistencia con QR verás los mensajes simulados aquí.
-              </p>
-            )}
-          </div>
+            </div>
 
-          <div className={styles.phoneFooter}>
-            <div className={styles.phoneInputMock}></div>
+            <div className={styles.phoneChatArea}>
+              {simulatedMessages.map((msg) => (
+                <div key={msg.id} className={styles.chatBubble}>
+                  <div>{msg.message}</div>
+                  <span className={styles.bubbleTime}>
+                    {msg.timestamp} <span className={styles.bubbleCheck}>✓✓</span>
+                  </span>
+                </div>
+              ))}
+              {simulatedMessages.length === 0 && (
+                <p style={{ color: '#707070', fontSize: '0.75rem', textAlign: 'center', margin: 'auto', padding: '1rem', fontFamily: 'sans-serif' }}>
+                  Esperando escaneos... Al realizar asistencia con QR verás los mensajes simulados aquí.
+                </p>
+              )}
+            </div>
+
+            <div className={styles.phoneFooter}>
+              <div className={styles.phoneInputMock}></div>
+            </div>
           </div>
         </div>
       </div>

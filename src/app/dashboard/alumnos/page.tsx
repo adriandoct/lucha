@@ -355,7 +355,7 @@ export default function AlumnosPage() {
           <h1>Directorio de Karatekas</h1>
           <p>Nómina de alumnos y licencias de la academia Shito-Ryu.</p>
         </div>
-        <div className={styles.headerActions}>
+        <div className={styles.headerActions} style={{ marginRight: '8.5rem' }}>
           <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => setIsImportOpen(true)}>
             <Upload size={18} /> Importar Excel/CSV
           </button>

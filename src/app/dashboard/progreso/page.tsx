@@ -245,7 +245,7 @@ export default function ProgresoPage() {
 
         {/* Sensei Student Selector */}
         {role === "sensei" && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginRight: '8.5rem' }}>
             <span style={{ fontSize: '0.9rem', fontWeight: 600 }}><Users size={16} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} /> Alumno:</span>
             <select 
               className={styles.selectInput}

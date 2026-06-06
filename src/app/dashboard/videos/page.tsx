@@ -450,7 +450,7 @@ export default function VideosPage() {
               : "Entrenamiento técnico entre semana exclusivo para karatekas registrados."}
           </p>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem', marginRight: '8.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: isSensei ? 'var(--brand-red)' : 'var(--success)', fontWeight: 'bold' }}>
             {isSensei ? (
               <><Globe size={14} /> Modo Administrador Activado</>
@@ -458,25 +458,6 @@ export default function VideosPage() {
               <><Lock size={14} /> Acceso Premium Habilitado</>
             )}
           </div>
-          <button 
-            onClick={handleSignOutClient}
-            className="btn-secondary" 
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.4rem', 
-              fontSize: '0.8rem', 
-              padding: '0.4rem 0.8rem',
-              color: 'var(--brand-red)',
-              borderColor: 'rgba(239, 68, 68, 0.2)',
-              background: 'rgba(239, 68, 68, 0.05)',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: 600
-            }}
-          >
-            <LogOut size={14} /> Cerrar Sesión
-          </button>
         </div>
       </div>
 

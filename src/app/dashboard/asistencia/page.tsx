@@ -418,7 +418,7 @@ export default function AsistenciaPage() {
           </h1>
           <p>Control de acceso escolar para tatamis Shito-Ryu.</p>
         </div>
-        <div>
+        <div style={{ marginRight: '8.5rem' }}>
           {isOnline ? (
             <span className={styles.onlineBadge}>
               <Wifi size={14} /> Sistema Online

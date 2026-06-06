@@ -4,6 +4,7 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-main);
+  position: relative;
 }
 
 /* Sidebar */
@@ -120,6 +121,7 @@
   padding: 2.5rem 3rem;
   max-width: 1600px;
   margin-right: auto;
+  position: relative;
 }
 
 /* Topbar */
@@ -347,4 +349,29 @@
   .panelsGrid {
     grid-template-columns: 1fr;
   }
+}
+
+.logoutBtnTop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  color: var(--brand-red);
+  border: 1px solid rgba(225, 29, 72, 0.2);
+  background: rgba(225, 29, 72, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.logoutBtnTop:hover {
+  background: var(--brand-red);
+  color: #fff;
+  border-color: var(--brand-red);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+  transform: translateY(-1px);
 }
