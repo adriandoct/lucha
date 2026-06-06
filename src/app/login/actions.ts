@@ -5,6 +5,22 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
+function parseTutorField(tutorField: string) {
+  const match = tutorField?.match(/(.*)\s+\[credentials:(.*?):(.*?)]/);
+  if (match) {
+    return {
+      tutor: match[1].trim(),
+      email: match[2],
+      password: match[3]
+    };
+  }
+  return {
+    tutor: tutorField || "",
+    email: "",
+    password: ""
+  };
+}
+
 export async function login(formData: FormData) {
   const supabase = await createClient();
   const email = formData.get("email") as string;
@@ -43,17 +59,26 @@ export async function login(formData: FormData) {
   // CHECK DYNAMIC KARATEKA TABLE FOR STUDENT CREDENTIALS
   if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
-      const { data: student, error: studentError } = await supabase
+      const { data: students, error: studentError } = await supabase
         .from("karatekas")
-        .select("nombre, tutor")
-        .like("tutor", `%[credentials:${email.trim().toLowerCase()}:${password.trim()}]%`)
-        .limit(1);
+        .select("nombre, tutor, activo")
+        .ilike("tutor", "%[credentials:%");
 
-      if (student && student.length > 0 && !studentError) {
-        cookieStore.set("dojoia_role", "karateka", { path: "/" });
-        cookieStore.set("dojoia_email", email.trim().toLowerCase(), { path: "/" });
-        cookieStore.set("dojoia_name", student[0].nombre, { path: "/" });
-        return redirect("/dashboard");
+      if (students && !studentError) {
+        const matched = students.find(s => {
+          const creds = parseTutorField(s.tutor);
+          return creds.email.toLowerCase() === email.trim().toLowerCase() && creds.password === password.trim();
+        });
+
+        if (matched) {
+          if (matched.activo === false) {
+            return redirect("/login?error=Esta cuenta de alumno está desactivada. Contacta a tu Sensei.");
+          }
+          cookieStore.set("dojoia_role", "karateka", { path: "/" });
+          cookieStore.set("dojoia_email", email.trim().toLowerCase(), { path: "/" });
+          cookieStore.set("dojoia_name", matched.nombre, { path: "/" });
+          return redirect("/dashboard");
+        }
       }
     } catch (dbErr) {
       console.warn("Dynamic karateka check failed or skipped", dbErr);
