@@ -65,7 +65,7 @@ export async function login(formData: FormData) {
         .ilike("tutor", "%[credentials:%");
 
       if (students && !studentError) {
-        const matched = students.find(s => {
+        const matched = students.find((s: any) => {
           const creds = parseTutorField(s.tutor);
           return creds.email.toLowerCase() === email.trim().toLowerCase() && creds.password === password.trim();
         });
