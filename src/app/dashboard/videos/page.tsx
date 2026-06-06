@@ -928,11 +928,23 @@ export default function VideosPage() {
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center', color: '#ff4d4d', zIndex: 5 }}>
                   <span style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</span>
                   <h4 style={{ color: 'white', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Error al cargar el video</h4>
-                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '0.85rem', color: '#ccc', maxWidth: '320px', lineHeight: '1.5', marginBottom: '1rem' }}>
                     {selectedVideo.url.startsWith('blob:') 
                       ? 'Este video se guardó temporalmente en la memoria de tu navegador y ya expiró. Por favor, ejecuta el script SQL en Supabase y vuelve a subirlo.' 
                       : 'El enlace de este video no está disponible o el formato no es compatible.'}
                   </p>
+                  {selectedVideo.url.startsWith('blob:') && (
+                    <button 
+                      onClick={() => {
+                        handleDeleteVideo(selectedVideo.id);
+                        handleCloseVideo();
+                      }}
+                      className="btn-primary"
+                      style={{ background: 'var(--brand-red)', fontSize: '0.85rem', padding: '0.5rem 1.25rem', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      Eliminar Video Expirado
+                    </button>
+                  )}
                 </div>
               )}
 
