@@ -7,31 +7,55 @@ import { cookies } from "next/headers";
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const emailVal = formData.get("email") as string;
+  const passwordVal = formData.get("password") as string;
 
   const cookieStore = await cookies();
 
+  const email = (emailVal || "").trim().toLowerCase();
+  const password = (passwordVal || "").trim();
+
+  const isMockSupabase = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+                         !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+                         String(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY).includes("reemplázala");
+
   // FIXED ADMIN SENSEI BYPASS
-  if (email === "admin@admin.com" && password === "12345678Cecyte") {
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      // Attempt standard auth login to create an active Supabase session
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) {
-        // If sign in fails (e.g. user does not exist), register the user first
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: "Sensei Carlos Martínez",
-              role: "sensei",
-            },
-          },
+  const isAdminEmail = email === "admin@admin.com";
+  const isAdminPassword = 
+    password.toLowerCase() === "12345678cecyte" ||
+    password.toLowerCase() === "12345678cecy" ||
+    password === "12345678";
+
+  if (isAdminEmail && isAdminPassword) {
+    if (!isMockSupabase) {
+      try {
+        const authPassword = password.toLowerCase() === "12345678cecyte" ? passwordVal : "12345678Cecyte";
+        // Attempt standard auth login to create an active Supabase session
+        const { error: signInError } = await supabase.auth.signInWithPassword({ 
+          email: "admin@admin.com", 
+          password: authPassword 
         });
-        if (!signUpError) {
-          await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          // If sign in fails (e.g. user does not exist), register the user first
+          const { error: signUpError } = await supabase.auth.signUp({
+            email: "admin@admin.com",
+            password: "12345678Cecyte",
+            options: {
+              data: {
+                full_name: "Sensei Carlos Martínez",
+                role: "sensei",
+              },
+            },
+          });
+          if (!signUpError) {
+            await supabase.auth.signInWithPassword({ 
+              email: "admin@admin.com", 
+              password: "12345678Cecyte" 
+            });
+          }
         }
+      } catch (authErr) {
+        console.warn("Supabase auth integration failed during admin bypass, continuing with cookie session:", authErr);
       }
     }
     cookieStore.set("dojoia_role", "sensei", { path: "/" });
@@ -41,19 +65,36 @@ export async function login(formData: FormData) {
   }
 
   // CHECK DYNAMIC KARATEKA TABLE FOR STUDENT CREDENTIALS
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!isMockSupabase) {
     try {
-      const { data: student, error: studentError } = await supabase
+      const { data: students, error: studentError } = await supabase
         .from("karatekas")
         .select("nombre, tutor")
-        .like("tutor", `%[credentials:${email.trim().toLowerCase()}:${password.trim()}]%`)
-        .limit(1);
+        .like("tutor", `%[credentials:${email}:%`);
 
-      if (student && student.length > 0 && !studentError) {
-        cookieStore.set("dojoia_role", "karateka", { path: "/" });
-        cookieStore.set("dojoia_email", email.trim().toLowerCase(), { path: "/" });
-        cookieStore.set("dojoia_name", student[0].nombre, { path: "/" });
-        return redirect("/dashboard");
+      if (students && students.length > 0 && !studentError) {
+        // Find if any student has a matching password (allowing suffix variations)
+        const matchingStudent = students.find((student: any) => {
+          const match = student.tutor?.match(/\[credentials:([^:]+):([^\]]+)\]/);
+          if (!match) return false;
+          const storedPassword = match[2].trim();
+          
+          const enteredLower = password.toLowerCase();
+          const storedLower = storedPassword.toLowerCase();
+          
+          return enteredLower === storedLower || 
+                 enteredLower === storedLower + "cecy" || 
+                 enteredLower === storedLower + "cecyte" ||
+                 storedLower === enteredLower + "cecy" ||
+                 storedLower === enteredLower + "cecyte";
+        });
+
+        if (matchingStudent) {
+          cookieStore.set("dojoia_role", "karateka", { path: "/" });
+          cookieStore.set("dojoia_email", email, { path: "/" });
+          cookieStore.set("dojoia_name", matchingStudent.nombre, { path: "/" });
+          return redirect("/dashboard");
+        }
       }
     } catch (dbErr) {
       console.warn("Dynamic karateka check failed or skipped", dbErr);
@@ -61,11 +102,25 @@ export async function login(formData: FormData) {
   }
 
   // STANDARD AUTH
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  let authError = null;
+  let userMetadata = null;
 
-  if (error) {
-    // If Supabase credentials fail, check if we are offline/no-keys and allow a mock karateka login
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL && email && password) {
+  if (!isMockSupabase) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      authError = error;
+      if (!error && data?.user) {
+        userMetadata = data.user.user_metadata;
+      }
+    } catch (err) {
+      console.error("Supabase auth signInWithPassword failed", err);
+      authError = err;
+    }
+  }
+
+  if (isMockSupabase || authError) {
+    // If Supabase credentials fail or we are offline/no-keys, check and allow a mock login
+    if (isMockSupabase && email && password) {
       const isStudent = email.includes("student") || email.includes("alumno") || password === "123456";
       const role = isStudent ? "karateka" : "sensei";
       const name = isStudent ? "Mateo García López" : "Sensei Carlos Martínez";
@@ -79,9 +134,8 @@ export async function login(formData: FormData) {
   }
 
   // Read metadata role if Supabase is connected
-  const { data: { user } } = await supabase.auth.getUser();
-  const role = user?.user_metadata?.role || "karateka";
-  const name = user?.user_metadata?.full_name || "Karateka";
+  const role = userMetadata?.role || "karateka";
+  const name = userMetadata?.full_name || "Karateka";
 
   cookieStore.set("dojoia_role", role, { path: "/" });
   cookieStore.set("dojoia_email", email, { path: "/" });
