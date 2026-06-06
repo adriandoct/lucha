@@ -396,3 +396,50 @@
     transform: translate(-50%, -50%) scale(1.5);
   }
 }
+
+.btnAction.delete {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btnAction.delete:hover {
+  background: var(--brand-red-light);
+  color: var(--brand-red);
+  border-color: rgba(225, 29, 72, 0.2);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.statusBadge.activo {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.statusBadge.inactivo {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: #64748B;
+}
+
+.formCheckboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checkboxInput {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--brand-red);
+}
+

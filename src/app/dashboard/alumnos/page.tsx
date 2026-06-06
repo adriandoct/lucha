@@ -13,7 +13,8 @@ import {
   X,
   Check,
   AlertCircle,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Trash2
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
@@ -59,6 +60,7 @@ export default function AlumnosPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [beltFilter, setBeltFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("activos");
 
   // Modals
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -79,6 +81,7 @@ export default function AlumnosPage() {
   const [formFotoUrl, setFormFotoUrl] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formPassword, setFormPassword] = useState("");
+  const [formActivo, setFormActivo] = useState(true);
 
   // Importer states
   const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
@@ -96,7 +99,6 @@ export default function AlumnosPage() {
       const { data, error } = await supabase
         .from("karatekas")
         .select("*")
-        .eq("activo", true)
         .order("nombre", { ascending: true });
 
       if (error || !data || data.length === 0) {
@@ -188,6 +190,7 @@ export default function AlumnosPage() {
     // Generate defaults for email and password
     setFormEmail(`${defaultMatricula.toLowerCase()}@dojoia.com`);
     setFormPassword("123456");
+    setFormActivo(true);
     setIsFormOpen(true);
   };
 
@@ -203,6 +206,7 @@ export default function AlumnosPage() {
     setFormFotoUrl(k.foto_url || "");
     setFormEmail(k.email || "");
     setFormPassword(k.password || "");
+    setFormActivo(k.activo !== false);
     setIsFormOpen(true);
   };
 
@@ -222,7 +226,7 @@ export default function AlumnosPage() {
       tutor: serializeTutorField(formTutor, formEmail, formPassword),
       telefono: formTelefono.trim(),
       foto_url: formFotoUrl.trim() || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200",
-      activo: true
+      activo: formActivo
     };
 
     const localKaratekaFields = {
@@ -233,7 +237,7 @@ export default function AlumnosPage() {
       tutor: formTutor.trim(),
       telefono: formTelefono.trim(),
       foto_url: formFotoUrl.trim() || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200",
-      activo: true,
+      activo: formActivo,
       email: formEmail.trim().toLowerCase(),
       password: formPassword.trim()
     };
@@ -425,17 +429,51 @@ export default function AlumnosPage() {
     }
   };
 
+  // Delete Karateka
+  const handleDelete = async (id: string, nombre: string) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente a ${nombre}? Esta acción no se puede deshacer y borrará sus asistencias y exámenes vinculados.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from("karatekas").delete().eq("id", id);
+
+      if (error) {
+        console.error("Error deleting karateka:", error);
+        alert("Error al eliminar de la base de datos: " + error.message);
+        return;
+      }
+
+      // Update in local state
+      const updatedList = karatekas.filter(k => k.id !== id);
+      setKaratekas(updatedList);
+      localStorage.setItem("local_karatekas", JSON.stringify(updatedList));
+      alert("Alumno eliminado correctamente.");
+    } catch (err) {
+      console.error(err);
+      alert("Ocurrió un error inesperado al intentar eliminar al alumno.");
+    }
+  };
+
   const handlePrintLicense = () => {
     window.print();
   };
 
-  // Filter students based on search queries and belts
+  // Filter students based on search queries, belts and active status
   const filteredKaratekas = karatekas.filter(k => {
     const matchesSearch = k.nombre.toLowerCase().includes(search.toLowerCase()) || 
                           k.matricula.toLowerCase().includes(search.toLowerCase()) ||
                           k.tutor.toLowerCase().includes(search.toLowerCase());
     const matchesBelt = beltFilter ? k.cinturon.toLowerCase() === beltFilter.toLowerCase() : true;
-    return matchesSearch && matchesBelt;
+    
+    let matchesStatus = true;
+    if (statusFilter === "activos") {
+      matchesStatus = k.activo !== false;
+    } else if (statusFilter === "inactivos") {
+      matchesStatus = k.activo === false;
+    }
+    
+    return matchesSearch && matchesBelt && matchesStatus;
   });
 
   return (
@@ -482,6 +520,16 @@ export default function AlumnosPage() {
           <option value="marron">Cinturón Marrón</option>
           <option value="negro">Cinturón Negro</option>
         </select>
+
+        <select 
+          className={styles.selectInput}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="activos">Estado: Activos</option>
+          <option value="inactivos">Estado: Inactivos</option>
+          <option value="todos">Estado: Todos</option>
+        </select>
       </div>
 
       {/* Grid List */}
@@ -495,6 +543,7 @@ export default function AlumnosPage() {
               <th>Grado Kyu/Dan</th>
               <th>Tutor responsable</th>
               <th>Teléfono</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -530,6 +579,11 @@ export default function AlumnosPage() {
                 <td>{k.tutor}</td>
                 <td>{k.telefono}</td>
                 <td>
+                  <span className={`${styles.statusBadge} ${k.activo !== false ? styles.activo : styles.inactivo}`}>
+                    {k.activo !== false ? "Activo" : "Inactivo"}
+                  </span>
+                </td>
+                <td>
                   <div className={styles.actions}>
                     <button 
                       className={`${styles.btnAction} ${styles.edit}`}
@@ -546,13 +600,20 @@ export default function AlumnosPage() {
                     >
                       <Award size={14} /> Credencial
                     </button>
+                    <button 
+                      className={`${styles.btnAction} ${styles.delete}`}
+                      onClick={() => handleDelete(k.id, k.nombre)}
+                      title="Eliminar Karateka"
+                    >
+                      <Trash2 size={14} /> Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
             {filteredKaratekas.length === 0 && (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-tertiary)' }}>
+                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-tertiary)' }}>
                   {loading ? 'Cargando karatekas...' : 'No se encontraron karatekas con los filtros seleccionados.'}
                 </td>
               </tr>
@@ -626,6 +687,19 @@ export default function AlumnosPage() {
                   <label className={styles.label}>Contraseña de Acceso</label>
                   <input type="text" className={styles.input} placeholder="Contraseña para el alumno" value={formPassword} onChange={(e) => setFormPassword(e.target.value)} required />
                 </div>
+              </div>
+
+              <div className={styles.formCheckboxGroup}>
+                <input 
+                  type="checkbox" 
+                  id="formActivo"
+                  className={styles.checkboxInput} 
+                  checked={formActivo} 
+                  onChange={(e) => setFormActivo(e.target.checked)} 
+                />
+                <label htmlFor="formActivo" className={styles.label} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  Usuario Activo (Permite el acceso y escaneo de asistencia)
+                </label>
               </div>
 
               <button type="submit" className="btn-primary" style={{ background: 'var(--brand-red)', marginTop: '0.5rem' }}>
