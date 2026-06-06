@@ -5,6 +5,22 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
+function parseTutorField(tutorField: string) {
+  const match = tutorField?.match(/(.*)\s+\[credentials:(.*?):(.*?)]/);
+  if (match) {
+    return {
+      tutor: match[1].trim(),
+      email: match[2],
+      password: match[3]
+    };
+  }
+  return {
+    tutor: tutorField || "",
+    email: "",
+    password: ""
+  };
+}
+
 export async function login(formData: FormData) {
   const supabase = await createClient();
   const emailVal = formData.get("email") as string;
@@ -69,18 +85,16 @@ export async function login(formData: FormData) {
     try {
       const { data: students, error: studentError } = await supabase
         .from("karatekas")
-        .select("nombre, tutor")
-        .like("tutor", `%[credentials:${email}:%`);
+        .select("nombre, tutor, activo")
+        .ilike("tutor", "%[credentials:%");
 
-      if (students && students.length > 0 && !studentError) {
-        // Find if any student has a matching password (allowing suffix variations)
-        const matchingStudent = students.find((student: any) => {
-          const match = student.tutor?.match(/\[credentials:([^:]+):([^\]]+)\]/);
-          if (!match) return false;
-          const storedPassword = match[2].trim();
+      if (students && !studentError) {
+        const matched = students.find((s: any) => {
+          const creds = parseTutorField(s.tutor);
+          if (creds.email.toLowerCase() !== email) return false;
           
           const enteredLower = password.toLowerCase();
-          const storedLower = storedPassword.toLowerCase();
+          const storedLower = creds.password.trim().toLowerCase();
           
           return enteredLower === storedLower || 
                  enteredLower === storedLower + "cecy" || 
@@ -89,10 +103,13 @@ export async function login(formData: FormData) {
                  storedLower === enteredLower + "cecyte";
         });
 
-        if (matchingStudent) {
+        if (matched) {
+          if (matched.activo === false) {
+            return redirect("/login?error=Esta cuenta de alumno está desactivada. Contacta a tu Sensei.");
+          }
           cookieStore.set("dojoia_role", "karateka", { path: "/" });
           cookieStore.set("dojoia_email", email, { path: "/" });
-          cookieStore.set("dojoia_name", matchingStudent.nombre, { path: "/" });
+          cookieStore.set("dojoia_name", matched.nombre, { path: "/" });
           return redirect("/dashboard");
         }
       }
