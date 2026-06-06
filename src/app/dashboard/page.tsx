@@ -132,6 +132,20 @@ export default function DashboardPage() {
     }
   }, []);
 
+  const handleSignOutClient = async () => {
+    try {
+      document.cookie = "dojoia_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_email=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_name=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      
+      await fetch("/auth/signout", { method: "POST" });
+      window.location.href = "/";
+    } catch (e) {
+      console.error("Error signing out", e);
+      window.location.href = "/";
+    }
+  };
+
   const loadSenseiData = async () => {
     try {
       setLoading(true);
@@ -433,8 +447,8 @@ export default function DashboardPage() {
           <div className={styles.actionBtn}>
             <Bell size={20} />
           </div>
-          <button className="btn-primary" style={{ background: 'var(--brand-red)' }} onClick={() => window.print()}>
-            Exportar Ficha
+          <button className="btn-primary" style={{ background: 'var(--brand-red)' }} onClick={handleSignOutClient}>
+            Cerrar Sesión
           </button>
         </div>
       </motion.div>
