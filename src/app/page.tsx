@@ -182,7 +182,7 @@ export default function Home() {
             nivel: "Principiantes",
             url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
             tipo: "entrenamiento",
-            thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
+            thumbnail: "/karate-kata.png"
           },
           {
             id: "v2",
@@ -193,7 +193,7 @@ export default function Home() {
             nivel: "Intermedios",
             url: "https://vjs.zencdn.net/v/oceans.mp4",
             tipo: "entrenamiento",
-            thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
+            thumbnail: "/karate-hero.png"
           },
           {
             id: "v3",
@@ -204,7 +204,7 @@ export default function Home() {
             nivel: "Avanzados",
             url: "https://www.w3schools.com/html/movie.mp4",
             tipo: "entrenamiento",
-            thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+            thumbnail: "/karate-kumite.png"
           }
         ];
 
@@ -574,6 +574,8 @@ export default function Home() {
                   src={featuredVideo.url} 
                   className={styles.homeVideoElement}
                   controls
+                  controlsList="nodownload"
+                  onContextMenu={(e) => e.preventDefault()}
                   autoPlay
                   muted
                   loop
@@ -617,7 +619,7 @@ export default function Home() {
               >
                 <div className={styles.demoThumbnailContainer}>
                   <img 
-                    src={vid.thumbnail || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"} 
+                    src={vid.thumbnail || "/karate-hero.png"} 
                     alt={vid.titulo} 
                     className={styles.demoThumbnail} 
                   />
@@ -805,8 +807,12 @@ export default function Home() {
 
       {/* Popup Video Player Overlay for Demo Teaser */}
       {isPlayerOpen && selectedVideo && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.playerCard}>
+        <div 
+          className={styles.modalOverlay}
+          onClick={(e) => { if (e.target === e.currentTarget) { setIsPlayerOpen(false); setSelectedVideo(null); setShowTeaser(false); } }}
+          style={{ cursor: 'pointer' }}
+        >
+          <div className={styles.playerCard} style={{ cursor: 'default' }}>
             <div className={styles.playerHeader}>
               <h2>{selectedVideo.titulo} (Vista Previa)</h2>
               <button 
@@ -841,6 +847,8 @@ export default function Home() {
                   src={selectedVideo.url} 
                   autoPlay 
                   controls={!showTeaser}
+                  controlsList="nodownload"
+                  onContextMenu={(e) => e.preventDefault()}
                   onTimeUpdate={handleTimeUpdate}
                   onError={() => setVideoError(true)}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
@@ -872,11 +880,20 @@ export default function Home() {
               )}
             </div>
 
-            <div style={{ padding: '1.25rem 1.5rem', background: '#1a1f26', fontSize: '0.85rem', color: 'var(--dojo-white-dim)' }}>
+            <div style={{ padding: '1.25rem 1.5rem', background: '#1a1f26', fontSize: '0.85rem', color: 'var(--dojo-white-dim)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <p>{selectedVideo.descripcion}</p>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', opacity: 0.8 }}>
-                <span><strong>Instructor:</strong> {selectedVideo.instructor}</span>
-                <span><strong>Nivel:</strong> {selectedVideo.nivel}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', opacity: 0.8, flexWrap: 'wrap', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <span><strong>Instructor:</strong> {selectedVideo.instructor}</span>
+                  <span><strong>Nivel:</strong> {selectedVideo.nivel}</span>
+                </div>
+                <button 
+                  onClick={() => { setIsPlayerOpen(false); setSelectedVideo(null); setShowTeaser(false); }} 
+                  className={styles.btnSecondary}
+                  style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', cursor: 'pointer' }}
+                >
+                  Cerrar Video
+                </button>
               </div>
             </div>
           </div>

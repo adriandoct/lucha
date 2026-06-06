@@ -18,7 +18,8 @@ import {
   FileVideo,
   CheckCircle2,
   Globe,
-  Award
+  Award,
+  LogOut
 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
@@ -67,7 +68,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     nivel: "Principiantes",
     url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
     tipo: "entrenamiento",
-    thumbnail: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400"
+    thumbnail: "/karate-kata.png"
   },
   {
     id: "v2",
@@ -78,7 +79,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     nivel: "Intermedios",
     url: "https://vjs.zencdn.net/v/oceans.mp4",
     tipo: "entrenamiento",
-    thumbnail: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400"
+    thumbnail: "/karate-hero.png"
   },
   {
     id: "v3",
@@ -89,7 +90,7 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
     nivel: "Avanzados",
     url: "https://www.w3schools.com/html/movie.mp4",
     tipo: "entrenamiento",
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+    thumbnail: "/karate-kumite.png"
   }
 ];
 
@@ -141,6 +142,20 @@ export default function VideosPage() {
     loadVideos();
     loadCategories();
   }, []);
+
+  const handleSignOutClient = async () => {
+    try {
+      document.cookie = "dojoia_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_email=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "dojoia_name=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      
+      await fetch("/auth/signout", { method: "POST" });
+      window.location.href = "/login";
+    } catch (e) {
+      console.error("Error signing out", e);
+      window.location.href = "/login";
+    }
+  };
 
   const loadCategories = async () => {
     try {
@@ -247,17 +262,17 @@ export default function VideosPage() {
   const getThumbnailForVideo = (v: TrainingVideo) => {
     if (v.thumbnail) return v.thumbnail;
     if (v.tipo === 'inicio') {
-      return "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400";
+      return "/karate-hero.png";
     }
     switch (v.nivel.toLowerCase()) {
       case "principiantes":
-        return "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=400";
+        return "/karate-kata.png";
       case "intermedios":
-        return "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400";
+        return "/karate-hero.png";
       case "avanzados":
-        return "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400";
+        return "/karate-kumite.png";
       default:
-        return "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=400";
+        return "/karate-hero.png";
     }
   };
 
@@ -322,7 +337,7 @@ export default function VideosPage() {
         duracion,
         categoria_id: selectedCategoryId || null,
         thumbnail: tipo === 'inicio' 
-          ? "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=400" 
+          ? "/karate-hero.png" 
           : undefined
       };
 
@@ -435,12 +450,33 @@ export default function VideosPage() {
               : "Entrenamiento técnico entre semana exclusivo para karatekas registrados."}
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: isSensei ? 'var(--brand-red)' : 'var(--success)', fontWeight: 'bold' }}>
-          {isSensei ? (
-            <><Globe size={14} /> Modo Administrador Activado</>
-          ) : (
-            <><Lock size={14} /> Acceso Premium Habilitado</>
-          )}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: isSensei ? 'var(--brand-red)' : 'var(--success)', fontWeight: 'bold' }}>
+            {isSensei ? (
+              <><Globe size={14} /> Modo Administrador Activado</>
+            ) : (
+              <><Lock size={14} /> Acceso Premium Habilitado</>
+            )}
+          </div>
+          <button 
+            onClick={handleSignOutClient}
+            className="btn-secondary" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.4rem', 
+              fontSize: '0.8rem', 
+              padding: '0.4rem 0.8rem',
+              color: 'var(--brand-red)',
+              borderColor: 'rgba(239, 68, 68, 0.2)',
+              background: 'rgba(239, 68, 68, 0.05)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: 600
+            }}
+          >
+            <LogOut size={14} /> Cerrar Sesión
+          </button>
         </div>
       </div>
 
@@ -871,8 +907,12 @@ export default function VideosPage() {
 
       {/* Pop-up Video Player Overlay */}
       {isPlayerOpen && selectedVideo && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.playerCard}>
+        <div 
+          className={styles.modalOverlay}
+          onClick={(e) => { if (e.target === e.currentTarget) handleCloseVideo(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          <div className={styles.playerCard} style={{ cursor: 'default' }}>
             <div className={styles.playerHeader}>
               <h2>{selectedVideo.titulo}</h2>
               <button onClick={handleCloseVideo} style={{ color: 'var(--text-secondary)', cursor: 'pointer', border: 'none', background: 'transparent' }}>
@@ -896,6 +936,8 @@ export default function VideosPage() {
                   className={styles.videoElement} 
                   autoPlay={isPlaying}
                   controls
+                  controlsList="nodownload"
+                  onContextMenu={(e) => e.preventDefault()}
                   onError={() => setVideoError(true)}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
                 />
@@ -942,16 +984,36 @@ export default function VideosPage() {
               </div>
             </div>
 
-            <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-secondary)' }}>
+            <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                 {selectedVideo.descripcion}
               </p>
-              {selectedVideo.tipo === 'entrenamiento' && (
-                <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-secondary)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }}>
-                  <span><strong>Instructor:</strong> {selectedVideo.instructor}</span>
-                  <span><strong>Nivel:</strong> {selectedVideo.nivel}</span>
-                </div>
-              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }}>
+                {selectedVideo.tipo === 'entrenamiento' ? (
+                  <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    <span><strong>Instructor:</strong> {selectedVideo.instructor}</span>
+                    <span><strong>Nivel:</strong> {selectedVideo.nivel}</span>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+                <button 
+                  onClick={handleCloseVideo} 
+                  className="btn-secondary" 
+                  style={{ 
+                    padding: '0.5rem 1.25rem', 
+                    fontSize: '0.85rem', 
+                    cursor: 'pointer',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border-color)',
+                    background: 'transparent',
+                    color: 'var(--text-primary)',
+                    fontWeight: 600
+                  }}
+                >
+                  Cerrar Video
+                </button>
+              </div>
             </div>
           </div>
         </div>

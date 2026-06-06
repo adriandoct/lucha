@@ -617,6 +617,8 @@ export default function ExamenesPage() {
                   <video 
                     src={selectedRequest.video_evidencia_url} 
                     controls 
+                    controlsList="nodownload"
+                    onContextMenu={(e) => e.preventDefault()}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 ) : (
