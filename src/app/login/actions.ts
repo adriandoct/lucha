@@ -45,14 +45,13 @@ export async function login(formData: FormData) {
     try {
       const { data: student, error: studentError } = await supabase
         .from("karatekas")
-        .select("nombre, email, password")
-        .eq("email", email.trim().toLowerCase())
-        .eq("password", password.trim())
+        .select("nombre, tutor")
+        .like("tutor", `%[credentials:${email.trim().toLowerCase()}:${password.trim()}]%`)
         .limit(1);
 
       if (student && student.length > 0 && !studentError) {
         cookieStore.set("dojoia_role", "karateka", { path: "/" });
-        cookieStore.set("dojoia_email", student[0].email, { path: "/" });
+        cookieStore.set("dojoia_email", email.trim().toLowerCase(), { path: "/" });
         cookieStore.set("dojoia_name", student[0].nombre, { path: "/" });
         return redirect("/dashboard");
       }

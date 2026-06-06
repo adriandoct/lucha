@@ -17,6 +17,29 @@ import {
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
+function parseTutorField(tutorField: string) {
+  const match = tutorField?.match(/(.*)\s+\[credentials:(.*?):(.*?)]/);
+  if (match) {
+    return {
+      tutor: match[1].trim(),
+      email: match[2],
+      password: match[3]
+    };
+  }
+  return {
+    tutor: tutorField || "",
+    email: "",
+    password: ""
+  };
+}
+
+function serializeTutorField(tutorName: string, email: string, password: string) {
+  if (email && password) {
+    return `${tutorName.trim()} [credentials:${email.trim().toLowerCase()}:${password.trim()}]`;
+  }
+  return tutorName.trim();
+}
+
 interface Karateka {
   id: string;
   matricula: string;
@@ -89,14 +112,41 @@ export default function AlumnosPage() {
         // Cache mock to local storage so edits are saved in dev mode
         const cached = localStorage.getItem("local_karatekas");
         if (cached) {
-          setKaratekas(JSON.parse(cached));
+          const parsedCached = JSON.parse(cached).map((k: any) => {
+            const credentials = parseTutorField(k.tutor);
+            return {
+              ...k,
+              tutor: credentials.tutor,
+              email: k.email || credentials.email,
+              password: k.password || credentials.password
+            };
+          });
+          setKaratekas(parsedCached);
         } else {
-          setKaratekas(mockData);
-          localStorage.setItem("local_karatekas", JSON.stringify(mockData));
+          const parsedMock = mockData.map(k => {
+            const credentials = parseTutorField(k.tutor);
+            return {
+              ...k,
+              tutor: credentials.tutor,
+              email: credentials.email || `${k.matricula.toLowerCase()}@dojoia.com`,
+              password: credentials.password || '123456'
+            };
+          });
+          setKaratekas(parsedMock);
+          localStorage.setItem("local_karatekas", JSON.stringify(parsedMock));
         }
       } else {
-        setKaratekas(data);
-        localStorage.setItem("local_karatekas", JSON.stringify(data));
+        const parsedData = data.map((k: any) => {
+          const credentials = parseTutorField(k.tutor);
+          return {
+            ...k,
+            tutor: credentials.tutor,
+            email: credentials.email,
+            password: credentials.password
+          };
+        });
+        setKaratekas(parsedData);
+        localStorage.setItem("local_karatekas", JSON.stringify(parsedData));
       }
     } catch (e) {
       console.error(e);
@@ -164,7 +214,18 @@ export default function AlumnosPage() {
       return;
     }
 
-    const payload = {
+    const dbPayload = {
+      matricula: formMatricula.trim(),
+      nombre: formNombre.trim(),
+      cinturon: formCinturon,
+      grado: formGrado.trim(),
+      tutor: serializeTutorField(formTutor, formEmail, formPassword),
+      telefono: formTelefono.trim(),
+      foto_url: formFotoUrl.trim() || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200",
+      activo: true
+    };
+
+    const localKaratekaFields = {
       matricula: formMatricula.trim(),
       nombre: formNombre.trim(),
       cinturon: formCinturon,
@@ -180,7 +241,7 @@ export default function AlumnosPage() {
     try {
       if (formId) {
         // Update in Supabase
-        const { error } = await supabase.from("karatekas").update(payload).eq("id", formId);
+        const { error } = await supabase.from("karatekas").update(dbPayload).eq("id", formId);
         
         if (error) {
           console.error("Error updating karateka:", error);
@@ -189,12 +250,12 @@ export default function AlumnosPage() {
         }
 
         // Update in local state
-        const updatedList = karatekas.map(k => k.id === formId ? { ...k, ...payload } : k);
+        const updatedList = karatekas.map(k => k.id === formId ? { ...k, ...localKaratekaFields } : k);
         setKaratekas(updatedList);
         localStorage.setItem("local_karatekas", JSON.stringify(updatedList));
       } else {
         // Insert in Supabase
-        const { data, error } = await supabase.from("karatekas").insert(payload).select();
+        const { data, error } = await supabase.from("karatekas").insert(dbPayload).select();
         
         if (error) {
           console.error("Error inserting karateka:", error);
@@ -203,7 +264,11 @@ export default function AlumnosPage() {
         }
 
         // Update in local state
-        const newKarateka = (data && data[0]) || { id: Math.random().toString(), ...payload };
+        const dbNewKarateka = data && data[0];
+        const newKarateka = {
+          id: dbNewKarateka ? dbNewKarateka.id : Math.random().toString(),
+          ...localKaratekaFields
+        };
         const updatedList = [...karatekas, newKarateka];
         setKaratekas(updatedList);
         localStorage.setItem("local_karatekas", JSON.stringify(updatedList));

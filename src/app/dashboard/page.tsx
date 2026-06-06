@@ -121,7 +121,7 @@ export default function DashboardPage() {
             const { data, error } = await supabase
               .from("karatekas")
               .select("matricula, cinturon, grado")
-              .eq("email", email.toLowerCase())
+              .like("tutor", `%[credentials:${email.toLowerCase()}:%`)
               .limit(1);
 
             if (data && data.length > 0 && !error) {
