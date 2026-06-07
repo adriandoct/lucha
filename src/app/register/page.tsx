@@ -14,7 +14,7 @@ export default async function RegisterPage({
   const getPlanName = (pId: string | undefined) => {
     switch (pId) {
       case "0": return "Mensualidad Regular ($500 MXN)";
-      case "1": return "Trimestre Raion Kay ($1,400 MXN)";
+      case "1": return "Trimestre Raion Kai ($1,400 MXN)";
       case "2": return "Semestre Shito-Ryu ($2,700 MXN)";
       default: return "Mensualidad Regular ($500 MXN)";
     }
@@ -23,7 +23,7 @@ export default async function RegisterPage({
   const getPlanShortName = (pId: string | undefined) => {
     switch (pId) {
       case "0": return "Mensualidad Regular";
-      case "1": return "Trimestre Raion Kay";
+      case "1": return "Trimestre Raion Kai";
       case "2": return "Semestre Shito-Ryu";
       default: return "Mensualidad Regular";
     }
@@ -44,9 +44,9 @@ export default async function RegisterPage({
 
         <div className={styles.logoContainer}>
           <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Raion Kay Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.7rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-              Raion <span style={{ color: 'var(--brand-red)' }}>Kay</span>
+              Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
             </span>
           </div>
         </div>

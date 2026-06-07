@@ -345,7 +345,7 @@ export default function DashboardPage() {
   if (role === "karateka") {
     const planPrices: Record<string, string> = {
       "Mensualidad Regular": "$500",
-      "Trimestre Raion Kay": "$1,400",
+      "Trimestre Raion Kai": "$1,400",
       "Semestre Shito-Ryu": "$2,700"
     };
     const planPrice = planPrices[studentPlan] || "$500";

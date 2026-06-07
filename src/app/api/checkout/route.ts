@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
 const PLANS = [
-  { id: "0", title: "Mensualidad Regular - Raion Kay", price: 500 },
-  { id: "1", title: "Trimestre Raion Kay - Raion Kay", price: 1400 },
-  { id: "2", title: "Semestre Shito-Ryu - Raion Kay", price: 2700 },
+  { id: "0", title: "Mensualidad Regular - Raion Kai", price: 500 },
+  { id: "1", title: "Trimestre Raion Kai - Raion Kai", price: 1400 },
+  { id: "2", title: "Semestre Shito-Ryu - Raion Kai", price: 2700 },
 ];
 
 export async function GET(request: Request) {

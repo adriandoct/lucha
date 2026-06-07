@@ -722,7 +722,7 @@ export default function AlumnosPage() {
             <div className="printArea">
               <div className={styles.licenseCard}>
                 <div className={styles.licenseHeader}>
-                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Raion Kay</h3>
+                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Raion Kai</h3>
                   <p>Karate Do Shito-Ryu</p>
                 </div>
                 <div className={styles.licenseBody}>

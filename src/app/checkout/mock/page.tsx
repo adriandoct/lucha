@@ -7,7 +7,7 @@ import { CreditCard, Calendar, Lock, User, Check, AlertCircle, ShieldCheck, Help
 
 const PLANS = [
   { id: "0", name: "Mensualidad Regular", price: 500, desc: "Acceso mensual completo al dojo" },
-  { id: "1", name: "Trimestre Raion Kay", price: 1400, desc: "Ahorro de $100 pesos de cuota" },
+  { id: "1", name: "Trimestre Raion Kai", price: 1400, desc: "Ahorro de $100 pesos de cuota" },
   { id: "2", name: "Semestre Shito-Ryu", price: 2700, desc: "Ahorro de $300 pesos de cuota" },
 ];
 
