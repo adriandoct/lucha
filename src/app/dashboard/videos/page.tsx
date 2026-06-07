@@ -774,7 +774,13 @@ export default function VideosPage() {
                     type="file" 
                     accept="video/*, .mp4, .webm, .mov, .mkv, .avi, .ogg, .wmv, .flv, .3gp, .m4v" 
                     ref={fileInputRef}
-                    onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      if (file && file.size > 50 * 1024 * 1024) {
+                        alert("⚠️ EL ARCHIVO EXCEDE LOS 50MB\n\nSi usas el plan gratuito de Supabase, los archivos no pueden superar los 50MB y la subida fallará.\n\nRecomendaciones:\n1. Comprime el video (bajando resolución a 720p/480p) para reducir su peso.\n2. O bien, sube el video a YouTube (como 'Oculto' o 'Público') y pega el enlace de YouTube en el campo de texto de abajo.");
+                      }
+                      setVideoFile(file);
+                    }}
                     style={{ display: 'none' }} 
                   />
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
