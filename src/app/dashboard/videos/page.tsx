@@ -58,6 +58,30 @@ function getYouTubeEmbedUrl(url: string) {
     : null;
 }
 
+// Verify if YouTube URL is public or unlisted
+async function checkYouTubePrivacy(videoUrl: string): Promise<{ isPrivate: boolean; error?: string }> {
+  try {
+    let cleanUrl = videoUrl.trim();
+    if (cleanUrl.includes('/shorts/')) {
+      cleanUrl = cleanUrl.replace('/shorts/', '/watch?v=');
+    }
+    const noembedUrl = `https://noembed.com/embed?url=${encodeURIComponent(cleanUrl)}`;
+    const res = await fetch(noembedUrl);
+    if (!res.ok) {
+      return { isPrivate: true, error: `HTTP status: ${res.status}` };
+    }
+    const data = await res.json();
+    if (data.error && (data.error.includes('403') || data.error.toLowerCase().includes('forbidden'))) {
+      return { isPrivate: true, error: "El video está configurado como Privado en YouTube." };
+    }
+    return { isPrivate: false };
+  } catch (err) {
+    console.warn("Could not check YouTube video privacy status:", err);
+    return { isPrivate: false };
+  }
+}
+
+
 // Default seed videos if no database records or localStorage cached data exists
 const DEFAULT_VIDEOS: TrainingVideo[] = [
   {
@@ -289,6 +313,20 @@ export default function VideosPage() {
       setUploading(true);
       setStatusMsg({ text: "Procesando video...", type: "" });
       
+      // Check YouTube Privacy before saving
+      if (url && (url.includes("youtube.com") || url.includes("youtu.be"))) {
+        setStatusMsg({ text: "Verificando visibilidad del video en YouTube...", type: "" });
+        const check = await checkYouTubePrivacy(url);
+        if (check.isPrivate) {
+          setStatusMsg({
+            text: `⚠️ ERROR: El video de YouTube está configurado como PRIVADO.\n\nPara que tus alumnos puedan verlo en sus celulares y otros dispositivos, debes cambiar su configuración de visibilidad a "Público" o "Oculto" (No listado) en tu panel de YouTube Studio.\n\nNo se permite guardar videos privados.`,
+            type: "error"
+          });
+          setUploading(false);
+          return;
+        }
+      }
+
       let finalUrl = url;
       let uploadErrorMsg = "";
       let hasUploadError = false;
