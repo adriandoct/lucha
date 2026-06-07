@@ -7,6 +7,9 @@ const PLANS = [
 ];
 
 export async function GET(request: Request) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = appUrl.endsWith("/") ? appUrl.slice(0, -1) : appUrl;
+
   try {
     const { searchParams } = new URL(request.url);
     const planIndex = searchParams.get("plan") || "0";
@@ -21,11 +24,9 @@ export async function GET(request: Request) {
                         token.includes("MOCK") ||
                         token.includes("TEST");
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-
     if (isMockToken) {
       console.log("Mercado Pago token not configured or using mock, redirecting to local checkout simulator.");
-      return NextResponse.redirect(new URL(`/checkout/mock?plan=${plan.id}`, request.url));
+      return NextResponse.redirect(`${baseUrl}/checkout/mock?plan=${plan.id}`);
     }
 
     // Call Mercado Pago Preferences API
@@ -46,9 +47,9 @@ export async function GET(request: Request) {
           }
         ],
         back_urls: {
-          success: `${appUrl}/register?payment=success&plan=${plan.id}`,
-          failure: `${appUrl}/register?payment=failure`,
-          pending: `${appUrl}/register?payment=pending`,
+          success: `${baseUrl}/register?payment=success&plan=${plan.id}`,
+          failure: `${baseUrl}/register?payment=failure`,
+          pending: `${baseUrl}/register?payment=pending`,
         },
         auto_return: "approved",
       }),
@@ -58,24 +59,22 @@ export async function GET(request: Request) {
       const errorText = await response.text();
       console.error("Mercado Pago API error response:", errorText);
       // Fallback to mock checkout if API call fails
-      return NextResponse.redirect(new URL(`/checkout/mock?plan=${plan.id}&api_error=true`, request.url));
+      return NextResponse.redirect(`${baseUrl}/checkout/mock?plan=${plan.id}&api_error=true`);
     }
 
     const data = await response.json();
     
     // Mercado Pago provides 'init_point' for live/redirect checkout, and 'sandbox_init_point' for testing
-    // We will use 'init_point' as it is standard and dynamically routes based on sandbox/production token
     const checkoutUrl = data.init_point || data.sandbox_init_point;
 
     if (!checkoutUrl) {
       console.error("No init_point or sandbox_init_point found in response:", data);
-      return NextResponse.redirect(new URL(`/checkout/mock?plan=${plan.id}&api_error=no_url`, request.url));
+      return NextResponse.redirect(`${baseUrl}/checkout/mock?plan=${plan.id}&api_error=no_url`);
     }
 
     return NextResponse.redirect(checkoutUrl);
   } catch (error) {
     console.error("Unexpected error in checkout API route:", error);
-    // Fallback redirect to register with error, or redirect to mock
-    return NextResponse.redirect(new URL(`/checkout/mock?plan=0&api_error=exception`, request.url));
+    return NextResponse.redirect(`${baseUrl}/checkout/mock?plan=0&api_error=exception`);
   }
 }
