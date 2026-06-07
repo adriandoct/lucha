@@ -268,7 +268,7 @@ export default function CertificadosPage() {
               <div className={styles.diplomaWatermark}>空手</div>
               
               <div className={styles.diplomaHeader}>
-                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2rem', margin: 0 }}>Raion Kai Academy</h2>
+                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '3rem', margin: 0 }}>Raion Kay Academy</h2>
                 <p>CERTIFICADO OFICIAL DE ASCENSO DE CINTURÓN</p>
               </div>
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playball&family=Satisfy&display=swap');
 
 :root {
   /* Default Light Theme - Clean Dojo Accent */
@@ -274,8 +274,12 @@ button {
 
 /* Tipografía Script para el Logo */
 .logo-script {
-  font-family: 'Alex Brush', 'Great Vibes', cursive !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.03em !important;
+  font-family: 'Playball', 'Satisfy', cursive !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
   text-transform: none !important;
+  font-size: 2.3rem !important; /* Más grande para igualar la altura de la imagen */
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
 }

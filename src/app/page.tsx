@@ -346,7 +346,7 @@ export default function Home() {
       popular: true
     },
     {
-      name: "Trimestre Raion Kai",
+      name: "Trimestre Raion Kay",
       price: "$1,400 MXN",
       desc: "Ahorra pagando un trimestre completo de preparación marcial.",
       features: [
@@ -363,7 +363,7 @@ export default function Home() {
       price: "$2,700 MXN",
       desc: "Compromiso absoluto en el tatami para aspirantes a cinta negra.",
       features: [
-        "Todos los beneficios de Trimestre Raion Kai",
+        "Todos los beneficios de Trimestre Raion Kay",
         "Acceso ilimitado a biblioteca de videos",
         "Soporte preferencial para competencias",
         "Descuento en seminarios especiales",
@@ -378,9 +378,9 @@ export default function Home() {
       <header className={styles.header} style={{ background: scrolled ? 'rgba(11, 14, 20, 0.95)' : 'transparent', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
         <div className={`container ${styles.headerContent}`}>
           <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
-            <span className="logo-script" style={{ fontSize: '1.9rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-              Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+            <img src="/lion-kai-logo.png" alt="Raion Kay Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <span className="logo-script" style={{ fontSize: '2.4rem', color: 'var(--text-primary)', textTransform: 'none' }}>
+              Raion <span style={{ color: 'var(--brand-red)' }}>Kay</span>
             </span>
           </div>
           <nav className={styles.nav}>
@@ -680,9 +680,9 @@ export default function Home() {
             <div className={styles.philImageCircle} style={{ borderColor: 'rgba(225, 29, 72, 0.3)' }}></div>
             <div className={styles.philImageCircleInner} style={{ borderColor: 'rgba(0, 240, 255, 0.3)' }}></div>
             <div className={styles.philLogo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
-              <span className="logo-script" style={{ fontSize: '2.2rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-                Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+              <img src="/lion-kai-logo.png" alt="Raion Kay Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
+              <span className="logo-script" style={{ fontSize: '5.5rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
+                Raion <span style={{ color: 'var(--brand-red)' }}>Kay</span>
               </span>
             </div>
           </div>
@@ -690,7 +690,7 @@ export default function Home() {
           <div className={styles.philContent}>
             <h2>Filosofía Marcial + <span style={{ color: 'var(--brand-accent)' }}>Control Digital</span></h2>
             <p>
-              El estilo Shito-Ryu une fuerza física y paz mental. Raion Kai une la disciplina tradicional 
+              El estilo Shito-Ryu une fuerza física y paz mental. Raion Kay une la disciplina tradicional 
               del saludo y la puntualidad con la velocidad y exactitud de las notificaciones móviles.
             </p>
             
@@ -769,16 +769,16 @@ export default function Home() {
           <div className={styles.footerGrid}>
             <div>
               <div className={styles.footerLogo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
-                <span className="logo-script" style={{ fontSize: '1.7rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-                  Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+                <img src="/lion-kai-logo.png" alt="Raion Kay Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
+                <span className="logo-script" style={{ fontSize: '2.1rem', color: 'var(--text-primary)', textTransform: 'none' }}>
+                  Raion <span style={{ color: 'var(--brand-red)' }}>Kay</span>
                 </span>
               </div>
               <p>Tecnología y tradición unidas para el control inteligente de asistencia marcial.</p>
             </div>
             
             <div className={styles.footerCol}>
-              <h4>Raion Kai</h4>
+              <h4>Raion Kay</h4>
               <ul>
                 <li><Link href="#funciones">Funciones</Link></li>
                 <li><Link href="#como-funciona">Metodología</Link></li>
@@ -805,7 +805,7 @@ export default function Home() {
           </div>
           
           <div className={styles.footerBottom}>
-            <p>&copy; {new Date().getFullYear()} Raion Kai Shito-Ryu. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} Raion Kay Shito-Ryu. Todos los derechos reservados.</p>
             <p>Oss! 🥋</p>
           </div>
         </div>

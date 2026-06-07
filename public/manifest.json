@@ -1,6 +1,6 @@
 {
-  "name": "LION KAI - Control de Acceso Marcial",
-  "short_name": "LION KAI",
+  "name": "Raion Kay - Control de Acceso Marcial",
+  "short_name": "Raion Kay",
   "description": "Sistema Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
   "start_url": "/dashboard",
   "display": "standalone",
