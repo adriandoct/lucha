@@ -289,6 +289,8 @@ export default function VideosPage() {
       setStatusMsg({ text: "Procesando video...", type: "" });
       
       let finalUrl = url;
+      let uploadErrorMsg = "";
+      let hasUploadError = false;
 
       // 1. Handle File Upload if present
       if (videoFile) {
@@ -307,8 +309,9 @@ export default function VideosPage() {
 
           if (uploadError) {
             console.warn("Storage upload failed, fallback to Object URL for demo session:", uploadError);
+            hasUploadError = true;
+            uploadErrorMsg = uploadError.message;
             finalUrl = URL.createObjectURL(videoFile);
-            setStatusMsg({ text: "Subida física falló. Simulación con URL temporal habilitada.", type: "info" });
           } else {
             // Get public URL
             const { data: { publicUrl } } = supabase.storage
@@ -316,8 +319,10 @@ export default function VideosPage() {
               .getPublicUrl(filePath);
             finalUrl = publicUrl;
           }
-        } catch (storageErr) {
+        } catch (storageErr: any) {
           console.error("Storage error:", storageErr);
+          hasUploadError = true;
+          uploadErrorMsg = storageErr?.message || "Error desconocido de almacenamiento";
           finalUrl = URL.createObjectURL(videoFile);
         }
       }
@@ -341,22 +346,30 @@ export default function VideosPage() {
           : undefined
       };
 
-      // 2. Insert into database
+      // 2. Insert into database (Only if it is NOT a local temporary blob URL)
       let insertSuccess = false;
-      try {
-        const { data, error } = await supabase
-          .from("videos")
-          .insert([newVideoData])
-          .select();
+      let dbErrorMsg = "";
+      const isBlob = finalUrl.startsWith("blob:");
 
-        if (!error && data && data.length > 0) {
-          insertSuccess = true;
+      if (!isBlob) {
+        try {
+          const { data, error } = await supabase
+            .from("videos")
+            .insert([newVideoData])
+            .select();
+
+          if (error) {
+            dbErrorMsg = error.message;
+          } else if (data && data.length > 0) {
+            insertSuccess = true;
+          }
+        } catch (dbErr: any) {
+          console.warn("Database insert failed", dbErr);
+          dbErrorMsg = dbErr?.message || "Error al conectar con la base de datos";
         }
-      } catch (dbErr) {
-        console.warn("Database insert failed, using LocalStorage fallback", dbErr);
       }
 
-      // 3. Fallback to LocalStorage
+      // 3. Fallback to LocalStorage (So the user still sees it locally on this computer)
       const currentVideos = [...videos];
       const localId = `v_${Date.now()}`;
       const savedVideo: TrainingVideo = { id: localId, ...newVideoData };
@@ -365,25 +378,42 @@ export default function VideosPage() {
       setVideos(updatedList);
       localStorage.setItem("dojo_videos", JSON.stringify(updatedList));
 
-      // Reset form
-      setTitulo("");
-      setDescripcion("");
-      setUrl("");
-      setVideoFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      
-      setStatusMsg({ 
-        text: insertSuccess 
-          ? "¡Video agregado correctamente a la base de datos de Supabase!" 
-          : "¡Video guardado localmente con éxito! (Modo desarrollador offline)", 
-        type: "success" 
-      });
+      if (hasUploadError || isBlob || (!insertSuccess && !url)) {
+        // Detailed instructions for the user because storage upload failed
+        let detailedMsg = "⚠️ EL VIDEO SOLO SE GUARDÓ LOCALMENTE EN ESTE NAVEGADOR Y NO SE VERÁ EN TU CELULAR.\n\n";
+        detailedMsg += `Razón: La subida a Supabase falló (${uploadErrorMsg || "No hay bucket configurado"}).\n\n`;
+        detailedMsg += "Para solucionarlo y que los videos se sincronicen y se vean en tu celular:\n";
+        detailedMsg += "1. Ve a tu panel de Supabase (https://supabase.com) y entra a la sección 'Storage' (Almacenamiento).\n";
+        detailedMsg += "2. Crea un nuevo bucket haciendo clic en 'New bucket'.\n";
+        detailedMsg += "3. Nómbralo exactamente: videos\n";
+        detailedMsg += "4. Marca la casilla de 'Public bucket' (Bucket Público) para que otros dispositivos puedan reproducir los videos.\n";
+        detailedMsg += "5. Haz clic en 'Save' para crearlo.\n";
+        detailedMsg += "6. Si aún no lo has hecho, ejecuta el script SQL 'create_videos_table.sql' en el SQL Editor de Supabase para configurar los permisos de lectura y escritura.\n\n";
+        detailedMsg += "Una vez hecho esto, elimina este video con el botón rojo y vuelve a subirlo.";
 
-      // Switch to list tab
-      setTimeout(() => {
-        setActiveTab('view');
-        setStatusMsg({ text: "", type: "" });
-      }, 2000);
+        setStatusMsg({
+          text: detailedMsg,
+          type: "error"
+        });
+      } else {
+        // Reset form
+        setTitulo("");
+        setDescripcion("");
+        setUrl("");
+        setVideoFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        
+        setStatusMsg({ 
+          text: "¡Video agregado y sincronizado correctamente con la base de datos de Supabase! Ahora ya es visible en todos los dispositivos.", 
+          type: "success" 
+        });
+
+        // Switch to list tab
+        setTimeout(() => {
+          setActiveTab('view');
+          setStatusMsg({ text: "", type: "" });
+        }, 3000);
+      }
 
     } catch (err) {
       console.error(err);
