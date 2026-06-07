@@ -387,8 +387,8 @@ export default function AsistenciaPage() {
     const list = wLogs ? JSON.parse(wLogs) : [];
     
     const messageTemplate = record.tipo === 'entrada' 
-      ? `🥋 *Lion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`
-      : `🥋 *Lion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`;
+      ? `🥋 *Raion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`
+      : `🥋 *Raion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`;
 
     list.unshift({
       id: Math.random().toString(),

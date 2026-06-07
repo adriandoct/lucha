@@ -58,12 +58,11 @@ export default async function DashboardLayout({
   return (
     <div className={styles.dashboardLayout}>
       <aside className={styles.sidebar}>
-        <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '3rem' }}>
-          <img src="/lion-kai-logo.png" alt="Lion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
-          <div>
-            <span className={styles.logoText}>LION</span>
-            <span className={styles.logoAccent} style={{ color: 'var(--brand-red)' }}>KAI</span>
-          </div>
+        <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '3rem' }}>
+          <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+          <span className="logo-script" style={{ fontSize: '1.9rem', color: 'var(--text-primary)', textTransform: 'none' }}>
+            Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+          </span>
         </div>
         
         <nav className={styles.navMenu}>

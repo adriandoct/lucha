@@ -149,7 +149,7 @@ export default function RankingPage() {
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Ranking de Alumnos
           </h1>
-          <p>Tabla de honor y gamificación técnica de la academia Lion Kai Shito-Ryu.</p>
+          <p>Tabla de honor y gamificación técnica de la academia Raion Kai Shito-Ryu.</p>
         </div>
       </div>
 
