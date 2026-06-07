@@ -297,7 +297,7 @@ export default function CheckoutMockPage({
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 0', gap: '1.5rem', textAlign: 'center' }}>
             {simStatus === "success" && (
               <>
-                <div style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyAlignment: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)' }}>
+                <div style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)' }}>
                   <Check size={36} />
                 </div>
                 <div>
