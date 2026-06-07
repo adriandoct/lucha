@@ -168,6 +168,8 @@ export async function signup(formData: FormData) {
   const password = formData.get("password") as string;
   const fullName = formData.get("fullName") as string;
   const role = formData.get("role") as string || "karateka";
+  const plan = formData.get("plan") as string || "Mensualidad Regular";
+  const paymentStatus = formData.get("paymentStatus") as string || "no_pagado";
 
   const cookieStore = await cookies();
 
@@ -178,16 +180,20 @@ export async function signup(formData: FormData) {
       data: {
         full_name: fullName,
         role: role, // 'sensei' or 'karateka'
+        plan: plan,
+        payment_status: paymentStatus,
       },
     },
   });
 
   if (error) {
     // Fallback for offline signup demo
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || String(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY).includes("reemplázala")) {
       cookieStore.set("dojoia_role", role, { path: "/" });
       cookieStore.set("dojoia_email", email, { path: "/" });
       cookieStore.set("dojoia_name", fullName, { path: "/" });
+      cookieStore.set("dojoia_plan", plan, { path: "/" });
+      cookieStore.set("dojoia_payment_status", paymentStatus, { path: "/" });
       return redirect("/dashboard?welcome=true");
     }
     return redirect("/register?error=" + encodeURIComponent(error.message));
@@ -196,6 +202,8 @@ export async function signup(formData: FormData) {
   cookieStore.set("dojoia_role", role, { path: "/" });
   cookieStore.set("dojoia_email", email, { path: "/" });
   cookieStore.set("dojoia_name", fullName, { path: "/" });
+  cookieStore.set("dojoia_plan", plan, { path: "/" });
+  cookieStore.set("dojoia_payment_status", paymentStatus, { path: "/" });
 
   revalidatePath("/", "layout");
   redirect("/dashboard?welcome=true");

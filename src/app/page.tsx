@@ -756,7 +756,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/register" className={plan.popular ? styles.btnPrimary : styles.btnSecondary} style={{ background: plan.popular ? 'var(--brand-red)' : 'transparent', border: plan.popular ? 'none' : '1px solid var(--border-color)', textAlign: 'center' }}>
+                <Link href={`/api/checkout?plan=${i}`} className={plan.popular ? styles.btnPrimary : styles.btnSecondary} style={{ background: plan.popular ? 'var(--brand-red)' : 'transparent', border: plan.popular ? 'none' : '1px solid var(--border-color)', textAlign: 'center' }}>
                   Comenzar Entrenamiento
                 </Link>
               </div>

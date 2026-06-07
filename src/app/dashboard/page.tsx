@@ -99,6 +99,8 @@ export default function DashboardPage() {
   const [studentMatricula, setStudentMatricula] = useState("KA-2026-004");
   const [studentBelt, setStudentBelt] = useState("azul");
   const [studentGrado, setStudentGrado] = useState("5° Kyu");
+  const [studentPlan, setStudentPlan] = useState("Mensualidad Regular");
+  const [paymentStatus, setPaymentStatus] = useState("pagado");
 
   const supabase = createClient();
 
@@ -106,10 +108,14 @@ export default function DashboardPage() {
     const userRole = getCookie("dojoia_role") || "karateka";
     const name = getCookie("dojoia_name") || "Karateka";
     const email = getCookie("dojoia_email") || "";
+    const plan = getCookie("dojoia_plan") || "Mensualidad Regular";
+    const status = getCookie("dojoia_payment_status") || "pagado";
     
     setRole(userRole);
     setUserName(name);
     setUserEmail(email);
+    setStudentPlan(plan);
+    setPaymentStatus(status);
 
     if (userRole === "sensei") {
       loadSenseiData();
@@ -337,6 +343,13 @@ export default function DashboardPage() {
 
   // RENDER STUDENT PORTAL
   if (role === "karateka") {
+    const planPrices: Record<string, string> = {
+      "Mensualidad Regular": "$500",
+      "Trimestre Raion Kay": "$1,400",
+      "Semestre Shito-Ryu": "$2,700"
+    };
+    const planPrice = planPrices[studentPlan] || "$500";
+
     return (
       <motion.div 
         className="animate-fade-in"
@@ -376,14 +389,24 @@ export default function DashboardPage() {
 
           <div className={styles.metricCard} style={{ borderLeft: '4px solid #10B981' }}>
             <div className={styles.metricHeader}>
-              <span className={styles.metricTitle}>Mensualidad Dojo</span>
+              <span className={styles.metricTitle}>{studentPlan}</span>
               <div className={`${styles.metricIcon} ${styles.green}`}>
                 <DollarSign size={24} color="#10B981" />
               </div>
             </div>
-            <div className={styles.metricValue}>$500 <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>MXN</span></div>
-            <div className={`${styles.metricTrend} ${styles.up}`} style={{ color: '#10B981', fontWeight: 'bold' }}>
-              <span>Estado: Pagado ✓</span>
+            <div className={styles.metricValue}>{planPrice} <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>MXN</span></div>
+            <div 
+              className={`${styles.metricTrend} ${styles.up}`} 
+              style={{ 
+                color: paymentStatus === "pagado" ? "#10B981" : paymentStatus === "pendiente" ? "#F59E0B" : "#EF4444", 
+                fontWeight: 'bold' 
+              }}
+            >
+              <span>
+                {paymentStatus === "pagado" && "Estado: Pagado ✓"}
+                {paymentStatus === "pendiente" && "Estado: Pendiente de Acreditación ?"}
+                {paymentStatus === "no_pagado" && "Estado: Pendiente de Pago ✗"}
+              </span>
             </div>
           </div>
 

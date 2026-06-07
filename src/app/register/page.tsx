@@ -6,9 +6,32 @@ import { ArrowLeft } from "lucide-react";
 export default async function RegisterPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; payment?: string; plan?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, payment, plan } = await searchParams;
+
+  // Map plan ID to readable name
+  const getPlanName = (pId: string | undefined) => {
+    switch (pId) {
+      case "0": return "Mensualidad Regular ($500 MXN)";
+      case "1": return "Trimestre Raion Kay ($1,400 MXN)";
+      case "2": return "Semestre Shito-Ryu ($2,700 MXN)";
+      default: return "Mensualidad Regular ($500 MXN)";
+    }
+  };
+
+  const getPlanShortName = (pId: string | undefined) => {
+    switch (pId) {
+      case "0": return "Mensualidad Regular";
+      case "1": return "Trimestre Raion Kay";
+      case "2": return "Semestre Shito-Ryu";
+      default: return "Mensualidad Regular";
+    }
+  };
+
+  const planName = getPlanName(plan);
+  const planShortName = getPlanShortName(plan);
+  const paymentStatus = payment === "success" ? "pagado" : payment === "pending" ? "pendiente" : "no_pagado";
 
   return (
     <div className={styles.authContainer}>
@@ -33,7 +56,29 @@ export default async function RegisterPage({
 
         {error && <div className={styles.errorBox}>{error}</div>}
 
+        {payment === "success" && (
+          <div className={styles.errorBox} style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid #10b981', color: '#10b981', marginBottom: '1.5rem' }}>
+            <strong>✓ ¡Pago Exitoso!</strong> Se ha acreditado tu pago para el plan <strong>{planName}</strong>. Completa los datos a continuación para registrar tu cuenta de alumno.
+          </div>
+        )}
+
+        {payment === "pending" && (
+          <div className={styles.errorBox} style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid #f59e0b', color: '#f59e0b', marginBottom: '1.5rem' }}>
+            <strong>? Pago Pendiente:</strong> Tu transacción para el plan <strong>{planName}</strong> está en proceso. Registra tu cuenta ahora y se activará en cuanto se acredite.
+          </div>
+        )}
+
+        {payment === "failure" && (
+          <div className={styles.errorBox} style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid #ef4444', color: '#ef4444', marginBottom: '1.5rem' }}>
+            <strong>⚠️ Falla en el Pago:</strong> No pudimos procesar tu tarjeta. Puedes registrarte de todos modos y liquidar tu pago directamente en el dojo presencial.
+          </div>
+        )}
+
         <form action={signup}>
+          {/* Hidden fields to pass plan info to signup server action */}
+          <input type="hidden" name="plan" value={planShortName} />
+          <input type="hidden" name="paymentStatus" value={paymentStatus} />
+
           <div className={styles.formGroup}>
             <label className={styles.label} htmlFor="fullName">Nombre Completo</label>
             <input 
