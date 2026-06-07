@@ -227,7 +227,19 @@ export default function Home() {
           }
         });
 
-        setDemoVideos(merged);
+        // Filter: only show beginner level or Kumite videos
+        const filtered = merged.filter((vid: any) => {
+          const nivel = (vid.nivel || "").toLowerCase();
+          const titulo = (vid.titulo || "").toLowerCase();
+          const descripcion = (vid.descripcion || "").toLowerCase();
+          
+          const isBeginner = nivel.includes("principiante");
+          const isKumite = titulo.includes("kumite") || descripcion.includes("kumite");
+          
+          return isBeginner || isKumite;
+        });
+
+        setDemoVideos(filtered);
       } catch (err) {
         console.warn("Error loading training videos for demo", err);
       }
