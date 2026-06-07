@@ -379,17 +379,25 @@ export default function VideosPage() {
       localStorage.setItem("dojo_videos", JSON.stringify(updatedList));
 
       if (hasUploadError || isBlob || (!insertSuccess && !url)) {
-        // Detailed instructions for the user because storage upload failed
         let detailedMsg = "⚠️ EL VIDEO SOLO SE GUARDÓ LOCALMENTE EN ESTE NAVEGADOR Y NO SE VERÁ EN TU CELULAR.\n\n";
-        detailedMsg += `Razón: La subida a Supabase falló (${uploadErrorMsg || "No hay bucket configurado"}).\n\n`;
-        detailedMsg += "Para solucionarlo y que los videos se sincronicen y se vean en tu celular:\n";
-        detailedMsg += "1. Ve a tu panel de Supabase (https://supabase.com) y entra a la sección 'Storage' (Almacenamiento).\n";
-        detailedMsg += "2. Crea un nuevo bucket haciendo clic en 'New bucket'.\n";
-        detailedMsg += "3. Nómbralo exactamente: videos\n";
-        detailedMsg += "4. Marca la casilla de 'Public bucket' (Bucket Público) para que otros dispositivos puedan reproducir los videos.\n";
-        detailedMsg += "5. Haz clic en 'Save' para crearlo.\n";
-        detailedMsg += "6. Si aún no lo has hecho, ejecuta el script SQL 'create_videos_table.sql' en el SQL Editor de Supabase para configurar los permisos de lectura y escritura.\n\n";
-        detailedMsg += "Una vez hecho esto, elimina este video con el botón rojo y vuelve a subirlo.";
+        
+        if (hasUploadError) {
+          detailedMsg += `Razón (Almacenamiento): La subida del archivo falló (${uploadErrorMsg || "No hay bucket configurado o error de conexión"}).\n\n`;
+          detailedMsg += "Para solucionarlo:\n";
+          detailedMsg += "1. Ve al panel de Supabase -> 'Storage'.\n";
+          detailedMsg += "2. Asegúrate de que exista un bucket público llamado exactamente: videos\n";
+          detailedMsg += "3. Verifica el tamaño del archivo (los planes gratuitos de Supabase pueden limitar el tamaño de subida a 50MB).\n\n";
+        } else if (!insertSuccess) {
+          detailedMsg += `Razón (Base de Datos): La subida al Storage fue exitosa, pero falló el registro en la base de datos de Supabase.\n`;
+          detailedMsg += `Detalle del error: ${dbErrorMsg || "Error desconocido o denegado por políticas RLS"}.\n\n`;
+          detailedMsg += "Para solucionarlo:\n";
+          detailedMsg += "1. Ejecuta el script SQL 'create_videos_table.sql' completo en el SQL Editor de tu panel de Supabase.\n";
+          detailedMsg += "2. Esto habilitará la tabla de videos y aplicará las políticas de Row Level Security (RLS) necesarias para que permita insertar registros de forma pública.\n\n";
+        } else {
+          detailedMsg += `Razón: Se usó una URL temporal local 'blob:'.\n\n`;
+        }
+        
+        detailedMsg += "Una vez corregido el problema en Supabase, elimina este video con el botón rojo 'Eliminar Video Expirado' y vuelve a subirlo.";
 
         setStatusMsg({
           text: detailedMsg,
@@ -864,21 +872,34 @@ export default function VideosPage() {
                         style={{ alignSelf: 'flex-start', background: 'var(--brand-gold)', fontSize: '0.85rem', padding: '0.4rem 1rem' }}
                         onClick={async () => {
                           if (!newCatName) return alert("Introduce el nombre de la categoría.");
-                          const newCatId = `c_${Date.now()}`;
+                          
+                          let finalCatId = `c_${Date.now()}`;
+                          const catPayload = { nombre: newCatName.trim(), descripcion: newCatDesc.trim() };
+                          
+                          try {
+                            const { data, error } = await supabase
+                              .from("video_categorias")
+                              .insert([catPayload])
+                              .select();
+                              
+                            if (data && data.length > 0) {
+                              finalCatId = data[0].id;
+                            } else if (error) {
+                              console.warn("Error al insertar categoría en DB:", error.message);
+                            }
+                          } catch (e) {
+                            console.warn("Excepción al insertar categoría en DB:", e);
+                          }
+                          
                           const newCat = {
-                            id: newCatId,
+                            id: finalCatId,
                             nombre: newCatName.trim(),
                             descripcion: newCatDesc.trim()
                           };
-                          try {
-                            await supabase.from("video_categorias").insert([{ nombre: newCatName.trim(), descripcion: newCatDesc.trim() }]);
-                          } catch (e) {
-                            console.warn("Error inserting category to DB", e);
-                          }
                           const updatedCats = [...categories, newCat];
                           setCategories(updatedCats);
                           localStorage.setItem("dojo_categories", JSON.stringify(updatedCats));
-                          setSelectedCategoryId(newCatId);
+                          setSelectedCategoryId(finalCatId);
                           setNewCatName("");
                           setNewCatDesc("");
                           setShowAddCat(false);

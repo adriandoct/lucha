@@ -33,11 +33,13 @@ CREATE TABLE IF NOT EXISTS public.videos (
     instructor TEXT DEFAULT 'Sensei Carlos Martínez',
     nivel VARCHAR(30) DEFAULT 'Todos los niveles',
     duracion VARCHAR(10) DEFAULT '05:00',
+    thumbnail TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- Asegurar que la columna categoria_id existe en public.videos y apunta a video_categorias
+-- Asegurar que las columnas categoria_id y thumbnail existen en public.videos
 ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS categoria_id UUID REFERENCES public.video_categorias(id) ON DELETE SET NULL;
+ALTER TABLE public.videos ADD COLUMN IF NOT EXISTS thumbnail TEXT;
 
 -- Habilitar Row Level Security (RLS) para videos
 ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
