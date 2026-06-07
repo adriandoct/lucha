@@ -50,10 +50,11 @@ const getCookie = (name: string): string => {
 // Helper function to extract YouTube ID and build embed URL
 function getYouTubeEmbedUrl(url: string) {
   if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) 
-    ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1` 
+  const cleanUrl = url.trim();
+  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/|youtube-nocookie\.com\/embed\/)([a-zA-Z0-9_-]{11})/;
+  const match = cleanUrl.match(regExp);
+  return (match && match[1].length === 11) 
+    ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1` 
     : null;
 }
 
