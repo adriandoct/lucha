@@ -471,6 +471,19 @@ export default function VideosPage() {
   const trainingVideos = videos.filter(v => {
     const isTraining = v.tipo === 'entrenamiento';
     if (!isTraining) return false;
+
+    // Apply beginner/kumite filter if not admin/sensei
+    if (!isSensei) {
+      const nivel = (v.nivel || "").toLowerCase();
+      const titulo = (v.titulo || "").toLowerCase();
+      const descripcion = (v.descripcion || "").toLowerCase();
+      
+      const isBeginner = nivel.includes("principiante");
+      const isKumite = titulo.includes("kumite") || descripcion.includes("kumite");
+      
+      if (!isBeginner && !isKumite) return false;
+    }
+
     if (filterCategory === 'all') return true;
     return v.categoria_id === filterCategory;
   });
