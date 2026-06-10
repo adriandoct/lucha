@@ -175,6 +175,9 @@ export default function AsistenciaPage() {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     if (requestRef.current) {
       cancelAnimationFrame(requestRef.current);
     }
@@ -437,12 +440,11 @@ export default function AsistenciaPage() {
           <div className={styles.qrSection} style={{ borderTop: '4px solid var(--brand-red)' }}>
             <h3>Lector de Credenciales</h3>
             
-            {cameraActive ? (
-              <div className={styles.videoContainer}>
-                <video ref={videoRef} className={styles.video} />
-                <div className={styles.beam}></div>
-              </div>
-            ) : (
+            <div className={styles.videoContainer} style={{ display: cameraActive ? 'block' : 'none' }}>
+              <video ref={videoRef} className={styles.video} />
+              <div className={styles.beam}></div>
+            </div>
+            {!cameraActive && (
               <div className={styles.qrScanner} style={{ borderColor: 'var(--brand-red)', color: 'var(--brand-red)' }} onClick={startCamera}>
                 <Camera size={48} />
                 <p>Activar Cámara de Escaneo</p>
