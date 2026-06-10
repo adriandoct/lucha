@@ -16,6 +16,7 @@ import {
   UserCheck
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
+import jsQR from "jsqr";
 
 interface Student {
   id: string;
@@ -40,7 +41,6 @@ interface ScanLog {
 
 export default function AsistenciaPage() {
   const [isScanning, setIsScanning] = useState(false);
-  const [jsqrLoaded, setJsqrLoaded] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const [scanMode, setScanMode] = useState<'auto' | 'entrada' | 'salida'>('auto');
@@ -133,18 +133,6 @@ export default function AsistenciaPage() {
     };
   }, []);
 
-  // Dynamically load jsQR library from CDN
-  useEffect(() => {
-    if (typeof window === "undefined" || window.hasOwnProperty("jsQR")) {
-      setJsqrLoaded(true);
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js";
-    script.async = true;
-    script.onload = () => setJsqrLoaded(true);
-    document.body.appendChild(script);
-  }, []);
 
   // Toggle Camera
   const startCamera = async () => {
@@ -187,7 +175,7 @@ export default function AsistenciaPage() {
 
   // QR Scanning Loop
   useEffect(() => {
-    if (!cameraActive || !jsqrLoaded || !isScanning) return;
+    if (!cameraActive || !isScanning) return;
 
     const scanFrame = () => {
       if (!videoRef.current || !canvasRef.current) {
@@ -204,8 +192,8 @@ export default function AsistenciaPage() {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        // jsQR comes from the CDN script loaded in window
-        const code = (window as any).jsQR?.(
+        // Use local jsQR library
+        const code = jsQR(
           imageData.data,
           imageData.width,
           imageData.height,
@@ -229,7 +217,7 @@ export default function AsistenciaPage() {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [cameraActive, jsqrLoaded, isScanning]);
+  }, [cameraActive, isScanning]);
 
   // Handle a successfully scanned code (e.g. "KA-2026-001")
   const handleScannedCode = async (matricula: string) => {
