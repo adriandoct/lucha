@@ -130,7 +130,7 @@ export default function AlumnosPage() {
             return {
               ...k,
               tutor: credentials.tutor,
-              email: credentials.email || `${k.matricula.toLowerCase()}@dojoia.com`,
+              email: credentials.email || `${k.matricula.toLowerCase()}@arenaraion.com`,
               password: credentials.password || '123456'
             };
           });
@@ -183,12 +183,12 @@ export default function AlumnosPage() {
     setFormMatricula(defaultMatricula);
     setFormNombre("");
     setFormCinturon("blanco");
-    setFormGrado("10° Kyu");
+    setFormGrado("Novato");
     setFormTutor("");
     setFormTelefono("");
     setFormFotoUrl("");
     // Generate defaults for email and password
-    setFormEmail(`${defaultMatricula.toLowerCase()}@dojoia.com`);
+    setFormEmail(`${defaultMatricula.toLowerCase()}@arenaraion.com`);
     setFormPassword("123456");
     setFormActivo(true);
     setIsFormOpen(true);
@@ -422,7 +422,7 @@ export default function AlumnosPage() {
       setCsvRows([]);
       setColumnMapping({});
       setImportPreview([]);
-      alert(`Se importaron ${importedList.length} Karatekas correctamente.`);
+      alert(`Se importaron ${importedList.length} luchadores correctamente.`);
     } catch (err) {
       console.error(err);
       alert("Hubo un error importando a Supabase, pero se guardó en memoria local.");
@@ -480,15 +480,15 @@ export default function AlumnosPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <h1>Directorio de Karatekas</h1>
-          <p>Nómina de alumnos y licencias de la academia Shito-Ryu.</p>
+          <h1>Directorio de Luchadores</h1>
+          <p>Nómina de alumnos y credenciales de la Arena Raion.</p>
         </div>
         <div className={styles.headerActions} style={{ marginRight: '8.5rem' }}>
           <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => setIsImportOpen(true)}>
             <Upload size={18} /> Importar Excel/CSV
           </button>
           <button className="btn-primary" style={{ background: 'var(--brand-red)', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={handleCreateOpen}>
-            <Plus size={18} /> Registrar Karateka
+            <Plus size={18} /> Registrar Luchador
           </button>
         </div>
       </div>
@@ -511,14 +511,14 @@ export default function AlumnosPage() {
           value={beltFilter}
           onChange={(e) => setBeltFilter(e.target.value)}
         >
-          <option value="">Filtro: Todos los cinturones</option>
-          <option value="blanco">Cinturón Blanco</option>
-          <option value="amarillo">Cinturón Amarillo</option>
-          <option value="naranja">Cinturón Naranja</option>
-          <option value="verde">Cinturón Verde</option>
-          <option value="azul">Cinturón Azul</option>
-          <option value="marron">Cinturón Marrón</option>
-          <option value="negro">Cinturón Negro</option>
+          <option value="">Filtro: Todas las categorías</option>
+          <option value="blanco">Categoría Novato</option>
+          <option value="amarillo">Categoría Preliminar</option>
+          <option value="naranja">Categoría Segunda Lucha</option>
+          <option value="verde">Categoría Especial</option>
+          <option value="azul">Categoría Semifinal</option>
+          <option value="marron">Categoría Estelar</option>
+          <option value="negro">Categoría Leyenda</option>
         </select>
 
         <select 
@@ -537,10 +537,10 @@ export default function AlumnosPage() {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Nombre Karateka</th>
+              <th>Nombre Luchador</th>
               <th>Matrícula</th>
-              <th>Cinturón</th>
-              <th>Grado Kyu/Dan</th>
+              <th>Categoría</th>
+              <th>Nivel/Rango</th>
               <th>Tutor responsable</th>
               <th>Teléfono</th>
               <th>Estado</th>
@@ -603,7 +603,7 @@ export default function AlumnosPage() {
                     <button 
                       className={`${styles.btnAction} ${styles.delete}`}
                       onClick={() => handleDelete(k.id, k.nombre)}
-                      title="Eliminar Karateka"
+                      title="Eliminar Luchador"
                     >
                       <Trash2 size={14} /> Eliminar
                     </button>
@@ -614,7 +614,7 @@ export default function AlumnosPage() {
             {filteredKaratekas.length === 0 && (
               <tr>
                 <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-tertiary)' }}>
-                  {loading ? 'Cargando karatekas...' : 'No se encontraron karatekas con los filtros seleccionados.'}
+                  {loading ? 'Cargando luchadores...' : 'No se encontraron luchadores con los filtros seleccionados.'}
                 </td>
               </tr>
             )}
@@ -627,7 +627,7 @@ export default function AlumnosPage() {
         <div className={styles.modalOverlay}>
           <div className={styles.formCard}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2>{formId ? "Editar Karateka" : "Registrar Nuevo Alumno"}</h2>
+              <h2>{formId ? "Editar Luchador" : "Registrar Nuevo Alumno"}</h2>
               <button onClick={() => setIsFormOpen(false)} style={{ color: 'var(--text-secondary)' }}><X /></button>
             </div>
             
@@ -638,27 +638,27 @@ export default function AlumnosPage() {
                   <input type="text" className={styles.input} value={formMatricula} onChange={(e) => setFormMatricula(e.target.value)} required />
                 </div>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Grado Kyu/Dan</label>
-                  <input type="text" className={styles.input} placeholder="e.g. 6° Kyu" value={formGrado} onChange={(e) => setFormGrado(e.target.value)} required />
+                  <label className={styles.label}>Nivel/Rango</label>
+                  <input type="text" className={styles.input} placeholder="e.g. Estelar" value={formGrado} onChange={(e) => setFormGrado(e.target.value)} required />
                 </div>
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>Nombre Completo del Karateka</label>
+                <label className={styles.label}>Nombre Completo del Luchador</label>
                 <input type="text" className={styles.input} placeholder="Nombre y Apellidos" value={formNombre} onChange={(e) => setFormNombre(e.target.value)} required />
               </div>
 
               <div className={styles.formGrid}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Cinturón</label>
+                  <label className={styles.label}>Categoría</label>
                   <select className={styles.selectInput} value={formCinturon} onChange={(e) => setFormCinturon(e.target.value)}>
-                    <option value="blanco">Blanco</option>
-                    <option value="amarillo">Amarillo</option>
-                    <option value="naranja">Naranja</option>
-                    <option value="verde">Verde</option>
-                    <option value="azul">Azul</option>
-                    <option value="marron">Marrón</option>
-                    <option value="negro">Negro</option>
+                    <option value="blanco">Novato</option>
+                    <option value="amarillo">Preliminar</option>
+                    <option value="naranja">Segunda Lucha</option>
+                    <option value="verde">Especial</option>
+                    <option value="azul">Semifinal</option>
+                    <option value="marron">Estelar</option>
+                    <option value="negro">Leyenda</option>
                   </select>
                 </div>
                 <div className={styles.formGroup}>
@@ -681,7 +681,7 @@ export default function AlumnosPage() {
               <div className={styles.formGrid}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Correo de Acceso (Usuario)</label>
-                  <input type="email" className={styles.input} placeholder="alumno@dojoia.com" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} required />
+                  <input type="email" className={styles.input} placeholder="alumno@arenaraion.com" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} required />
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Contraseña de Acceso</label>
@@ -703,7 +703,7 @@ export default function AlumnosPage() {
               </div>
 
               <button type="submit" className="btn-primary" style={{ background: 'var(--brand-red)', marginTop: '0.5rem' }}>
-                {formId ? "Guardar Cambios" : "Guardar Karateka"}
+                {formId ? "Guardar Cambios" : "Guardar Luchador"}
               </button>
             </form>
           </div>
@@ -722,21 +722,21 @@ export default function AlumnosPage() {
             <div className="printArea">
               <div className={styles.licenseCard}>
                 <div className={styles.licenseHeader}>
-                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Raion Kai</h3>
-                  <p>Karate Do Shito-Ryu</p>
+                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Arena Raion</h3>
+                  <p>Lucha Libre Profesional</p>
                 </div>
                 <div className={styles.licenseBody}>
                   <div className={styles.licensePhotoContainer}>
                     {selectedKarateka.foto_url ? (
                       <img src={selectedKarateka.foto_url} alt={selectedKarateka.nombre} className={styles.licensePhoto} />
                     ) : (
-                      <span style={{ fontSize: '2.5rem' }}>🥋</span>
+                      <span style={{ fontSize: '2.5rem' }}>🤼‍♂️</span>
                     )}
                   </div>
                   <div className={styles.licenseMeta}>
                     <h4 style={{ textTransform: 'uppercase' }}>{selectedKarateka.nombre}</h4>
-                    <p style={{ fontWeight: 600, color: 'var(--brand-red)' }}>Kyudan: {selectedKarateka.grado}</p>
-                    <p style={{ fontSize: '0.65rem' }}>Cinta: {selectedKarateka.cinturon.toUpperCase()}</p>
+                    <p style={{ fontWeight: 600, color: 'var(--brand-red)' }}>Rango: {selectedKarateka.grado}</p>
+                    <p style={{ fontSize: '0.65rem' }}>Categoría: {selectedKarateka.cinturon.toUpperCase()}</p>
                     <p style={{ fontSize: '0.65rem' }}>ID: {selectedKarateka.matricula}</p>
                   </div>
                 </div>
@@ -749,7 +749,7 @@ export default function AlumnosPage() {
                     />
                   </div>
                   <div className={styles.licenseSign}>
-                    <p>Sensei Principal</p>
+                    <p>Maestro Principal</p>
                   </div>
                 </div>
               </div>
@@ -813,36 +813,39 @@ export default function AlumnosPage() {
                   }}
                 />
                 <p style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>
-                  Las columnas sugeridas son: Nombre, Matrícula, Cinturón, Grado, Tutor, Teléfono
+                  Las columnas sugeridas son: Nombre, Matrícula, Categoría, Rango, Tutor, Teléfono
                 </p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <h3>Mapear Columnas de tu Archivo</h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                  Asocia las columnas de tu CSV con los campos del perfil de Karateka en Supabase.
+                  Asocia las columnas de tu CSV con los campos del perfil de Luchador.
                 </p>
 
                 <div style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '8px' }}>
-                  {["nombre", "matricula", "cinturon", "grado", "tutor", "telefono", "foto"].map((dbKey) => (
-                    <div key={dbKey} className={styles.mappingRow}>
-                      <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
-                        {dbKey === "foto" ? "Foto URL" : dbKey} 
-                        {["nombre", "tutor", "telefono"].includes(dbKey) && <span style={{ color: 'var(--brand-red)' }}> *</span>}
-                      </span>
-                      <span>➡️ Mapea a:</span>
-                      <select 
-                        className={styles.selectInput}
-                        value={columnMapping[dbKey] ?? ""}
-                        onChange={(e) => handleMappingChange(dbKey, parseInt(e.target.value))}
-                      >
-                        <option value="">-- Ignorar o Auto --</option>
-                        {csvHeaders.map((header, idx) => (
-                          <option key={idx} value={idx}>{header}</option>
-                        ))}
-                      </select>
-                    </div>
-                  ))}
+                  {["nombre", "matricula", "cinturon", "grado", "tutor", "telefono", "foto"].map((dbKey) => {
+                    const displayLabel = dbKey === "cinturon" ? "categoría" : dbKey === "grado" ? "rango" : dbKey === "foto" ? "Foto URL" : dbKey;
+                    return (
+                      <div key={dbKey} className={styles.mappingRow}>
+                        <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
+                          {displayLabel} 
+                          {["nombre", "tutor", "telefono"].includes(dbKey) && <span style={{ color: 'var(--brand-red)' }}> *</span>}
+                        </span>
+                        <span>➡️ Mapea a:</span>
+                        <select 
+                          className={styles.selectInput}
+                          value={columnMapping[dbKey] ?? ""}
+                          onChange={(e) => handleMappingChange(dbKey, parseInt(e.target.value))}
+                        >
+                          <option value="">-- Ignorar o Auto --</option>
+                          {csvHeaders.map((header, idx) => (
+                            <option key={idx} value={idx}>{header}</option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <h3>Vista Previa de Importación (Primeros 5 registros)</h3>

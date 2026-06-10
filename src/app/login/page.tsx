@@ -21,15 +21,15 @@ export default async function LoginPage({
 
         <div className={styles.logoContainer}>
           <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.7rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-              Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+              Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
             </span>
           </div>
         </div>
         
-        <h1 className={styles.title}>Bienvenido al Dojo</h1>
-        <p className={styles.subtitle}>Ingresa tus credenciales para continuar tu entrenamiento.</p>
+        <h1 className={styles.title}>Bienvenido a la Arena</h1>
+        <p className={styles.subtitle}>Ingresa tus credenciales para continuar tu entrenamiento de lucha.</p>
 
         {error && <div className={styles.errorBox}>{error}</div>}
 
@@ -41,7 +41,7 @@ export default async function LoginPage({
               id="email" 
               name="email" 
               type="email" 
-              placeholder="sensei@ejemplo.com"
+              placeholder="maestro@ejemplo.com"
               required 
             />
           </div>

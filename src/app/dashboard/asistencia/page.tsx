@@ -246,7 +246,7 @@ export default function AsistenciaPage() {
 
       if (!matchedStudent) {
         playSound("error");
-        alert(`Matrícula inválida: "${matricula}" no pertenece a ningún karateka.`);
+        alert(`Matrícula inválida: "${matricula}" no pertenece a ningún luchador.`);
         setIsScanning(true);
         return;
       }
@@ -378,8 +378,8 @@ export default function AsistenciaPage() {
     const list = wLogs ? JSON.parse(wLogs) : [];
     
     const messageTemplate = record.tipo === 'entrada' 
-      ? `🥋 *Raion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`
-      : `🥋 *Raion Kai*\n\nHola *${record.tutor}*,\n\nLe informamos que el karateka:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🥋 ¡Oss!`;
+      ? `🤼‍♂️ *Arena Raion*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`
+      : `🤼‍♂️ *Arena Raion*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Gimnasio.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`;
 
     list.unshift({
       id: Math.random().toString(),
@@ -405,9 +405,9 @@ export default function AsistenciaPage() {
       <div className={styles.header}>
         <div>
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Escáner Kamiza QR
+            Escáner Arena QR
           </h1>
-          <p>Control de acceso escolar para tatamis Shito-Ryu.</p>
+          <p>Control de acceso escolar para el ring de Lucha Libre.</p>
         </div>
         <div style={{ marginRight: '8.5rem' }}>
           {isOnline ? (
@@ -502,8 +502,8 @@ export default function AsistenciaPage() {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    <th>Karateka</th>
-                    <th>Cinturón</th>
+                    <th>Luchador</th>
+                    <th>Categoría</th>
                     <th>Grado</th>
                     <th>Hora</th>
                     <th>Tipo</th>
@@ -574,7 +574,7 @@ export default function AsistenciaPage() {
                 </div>
                 
                 <span className={`belt-badge belt-${scannedStudent.cinturon.toLowerCase()}`} style={{ fontSize: '1rem' }}>
-                  Cinturón {scannedStudent.cinturon}
+                  Categoría {scannedStudent.cinturon}
                 </span>
 
                 <div className={styles.cardDetails}>
@@ -597,7 +597,7 @@ export default function AsistenciaPage() {
                   setScannedStudent(null);
                   if (cameraActive) setIsScanning(true);
                 }}>
-                  Oss! (Cerrar)
+                  ¡Lucha! (Cerrar)
                 </button>
               </div>
             </motion.div>

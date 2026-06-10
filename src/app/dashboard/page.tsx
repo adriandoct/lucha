@@ -161,20 +161,20 @@ export default function DashboardPage() {
         if (name.toLowerCase().includes("mateo")) {
           setStudentMatricula("KA-2026-001");
           setStudentBelt("verde");
-          setStudentGrado("6° Kyu");
+          setStudentGrado("Especial");
         } else if (name.toLowerCase().includes("sofia")) {
           setStudentMatricula("KA-2026-002");
           setStudentBelt("amarillo");
-          setStudentGrado("8° Kyu");
+          setStudentGrado("Preliminar");
         } else if (name.toLowerCase().includes("diego")) {
           setStudentMatricula("KA-2026-003");
           setStudentBelt("negro");
-          setStudentGrado("1° Dan");
+          setStudentGrado("Leyenda");
         } else {
           // Default fallback
           setStudentMatricula("KA-2026-004");
           setStudentBelt("azul");
-          setStudentGrado("5° Kyu");
+          setStudentGrado("Semifinal");
         }
         setLoading(false);
       };
@@ -219,11 +219,11 @@ export default function DashboardPage() {
 
       if ((!listKaratekas || listKaratekas.length === 0) || kError) {
         finalKaratekas = [
-          { id: "1", nombre: "Mateo García López", matricula: "KA-2026-001", cinturon: "verde", grado: "6° Kyu" },
-          { id: "2", nombre: "Sofía Martínez Ruiz", matricula: "KA-2026-002", cinturon: "amarillo", grado: "8° Kyu" },
-          { id: "3", nombre: "Diego Fernández Silva", matricula: "KA-2026-003", cinturon: "negro", grado: "1° Dan" },
-          { id: "4", nombre: "Valentina Ruiz Castro", matricula: "KA-2026-004", cinturon: "azul", grado: "5° Kyu" },
-          { id: "5", nombre: "Lucas Torres Mendoza", matricula: "KA-2026-005", cinturon: "marron", grado: "2° Kyu" }
+          { id: "1", nombre: "Mateo García López", matricula: "KA-2026-001", cinturon: "verde", grado: "Especial" },
+          { id: "2", nombre: "Sofía Martínez Ruiz", matricula: "KA-2026-002", cinturon: "amarillo", grado: "Preliminar" },
+          { id: "3", nombre: "Diego Fernández Silva", matricula: "KA-2026-003", cinturon: "negro", grado: "Leyenda" },
+          { id: "4", nombre: "Valentina Ruiz Castro", matricula: "KA-2026-004", cinturon: "azul", grado: "Semifinal" },
+          { id: "5", nombre: "Lucas Torres Mendoza", matricula: "KA-2026-005", cinturon: "marron", grado: "Estelar" }
         ];
 
         finalAsistencias = [
@@ -233,7 +233,7 @@ export default function DashboardPage() {
             hora: "17:12:00",
             fecha: today,
             whatsapp_status: "simulated",
-            karatekas: { nombre: "Mateo García López", cinturon: "verde", grado: "6° Kyu" }
+            karatekas: { nombre: "Mateo García López", cinturon: "verde", grado: "Especial" }
           },
           {
             id: "a2",
@@ -241,7 +241,7 @@ export default function DashboardPage() {
             hora: "17:15:00",
             fecha: today,
             whatsapp_status: "simulated",
-            karatekas: { nombre: "Sofía Martínez Ruiz", cinturon: "amarillo", grado: "8° Kyu" }
+            karatekas: { nombre: "Sofía Martínez Ruiz", cinturon: "amarillo", grado: "Preliminar" }
           },
           {
             id: "a3",
@@ -249,7 +249,7 @@ export default function DashboardPage() {
             hora: "17:35:00",
             fecha: today,
             whatsapp_status: "simulated",
-            karatekas: { nombre: "Lucas Torres Mendoza", cinturon: "marron", grado: "2° Kyu" }
+            karatekas: { nombre: "Lucas Torres Mendoza", cinturon: "marron", grado: "Estelar" }
           }
         ];
       }
@@ -296,13 +296,13 @@ export default function DashboardPage() {
       });
 
       setBeltChartData([
-        { name: 'Blanco', value: belts.blanco, fill: '#CBD5E1' },
-        { name: 'Amarillo', value: belts.amarillo, fill: '#FACC15' },
-        { name: 'Naranja', value: belts.naranja, fill: '#FB923C' },
-        { name: 'Verde', value: belts.verde, fill: '#22C55E' },
-        { name: 'Azul', value: belts.azul, fill: '#3B82F6' },
-        { name: 'Marrón', value: belts.marron, fill: '#8B4513' },
-        { name: 'Negro', value: belts.negro, fill: '#1E293B' },
+        { name: 'Novato', value: belts.blanco, fill: '#CBD5E1' },
+        { name: 'Preliminar', value: belts.amarillo, fill: '#FACC15' },
+        { name: 'Segunda Lucha', value: belts.naranja, fill: '#FB923C' },
+        { name: 'Especial', value: belts.verde, fill: '#22C55E' },
+        { name: 'Semifinal', value: belts.azul, fill: '#3B82F6' },
+        { name: 'Estelar', value: belts.marron, fill: '#8B4513' },
+        { name: 'Leyenda', value: belts.negro, fill: '#1E293B' },
       ]);
 
       setWeeklyChartData([
@@ -345,8 +345,8 @@ export default function DashboardPage() {
   if (role === "karateka") {
     const planPrices: Record<string, string> = {
       "Mensualidad Regular": "$500",
-      "Trimestre Raion Kai": "$1,400",
-      "Semestre Shito-Ryu": "$2,700"
+      "Trimestre Estelar": "$1,400",
+      "Semestre Leyenda": "$2,700"
     };
     const planPrice = planPrices[studentPlan] || "$500";
 
@@ -361,7 +361,7 @@ export default function DashboardPage() {
         <motion.div variants={itemVariants} className={styles.topbar}>
           <div className={styles.greeting}>
             <h1>¡Hola, {userName}!</h1>
-            <p>Bienvenido al Portal del Alumno. Monitoreo técnico y credenciales.</p>
+            <p>Bienvenido al Portal del Alumno. Monitoreo de entrenamiento y credenciales.</p>
           </div>
           <div className={styles.topActions} style={{ marginRight: '8.5rem' }}>
             <div className={styles.actionBtn}>
@@ -374,16 +374,16 @@ export default function DashboardPage() {
         <motion.div variants={itemVariants} className={styles.metricsGrid}>
           <div className={styles.metricCard} style={{ borderLeft: '4px solid var(--brand-red)' }}>
             <div className={styles.metricHeader}>
-              <span className={styles.metricTitle}>Mi Grado Shito-Ryu</span>
+              <span className={styles.metricTitle}>Mi Categoría de Lucha</span>
               <div className={`${styles.metricIcon} ${styles.blue}`}>
                 <Award size={24} color="var(--brand-red)" />
               </div>
             </div>
             <div className={styles.metricValue} style={{ fontSize: '1.6rem', marginTop: '0.5rem', textTransform: 'capitalize' }}>
-              Cinturón {studentBelt}
+              Categoría {studentBelt}
             </div>
             <div className={`${styles.metricTrend} ${styles.up}`}>
-              <span>Grado Técnico: {studentGrado}</span>
+              <span>Rango Técnico: {studentGrado}</span>
             </div>
           </div>
 
@@ -419,7 +419,7 @@ export default function DashboardPage() {
             </div>
             <div className={styles.metricValue}>95%</div>
             <div className={`${styles.metricTrend} ${styles.up}`}>
-              <span>Asistencia excelente (Oss)</span>
+              <span>Asistencia excelente (¡Lucha!)</span>
             </div>
           </div>
         </motion.div>
@@ -430,7 +430,7 @@ export default function DashboardPage() {
           <div className={styles.chartCard} style={{ alignItems: 'center', padding: '2rem', gap: '1rem' }}>
             <h3 style={{ textTransform: 'uppercase', letterSpacing: '1px' }}>Mi Credencial de Acceso QR</h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '280px' }}>
-              Muestra este código al sensor Kamiza QR al entrar o salir del dojo.
+              Muestra este código al escáner QR al entrar o salir del gimnasio.
             </p>
             <div style={{ background: 'white', padding: '0.75rem', borderRadius: '12px', width: '180px', height: '180px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
               <img 
@@ -457,12 +457,12 @@ export default function DashboardPage() {
             
             <div style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '8px', marginTop: '1rem', border: '1px solid var(--border-color)' }}>
               <p style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--brand-red)', marginBottom: '0.25rem' }}>
-                Sensei AI Chatbot dice:
+                Maestro AI Chatbot dice:
               </p>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
-                "Oss, {userName}. Has asistido puntualmente a tus últimas 4 clases de Karate Shito-Ryu. 
-                Tu ejecución de la kata <strong>Pinan Shodan</strong> ha mejorado sustancialmente en la fluidez del Shuto-Uke. 
-                Tu rendimiento actual está al 92% para tu próximo examen de grado. Sigue entrenando con constancia. ¡Oss!"
+                "¡Lucha, {userName}! Has asistido puntualmente a tus últimas 4 clases de Lucha Libre Arena Raion. 
+                Tu ejecución de la llave <strong>La de a Caballo</strong> ha mejorado sustancialmente en la fluidez del agarre. 
+                Tu rendimiento actual está al 92% para tu próximo debut. Sigue entrenando con constancia. ¡Lucha!"
               </p>
             </div>
 
@@ -482,7 +482,7 @@ export default function DashboardPage() {
                 Entrenamiento entre Semana (Videos Cortos)
               </h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                Accede a nuestro contenido audiovisual formativo exclusivo para karatekas registrados.
+                Accede a nuestro contenido audiovisual formativo exclusivo para luchadores registrados.
               </p>
             </div>
             <Link href="/dashboard/videos" className="btn-primary" style={{ background: 'var(--brand-red)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -504,8 +504,8 @@ export default function DashboardPage() {
     >
       <motion.div variants={itemVariants} className={styles.topbar}>
         <div className={styles.greeting}>
-          <h1>Resumen del Dojo (Sensei)</h1>
-          <p>Control de acceso escolar y estado del tatami en tiempo real.</p>
+          <h1>Resumen de la Arena (Maestro)</h1>
+          <p>Control de acceso escolar y estado del gimnasio en tiempo real.</p>
         </div>
         
         <div className={styles.topActions} style={{ marginRight: '8.5rem' }}>
@@ -522,7 +522,7 @@ export default function DashboardPage() {
       <motion.div variants={itemVariants} className={styles.metricsGrid}>
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span className={styles.metricTitle}>Karatekas Activos</span>
+            <span className={styles.metricTitle}>Luchadores Activos</span>
             <div className={`${styles.metricIcon} ${styles.blue}`}>
               <Users size={24} color="var(--brand-red)" />
             </div>
@@ -530,7 +530,7 @@ export default function DashboardPage() {
           <div className={styles.metricValue}>{stats.total}</div>
           <div className={`${styles.metricTrend} ${styles.up}`}>
             <TrendingUp size={16} />
-            <span>Nómina oficial del Dojo</span>
+            <span>Nómina oficial de la Arena</span>
           </div>
         </div>
 
@@ -544,7 +544,7 @@ export default function DashboardPage() {
           <div className={styles.metricValue}>{stats.presentes}</div>
           <div className={`${styles.metricTrend} ${styles.up}`}>
             <TrendingUp size={16} />
-            <span>Activos en el tatami</span>
+            <span>Activos en el ring</span>
           </div>
         </div>
 
@@ -557,7 +557,7 @@ export default function DashboardPage() {
           </div>
           <div className={styles.metricValue}>{stats.retardos}</div>
           <div className={`${styles.metricTrend} ${styles.down}`}>
-            <span>Ingresos después del saludo</span>
+            <span>Ingresos tarde al entrenamiento</span>
           </div>
         </div>
 
@@ -607,7 +607,7 @@ export default function DashboardPage() {
 
         <div className={styles.chartCard}>
           <div className={styles.cardHeader}>
-            <h3>Distribución de Cinturones</h3>
+            <h3>Distribución de Categorías</h3>
           </div>
           <div className={styles.chartContainer} style={{ height: '260px' }}>
             <ResponsiveContainer width="100%" height="100%">
@@ -635,11 +635,11 @@ export default function DashboardPage() {
         <div className={styles.aiExecutiveWidget} style={{ borderLeft: '4px solid var(--brand-red)' }}>
           <div className={styles.aiWidgetHeader}>
             <Brain size={24} style={{ color: 'var(--brand-red)' }} />
-            <span style={{ fontWeight: 600 }}>AI Sensei Coach</span>
+            <span style={{ fontWeight: 600 }}>AI Lucha Coach</span>
           </div>
           <div className={styles.aiWidgetContent}>
             <p style={{ lineHeight: '1.5', fontSize: '0.95rem' }}>
-              Oss, Sensei. Hoy la asistencia se mantiene alta en un 94%. He notado que el grupo de <strong>Cinturones Naranjas</strong> ha acumulado 3 retardos esta semana. Te sugiero reforzar el valor de la puntualidad (Reigi) al inicio de la sesión.
+              ¡Lucha, Maestro! Hoy la asistencia se mantiene alta en un 94%. He notado que el grupo de <strong>Segunda Lucha</strong> ha acumulado 3 retardos esta semana. Te sugiero reforzar el valor de la puntualidad y disciplina al inicio de la sesión.
             </p>
           </div>
           <button className={styles.aiWidgetBtn} style={{ background: 'var(--brand-red-light)', color: 'var(--brand-red)' }}>

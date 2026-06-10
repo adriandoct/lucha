@@ -131,66 +131,66 @@ export default function ProgresoPage() {
   // Generate dynamic requirements list
   const getRequirementsList = (belt: string): RequirementItem[] => {
     const defaultReqs = [
-      { name: "Posiciones Básicas: Zenkutsu Dachi & Moto Dachi", completed: true },
-      { name: "Bloqueos Fundamentales: Jodan Uke, Gedan Barai", completed: true },
-      { name: "Kata de Inicio: Kihon Kata I & II", completed: true }
+      { name: "Posiciones Básicas: Guardia y Desplazamiento", completed: true },
+      { name: "Bloqueos Fundamentales: Toma de cuello y derribes simples", completed: true },
+      { name: "Llave de Inicio: Candado a la cabeza y palanca al brazo", completed: true }
     ];
 
     switch (belt?.toLowerCase()) {
       case "blanco":
         return [
           ...defaultReqs,
-          { name: "Kata Oficial: Pinan Nidan", completed: false },
-          { name: "Defensas a 5 pasos (Gohon Kumite)", completed: false },
+          { name: "Llave Oficial: La Tapatía", completed: false },
+          { name: "Defensas básicas en el ring", completed: false },
         ];
       case "amarillo":
         return [
           ...defaultReqs,
-          { name: "Golpes de Tajo (Shuto Uke)", completed: true },
-          { name: "Patadas Frontales (Mae Geri)", completed: true },
-          { name: "Kata Oficial: Pinan Shodan", completed: false },
-          { name: "Kihon Kumite I", completed: false }
+          { name: "Golpe de antebrazo / machetazo", completed: true },
+          { name: "Patadas de canguro", completed: true },
+          { name: "Llave Oficial: La de a Caballo", completed: false },
+          { name: "Sparring simple a ras de lona", completed: false }
         ];
       case "naranja":
         return [
           ...defaultReqs,
-          { name: "Defensa Media (Uchi Uke)", completed: true },
-          { name: "Golpe de Codo (Empi Uchi)", completed: true },
-          { name: "Patada Lateral (Yoko Geri)", completed: true },
-          { name: "Kata Oficial: Pinan Sandan", completed: false },
-          { name: "Kihon Kumite II", completed: false }
+          { name: "Contrallaveo a toma de muñeca", completed: true },
+          { name: "Golpe de codo y lazo al cuello", completed: true },
+          { name: "Patada voladora / dropkick", completed: true },
+          { name: "Llave Oficial: La Valedora", completed: false },
+          { name: "Sparring en las cuerdas", completed: false }
         ];
       case "verde":
         return [
-          { name: "Bloqueos y defensas básicas del kyu anterior", completed: true },
-          { name: "Kata Oficial: Pinan Yondan", completed: false },
-          { name: "Patada Semicircular (Mawashi Geri)", completed: true },
-          { name: "Combate a un paso (Jiyu Ippon Kumite)", completed: false },
-          { name: "Flexibilidad y agilidad en tatami", completed: true }
+          { name: "Llaves y defensas del nivel anterior", completed: true },
+          { name: "Llave Oficial: La Cavernaria", completed: false },
+          { name: "Patadas de tijera", completed: true },
+          { name: "Sparring de media intensidad", completed: false },
+          { name: "Flexibilidad y resorte en las cuerdas", completed: true }
         ];
       case "azul":
         return [
-          { name: "Consolidación de Katas Pinan (1 al 4)", completed: true },
-          { name: "Kata Oficial: Pinan Godan", completed: false },
-          { name: "Combinación de patadas consecutivas", completed: true },
-          { name: "Jiyu Ippon Kumite Avanzado", completed: false },
-          { name: "Esquivas laterales (Sabaki)", completed: true }
+          { name: "Consolidación de llaves del nivel intermedio", completed: true },
+          { name: "Llave Oficial: La Huracarrana", completed: false },
+          { name: "Combinación de vuelos y llaves aéreas", completed: true },
+          { name: "Sparring de alta intensidad en el ring", completed: false },
+          { name: "Esquivas y rebotes en las cuerdas", completed: true }
         ];
       case "marron":
         return [
-          { name: "Dominio de todas las Katas Pinan", completed: true },
-          { name: "Katas Superiores: Bassai Dai & Seienchin", completed: false },
-          { name: "Combate libre (Jiyu Kumite)", completed: true },
-          { name: "Liderazgo de calentamiento grupal", completed: true },
-          { name: "Velocidad y rompimiento de guardias WKF", completed: false }
+          { name: "Dominio de llaves de sumisión intermedias", completed: true },
+          { name: "Llaves Superiores: El Tirabuzón y La Cerrajera", completed: false },
+          { name: "Lucha libre en ring / Sparring libre", completed: true },
+          { name: "Liderazgo de calentamiento de la arena", completed: true },
+          { name: "Velocidad y rompimiento de guardias en el ring", completed: false }
         ];
       case "negro":
         return [
-          { name: "Dominio absoluto del temario de grados Kyu", completed: true },
-          { name: "Katas Superiores Avanzados: Nipaipo & Tensho", completed: true },
-          { name: "Combate oficial competitivo reglamento WKF", completed: true },
-          { name: "Asistencia e impartición de clases (Sempai/Sensei)", completed: true },
-          { name: "Examen escrito de historia marcial", completed: true }
+          { name: "Dominio absoluto del temario de categorías de lucha", completed: true },
+          { name: "Llaves Avanzadas Especiales: La Gory Special y El Martinete (simulado)", completed: true },
+          { name: "Combate oficial estelar bajo reglamento de lucha libre", completed: true },
+          { name: "Asistencia e impartición de clases (Instructor/Maestro)", completed: true },
+          { name: "Examen de historia de la lucha libre mexicana", completed: true }
         ];
       default:
         return defaultReqs;
@@ -234,12 +234,12 @@ export default function ProgresoPage() {
       <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            {role === "sensei" ? "Seguimiento de Alumnos" : "Mi Progreso Shito-Ryu"}
+            {role === "sensei" ? "Seguimiento de Alumnos" : "Mi Progreso Lucha Libre"}
           </h1>
           <p>
             {role === "sensei" 
               ? "Revisa la progresión y cumplimiento técnico de tu nómina de alumnos." 
-              : "Revisa tu asistencia, avance técnico y preparación para tu próximo examen."}
+              : "Revisa tu asistencia, avance técnico y preparación para tu próximo debut o ascenso."}
           </p>
         </div>
 
@@ -269,7 +269,7 @@ export default function ProgresoPage() {
           {/* Card 1: Belt Profile */}
           <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-red)' }}>
             <div className={styles.cardHeader}>
-              <span className={styles.cardTitle}>Estatus de Cinturón</span>
+              <span className={styles.cardTitle}>Estatus de Categoría</span>
               <Award size={20} style={{ color: 'var(--brand-red)' }} />
             </div>
 
@@ -278,12 +278,12 @@ export default function ProgresoPage() {
                 {currentStudent.foto_url ? (
                   <img src={currentStudent.foto_url} alt={currentStudent.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  "🥋"
+                  "🤼‍♂️"
                 )}
               </div>
               <div>
-                <h3 style={{ textTransform: 'capitalize' }}>Cinturón {currentStudent.cinturon}</h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Grado Técnico: {currentStudent.grado}</p>
+                <h3 style={{ textTransform: 'capitalize' }}>Categoría {currentStudent.cinturon}</h3>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Rango Técnico: {currentStudent.grado}</p>
                 <span className={`belt-badge ${getBeltColorClass(currentStudent.cinturon)}`} style={{ marginTop: '0.4rem' }}>
                   {currentStudent.cinturon}
                 </span>
@@ -292,7 +292,7 @@ export default function ProgresoPage() {
 
             <div className={styles.progressContainer}>
               <div className={styles.progressText}>
-                <span>Camino a Cinta Negra</span>
+                <span>Camino a Nivel Leyenda</span>
                 <span>{currentBeltPct}%</span>
               </div>
               <div className={styles.progressBarBg}>
@@ -302,7 +302,7 @@ export default function ProgresoPage() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--brand-red-light)', color: 'var(--brand-red)', padding: '0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, marginTop: '0.5rem' }}>
               <ShieldCheck size={16} />
-              <span>Grado validado oficialmente por la Federación de Shito-Ryu</span>
+              <span>Rango validado oficialmente por la Arena Raion</span>
             </div>
           </div>
 
@@ -336,8 +336,8 @@ export default function ProgresoPage() {
           {/* Card 3: Requirements Checkbox */}
           <div className={styles.card} style={{ gridColumn: 'span 2' }}>
             <div className={styles.cardHeader} style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-              <span className={styles.cardTitle}>Requisitos Pendientes para Examen de Cinturón</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Filtro basado en Cinturón {currentStudent.cinturon}</span>
+              <span className={styles.cardTitle}>Requisitos Pendientes para Ascenso de Categoría</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Filtro basado en Categoría {currentStudent.cinturon}</span>
             </div>
 
             <div className={styles.checklist}>

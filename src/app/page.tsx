@@ -43,11 +43,11 @@ const getCookie = (name: string): string => {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [featuredVideo, setFeaturedVideo] = useState({
-    titulo: "Presentación del Dojo Shito-Ryu",
-    descripcion: "Una demostración de nuestra práctica habitual, que combina katas tradicionales con técnicas de combate y defensa personal adaptadas para todas las edades.",
+    titulo: "Presentación de la Arena Raion",
+    descripcion: "Una demostración de nuestro entrenamiento de lucha libre, que combina llaves clásicas, contrallaves, lances aéreos y combate espectacular adaptado para todas las edades.",
     url: "https://vjs.zencdn.net/v/oceans.mp4",
     thumbnail: "/karate-hero.png",
-    instructor: "Sensei Carlos Martínez",
+    instructor: "Maestro Carlos Martínez",
     nivel: "Todos los niveles"
   });
 
@@ -176,10 +176,10 @@ export default function Home() {
         const defaults = [
           {
             id: "v1",
-            titulo: "Pinan Shodan - Kata Completo y Detalles",
-            descripcion: "Guía paso a paso del primer kata de la serie Pinan. Posiciones de cadera, Zenkutsu Dachi y bloqueos altos.",
+            titulo: "Llave de Sumisión: La De a Caballo paso a paso",
+            descripcion: "Guía paso a paso de la icónica sumisión de lucha libre. Posición del oponente, palanca de brazos y tracción de cuello.",
             duracion: "05:12",
-            instructor: "Sensei Carlos Martínez",
+            instructor: "Maestro Carlos Martínez",
             nivel: "Principiantes",
             url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
             tipo: "entrenamiento",
@@ -187,10 +187,10 @@ export default function Home() {
           },
           {
             id: "v2",
-            titulo: "Bunkai Aplicado de Pinan Nidan",
-            descripcion: "Aplicación práctica para la defensa personal de las técnicas de golpe y bloqueo contenidas en Pinan Nidan.",
+            titulo: "Derribe y Contralaveo en Lona",
+            descripcion: "Aplicación práctica para zafarse de una toma de cuello y realizar un derribe técnico directo a la lona.",
             duracion: "07:45",
-            instructor: "Sensei Carlos Martínez",
+            instructor: "Maestro Carlos Martínez",
             nivel: "Intermedios",
             url: "https://vjs.zencdn.net/v/oceans.mp4",
             tipo: "entrenamiento",
@@ -198,10 +198,10 @@ export default function Home() {
           },
           {
             id: "v3",
-            titulo: "Tácticas de Kumite WKF: Kizami Zuki",
-            descripcion: "Perfecciona la velocidad y el alcance del golpe de puño adelantado en combate deportivo con reglamento oficial.",
+            titulo: "Tácticas de Vuelo: Salida de Bandera",
+            descripcion: "Perfecciona la velocidad, el impulso y la caída segura al volar sobre la tercera cuerda en luchas estelares.",
             duracion: "04:30",
-            instructor: "Sempai Carlos Ruiz",
+            instructor: "Instructor Carlos Ruiz",
             nivel: "Avanzados",
             url: "https://www.w3schools.com/html/movie.mp4",
             tipo: "entrenamiento",
@@ -284,22 +284,22 @@ export default function Home() {
 
   const slides = [
     {
-      src: "/karate-hero.png",
-      tag: "🥋 Shito-Ryu Do",
-      title: "Shito-Ryu Do",
-      desc: "Entrenamiento de Katas tradicionales, Bunkai práctico y Kumite de competencia olímpica WKF."
+      src: "/arena-hero.png",
+      tag: "🤼‍♂️ Lucha Libre Estelar",
+      title: "Lucha Libre Estelar",
+      desc: "Entrenamiento de llaves tradicionales a ras de lona, lances aéreos espectaculares y lucha profesional."
     },
     {
-      src: "/karate-kata.png",
-      tag: "🥋 Katas Tradicionales",
-      title: "Katas Tradicionales",
-      desc: "Perfecciona formas clásicas de Shito-Ryu como Pinan, Anan y Seienchin con precisión técnica y marcialidad."
+      src: "/arena-kata.png",
+      tag: "🤼‍♂️ Llaves y Candados",
+      title: "Llaves y Candados",
+      desc: "Perfecciona las sumisiones clásicas de la lucha libre mexicana, contrallaves y combate técnico."
     },
     {
-      src: "/karate-kumite.png",
-      tag: "🥋 Kumite Olímpico",
-      title: "Kumite Olímpico",
-      desc: "Desarrolla velocidad, reflejos y tácticas de combate deportivo WKF bajo el monitoreo y cuidado de la academia."
+      src: "/arena-kumite.png",
+      tag: "🤼‍♂️ Vuelo y Acrobacia",
+      title: "Vuelo y Acrobacia",
+      desc: "Desarrolla velocidad, reflejos y técnicas de vuelo espectacular desde la tercera cuerda con total seguridad."
     }
   ];
 
@@ -316,23 +316,23 @@ export default function Home() {
     { 
       icon: <QrCode />, 
       title: "Credenciales Digitales QR", 
-      desc: "Generación automática de códigos QR únicos para cada karateka, listos para imprimir o llevar en celular.", 
+      desc: "Generación automática de códigos QR únicos para cada luchador, listos para imprimir o llevar en celular.", 
       color: "#E11D48", 
       level: "Control de Acceso" 
     },
     { 
       icon: <MessageSquare />, 
       title: "WhatsApp Automatizado", 
-      desc: "Envío instantáneo de notificaciones de Entrada/Salida a tutores indicando hora y fecha exacta con cortesía 'Oss'.", 
+      desc: "Envío instantáneo de notificaciones de Entrada/Salida a tutores indicando hora y fecha exacta con temática de lucha libre.", 
       color: "#10B981", 
       level: "Seguridad y Enlace" 
     },
     { 
       icon: <LayoutDashboard />, 
       title: "Panel en Tiempo Real", 
-      desc: "Dashboard moderno para el Sensei con estadísticas de presentes, ausentes y análisis de asistencia por cinturones.", 
+      desc: "Dashboard moderno para el Maestro con estadísticas de presentes, ausentes y análisis de asistencia por categorías.", 
       color: "#00F0FF", 
-      level: "Métricas del Dojo" 
+      level: "Métricas de la Arena" 
     },
     { 
       icon: <Database />, 
@@ -350,7 +350,7 @@ export default function Home() {
       desc: "Ideal para entrenamiento constante y monitoreo automatizado.",
       features: [
         "Entrenamientos entre semana",
-        "Clases los Fines de Semana (Katas especiales)",
+        "Clases los Fines de Semana (Técnicas especiales)",
         "Videos cortos de entrenamiento exclusivos",
         "Registro de asistencia con código QR",
         "Monitoreo de asistencia y rendimiento",
@@ -359,27 +359,27 @@ export default function Home() {
       popular: true
     },
     {
-      name: "Trimestre Raion Kai",
+      name: "Trimestre Estelar",
       price: "$1,400 MXN",
-      desc: "Ahorra pagando un trimestre completo de preparación marcial.",
+      desc: "Ahorra pagando un trimestre completo de preparación en el ring.",
       features: [
         "Todos los beneficios de Mensualidad Regular",
         "Clases los fines de semana incluidas",
         "Acceso ilimitado a biblioteca de videos",
-        "Prioridad en exámenes de graduación",
+        "Prioridad en luchas de debut",
         "Ahorro de $100 pesos de cuota"
       ],
       popular: false
     },
     {
-      name: "Semestre Shito-Ryu",
+      name: "Semestre Leyenda",
       price: "$2,700 MXN",
-      desc: "Compromiso absoluto en el tatami para aspirantes a cinta negra.",
+      desc: "Compromiso absoluto en el ring para aspirantes a luchador profesional.",
       features: [
-        "Todos los beneficios de Trimestre Raion Kai",
+        "Todos los beneficios de Trimestre Estelar",
         "Acceso ilimitado a biblioteca de videos",
-        "Soporte preferencial para competencias",
-        "Descuento en seminarios especiales",
+        "Soporte preferencial para luchas locales",
+        "Descuento en seminarios de luchadores consagrados",
         "Ahorro de $300 pesos de cuota"
       ],
       popular: false
@@ -391,15 +391,15 @@ export default function Home() {
       <header className={styles.header} style={{ background: scrolled ? 'rgba(11, 14, 20, 0.95)' : 'transparent', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
         <div className={`container ${styles.headerContent}`}>
           <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.4rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-              Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+              Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
             </span>
           </div>
           <nav className={styles.nav}>
-            <Link href="#como-funciona" className={styles.navLink}>Metodología</Link>
+            <Link href="#como-funciona" className={styles.navLink}>Entrenamiento</Link>
             <Link href="#funciones" className={styles.navLink}>Funciones</Link>
-            <Link href="#planes" className={styles.navLink}>Tarifas</Link>
+            <Link href="#planes" className={styles.navLink}>Precios</Link>
           </nav>
           {isLoggedIn ? (
             <div className={styles.nav}>
@@ -566,12 +566,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECCIÓN: DOJO EN ACCIÓN (Video Destacado) */}
+      {/* SECCIÓN: ARENA EN ACCIÓN (Video Destacado) */}
       <section className={styles.dojoVideoSection}>
         <div className="container">
           <div className={styles.videoSectionHeader}>
-            <h2>NUESTRO DOJO EN <span style={{ color: 'var(--brand-red)' }}>ACCIÓN</span></h2>
-            <p>Mira una demostración del entrenamiento de Karate en nuestro dojo. Disciplina, técnica y valores en cada movimiento.</p>
+            <h2>NUESTRA ARENA EN <span style={{ color: 'var(--brand-red)' }}>ACCIÓN</span></h2>
+            <p>Mira una demostración del entrenamiento de Lucha Libre en nuestra arena. Espectáculo, técnica y disciplina en cada llave.</p>
           </div>
           
           <div className={styles.videoPlayerContainer}>
@@ -693,18 +693,18 @@ export default function Home() {
             <div className={styles.philImageCircle} style={{ borderColor: 'rgba(225, 29, 72, 0.3)' }}></div>
             <div className={styles.philImageCircleInner} style={{ borderColor: 'rgba(0, 240, 255, 0.3)' }}></div>
             <div className={styles.philLogo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
+              <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
               <span className="logo-script" style={{ fontSize: '5.5rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-                Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+                Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
               </span>
             </div>
           </div>
           
           <div className={styles.philContent}>
-            <h2>Filosofía Marcial + <span style={{ color: 'var(--brand-accent)' }}>Control Digital</span></h2>
+            <h2>Cultura de Ring + <span style={{ color: 'var(--brand-accent)' }}>Control Digital</span></h2>
             <p>
-              El estilo Shito-Ryu une fuerza física y paz mental. Raion Kai une la disciplina tradicional 
-              del saludo y la puntualidad con la velocidad y exactitud de las notificaciones móviles.
+              La lucha libre une fuerza física, agilidad y espectáculo. Arena Raion une la disciplina tradicional 
+              del gimnasio con la velocidad y exactitud de las notificaciones de asistencia.
             </p>
             
             <div className={styles.featureList}>
@@ -714,7 +714,7 @@ export default function Home() {
                 </div>
                 <div className={styles.featureText}>
                   <h4>Videos Cortos entre Semana</h4>
-                  <p>Accede a videos educativos grabados por el Sensei para perfeccionar técnicas fundamentales desde tu casa durante los días de semana.</p>
+                  <p>Accede a videos educativos grabados por el Maestro para perfeccionar llaves y acrobacias fundamentales desde tu casa durante los días de semana.</p>
                 </div>
               </div>
               
@@ -724,7 +724,7 @@ export default function Home() {
                 </div>
                 <div className={styles.featureText}>
                   <h4>Clases los Fines de Semana</h4>
-                  <p>Sábados y Domingos de entrenamiento presencial dedicados al temario de Katas oficiales y Kumite libre competitivo.</p>
+                  <p>Sábados y Domingos de entrenamiento presencial dedicados al acondicionamiento físico, llaves y lucha en el ring.</p>
                 </div>
               </div>
               
@@ -745,7 +745,7 @@ export default function Home() {
       <section id="planes" className={styles.plans}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2>Tarifas del <span style={{ color: 'var(--brand-red)' }}>Dojo</span></h2>
+            <h2>Tarifas de la <span style={{ color: 'var(--brand-red)' }}>Arena</span></h2>
             <p>Planes diseñados con cobros transparentes en pesos mexicanos para tu membresía.</p>
           </div>
           
@@ -782,28 +782,28 @@ export default function Home() {
           <div className={styles.footerGrid}>
             <div>
               <div className={styles.footerLogo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
+                <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
                 <span className="logo-script" style={{ fontSize: '2.1rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-                  Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+                  Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
                 </span>
               </div>
-              <p>Tecnología y tradición unidas para el control inteligente de asistencia marcial.</p>
+              <p>Tecnología y espectáculo unidos para el control inteligente de asistencia de luchadores.</p>
             </div>
             
             <div className={styles.footerCol}>
-              <h4>Raion Kai</h4>
+              <h4>Arena Raion</h4>
               <ul>
                 <li><Link href="#funciones">Funciones</Link></li>
-                <li><Link href="#como-funciona">Metodología</Link></li>
-                <li><Link href="#planes">Tarifas</Link></li>
+                <li><Link href="#como-funciona">Entrenamiento</Link></li>
+                <li><Link href="#planes">Precios</Link></li>
               </ul>
             </div>
             
             <div className={styles.footerCol}>
               <h4>Recursos</h4>
               <ul>
-                <li><Link href="/login">Portal Sensei</Link></li>
-                <li><Link href="/register">Registro Dojo</Link></li>
+                <li><Link href="/login">Portal Maestro</Link></li>
+                <li><Link href="/register">Registro Arena</Link></li>
                 <li><Link href="#">Soporte Técnico</Link></li>
               </ul>
             </div>
@@ -818,8 +818,8 @@ export default function Home() {
           </div>
           
           <div className={styles.footerBottom}>
-            <p>&copy; {new Date().getFullYear()} Raion Kai Shito-Ryu. Todos los derechos reservados.</p>
-            <p>Oss! 🥋</p>
+            <p>&copy; {new Date().getFullYear()} Arena Raion Lucha Libre. Todos los derechos reservados.</p>
+            <p>¡Tercera Caída! 🤼‍♂️</p>
           </div>
         </div>
       </footer>
@@ -907,11 +907,11 @@ export default function Home() {
               {showTeaser && (
                 <div className={styles.teaserOverlay}>
                   <div className={styles.teaserContent}>
-                    <span className={styles.teaserBadge}>🥋 TEASER DE LA ACADEMIA PREMIUM</span>
+                    <span className={styles.teaserBadge}>🤼‍♂️ TEASER DE LA ARENA PREMIUM</span>
                     <h3 className={styles.teaserTitle}>Límite de Vista Previa Alcanzado</h3>
                     <p className={styles.teaserText}>
                       Has visto los primeros 30 segundos de este video de entrenamiento. 
-                      Para tener acceso ilimitado a toda la videoteca técnica, registrar asistencias por QR, recibir el recordatorio del sábado por WhatsApp y competir en el ranking, únete a nuestra Academia Premium.
+                      Para tener acceso ilimitado a toda la videoteca de lucha, registrar asistencias por QR, recibir el recordatorio del sábado por WhatsApp y competir en el ranking, únete a nuestra Arena Premium.
                     </p>
                     <div className={styles.teaserButtons}>
                       <Link href="/register" className={styles.btnPrimary} style={{ background: 'var(--brand-red)' }}>

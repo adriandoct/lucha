@@ -121,7 +121,7 @@ export default function CertificadosPage() {
               id: "c1",
               exam_id: "r1",
               karateka_id: localKaratekas[0]?.id || "1",
-              codigo_certificado: "CERT-SHITO-8821-MATEO",
+              codigo_certificado: "CERT-LUCHA-8821-MATEO",
               fecha_emision: new Date(Date.now() - 3600000 * 24 * 5).toISOString().split("T")[0],
               karateka: {
                 nombre: localKaratekas[0]?.nombre || "Mateo García López",
@@ -142,7 +142,7 @@ export default function CertificadosPage() {
               id: "c2",
               exam_id: "r3",
               karateka_id: student.id,
-              codigo_certificado: `CERT-SHITO-9943-${student.nombre.split(" ")[0].toUpperCase()}`,
+              codigo_certificado: `CERT-LUCHA-9943-${student.nombre.split(" ")[0].toUpperCase()}`,
               fecha_emision: new Date(Date.now() - 3600000 * 24 * 30).toISOString().split("T")[0],
               karateka: {
                 nombre: student.nombre,
@@ -192,12 +192,12 @@ export default function CertificadosPage() {
       <div className={styles.header}>
         <div>
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            {role === "sensei" ? "Gestión de Certificados de Grado" : "Mis Certificados Shito-Ryu"}
+            {role === "sensei" ? "Gestión de Certificados de Categoría" : "Mis Certificados de Lucha"}
           </h1>
           <p>
             {role === "sensei" 
-              ? "Revisa e imprime los diplomas de ascenso autorizados en la academia." 
-              : "Descarga e imprime tus diplomas oficiales de ascenso de grado."}
+              ? "Revisa e imprime los diplomas de ascenso autorizados en la arena." 
+              : "Descarga e imprime tus diplomas oficiales de ascenso de categoría."}
           </p>
         </div>
       </div>
@@ -216,9 +216,9 @@ export default function CertificadosPage() {
                 <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: getBeltColor(cert.karateka?.cinturon || "blanco"), border: '2px solid #475569', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}></div>
               </div>
               <div className={styles.cardMeta}>
-                <h3>Certificado de Cinturón {cert.karateka?.cinturon.toUpperCase()}</h3>
-                <p>Grado: {cert.karateka?.grado}</p>
-                <p>Alumno: {cert.karateka?.nombre}</p>
+                <h3>Certificado de Rango {cert.karateka?.cinturon.toUpperCase()}</h3>
+                <p>Categoría: {cert.karateka?.grado}</p>
+                <p>Luchador: {cert.karateka?.nombre}</p>
                 <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', color: 'var(--text-tertiary)' }}>{cert.codigo_certificado}</span>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
@@ -234,7 +234,7 @@ export default function CertificadosPage() {
           {certificates.length === 0 && (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
               <FileText size={48} style={{ color: 'var(--border-color)', marginBottom: '1rem', margin: 'auto' }} />
-              <p>Aún no tienes certificados aprobados. Completa y aprueba un examen para recibir tu diploma. ¡Oss!</p>
+              <p>Aún no tienes certificados aprobados. Completa y aprueba una evaluación para recibir tu diploma. ¡Al ring!</p>
             </div>
           )}
         </div>
@@ -265,35 +265,35 @@ export default function CertificadosPage() {
 
             {/* Official Diploma Paper */}
             <div className={styles.diplomaContainer}>
-              <div className={styles.diplomaWatermark}>空手</div>
+              <div className={styles.diplomaWatermark}>LUCHA</div>
               
               <div className={styles.diplomaHeader}>
-                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '3rem', margin: 0 }}>Raion Kai Academy</h2>
-                <p>CERTIFICADO OFICIAL DE ASCENSO DE CINTURÓN</p>
+                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '3rem', margin: 0 }}>Arena Raion</h2>
+                <p>CERTIFICADO OFICIAL DE ASCENSO DE CATEGORÍA</p>
               </div>
 
               <div className={styles.diplomaBody}>
-                <p className={styles.diplomaTitle}>Otorgado con orgullo y validación marcial a:</p>
+                <p className={styles.diplomaTitle}>Otorgado con orgullo por su desempeño en el ring a:</p>
                 <h1 className={styles.recipientName}>{selectedCert.karateka?.nombre}</h1>
                 
                 <p className={styles.diplomaText}>
-                  Por haber demostrado la disciplina, perseverancia y habilidad técnica requeridas en los exámenes oficiales del estilo <strong>Shito-Ryu Karate Do</strong>, acreditando las catas y kumite necesarios para ostentar el grado de:
+                  Por haber demostrado la disciplina, perseverancia y destreza en el ring en las evaluaciones oficiales de <strong>Lucha Libre Profesional</strong>, acreditando las llaves, contrallaves y lances necesarios para ostentar la categoría de:
                 </p>
 
                 <h3 className={styles.beltAwarded}>
-                  CINTURÓN {selectedCert.karateka?.cinturon} ({selectedCert.karateka?.grado})
+                  RANGO: {selectedCert.karateka?.grado.toUpperCase()} (LONA: {selectedCert.karateka?.cinturon.toUpperCase()})
                 </h3>
 
                 <p className={styles.diplomaText} style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                  Dado en el Honbu Dojo de la academia en la fecha {selectedCert.fecha_emision}.
+                  Dado en la Arena Raion en la fecha {selectedCert.fecha_emision}.
                 </p>
               </div>
 
               <div className={styles.diplomaFooter}>
                 <div className={styles.signatureLine}>
                   <span>Carlos Martínez</span>
-                  <p>Sensei Carlos Martínez</p>
-                  <p style={{ border: 'none', fontSize: '0.6rem', color: '#94a3b8', paddingTop: 0 }}>Director del Dojo</p>
+                  <p>Maestro Carlos Martínez</p>
+                  <p style={{ border: 'none', fontSize: '0.6rem', color: '#94a3b8', paddingTop: 0 }}>Director de la Arena</p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -303,9 +303,9 @@ export default function CertificadosPage() {
                 </div>
 
                 <div className={styles.signatureLine}>
-                  <span>Federación Dojoia</span>
+                  <span>Comisión Evaluadora</span>
                   <p>Presidente Evaluador</p>
-                  <p style={{ border: 'none', fontSize: '0.6rem', color: '#94a3b8', paddingTop: 0 }}>Federación Shito-Ryu</p>
+                  <p style={{ border: 'none', fontSize: '0.6rem', color: '#94a3b8', paddingTop: 0 }}>Comisión de Lucha Libre</p>
                 </div>
               </div>
 

@@ -86,10 +86,10 @@ async function checkYouTubePrivacy(videoUrl: string): Promise<{ isPrivate: boole
 const DEFAULT_VIDEOS: TrainingVideo[] = [
   {
     id: "v1",
-    titulo: "Pinan Shodan - Kata Completo y Detalles",
-    descripcion: "Guía paso a paso del primer kata de la serie Pinan. Posiciones de cadera, Zenkutsu Dachi y bloqueos altos.",
+    titulo: "Toma de Campana y Derribe de Bombero",
+    descripcion: "Guía paso a paso para la toma de fuerza inicial, enganche, contrallave y derribe clásico de bombero en el centro del ring.",
     duracion: "05:12",
-    instructor: "Sensei Carlos Martínez",
+    instructor: "Maestro Carlos Martínez",
     nivel: "Principiantes",
     url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
     tipo: "entrenamiento",
@@ -97,10 +97,10 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
   },
   {
     id: "v2",
-    titulo: "Bunkai Aplicado de Pinan Nidan",
-    descripcion: "Aplicación práctica para la defensa personal de las técnicas de golpe y bloqueo contenidas en Pinan Nidan.",
+    titulo: "Escape de Candado a la Cabeza y Contra-llave",
+    descripcion: "Aplicación práctica sobre cómo zafarse de un candado a la cabeza y aplicar una palanca al brazo (sumisión) en contraataque.",
     duracion: "07:45",
-    instructor: "Sensei Carlos Martínez",
+    instructor: "Maestro Carlos Martínez",
     nivel: "Intermedios",
     url: "https://vjs.zencdn.net/v/oceans.mp4",
     tipo: "entrenamiento",
@@ -108,10 +108,10 @@ const DEFAULT_VIDEOS: TrainingVideo[] = [
   },
   {
     id: "v3",
-    titulo: "Tácticas de Kumite WKF: Kizami Zuki",
-    descripcion: "Perfecciona la velocidad y el alcance del golpe de puño adelantado en combate deportivo con reglamento oficial.",
+    titulo: "Lances y Vuelos: Tijeras desde la Tercera Cuerda",
+    descripcion: "Perfecciona la velocidad, balance e impulso en la tercera cuerda para ejecutar unas tijeras voladoras con aterrizaje seguro fuera del ring.",
     duracion: "04:30",
-    instructor: "Sempai Carlos Ruiz",
+    instructor: "Entrenador Carlos Ruiz",
     nivel: "Avanzados",
     url: "https://www.w3schools.com/html/movie.mp4",
     tipo: "entrenamiento",
@@ -145,7 +145,7 @@ export default function VideosPage() {
   const [descripcion, setDescripcion] = useState("");
   const [url, setUrl] = useState("");
   const [tipo, setTipo] = useState<'inicio' | 'entrenamiento'>('entrenamiento');
-  const [instructor, setInstructor] = useState("Sensei Carlos Martínez");
+  const [instructor, setInstructor] = useState("Maestro Carlos Martínez");
   const [nivel, setNivel] = useState("Todos los niveles");
   const [duracion, setDuracion] = useState("05:00");
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -198,11 +198,11 @@ export default function VideosPage() {
           setCategories(JSON.parse(cached));
         } else {
           const defaults = [
-            { id: "1a1a1a1a-1111-1111-1111-111111111111", nombre: "Katas", descripcion: "Formas y secuencias de movimientos técnicos del estilo Shito-Ryu" },
-            { id: "2b2b2b2b-2222-2222-2222-222222222222", nombre: "Kihon", descripcion: "Técnicas fundamentales de golpes, bloqueos y posiciones básicas" },
-            { id: "3c3c3c3c-3333-3333-3333-333333333333", nombre: "Kumite", descripcion: "Combate deportivo y aplicación táctica de defensa personal" },
-            { id: "4d4d4d4d-4444-4444-4444-444444444444", nombre: "Bunkai", descripcion: "Análisis práctico y explicaciones del significado de los katas" },
-            { id: "5e5e5e5e-5555-5555-5555-555555555555", nombre: "Acondicionamiento", descripcion: "Ejercicios de fortalecimiento físico, elasticidad y velocidad" }
+            { id: "1a1a1a1a-1111-1111-1111-111111111111", nombre: "Llaves y Sumisiones", descripcion: "Técnicas de sometimiento en ras de lona, palancas y candados clásicos" },
+            { id: "2b2b2b2b-2222-2222-2222-222222222222", nombre: "Llaveo y Contrallaveo", descripcion: "Fundamentos básicos de llaveo clásico y defensa cuerpo a cuerpo" },
+            { id: "3c3c3c3c-3333-3333-3333-333333333333", nombre: "Lances y Acrobacia", descripcion: "Técnicas aéreas, saltos desde las cuerdas y acrobacias en el ring" },
+            { id: "4d4d4d4d-4444-4444-4444-444444444444", nombre: "Lucha en Lona", descripcion: "Análisis del combate a ras de lona, derribes, proyecciones y rodadas" },
+            { id: "5e5e5e5e-5555-5555-5555-555555555555", nombre: "Acondicionamiento", descripcion: "Ejercicios de fortalecimiento físico, elasticidad y agilidad para el ring" }
           ];
           setCategories(defaults);
           localStorage.setItem("dojo_categories", JSON.stringify(defaults));
@@ -516,8 +516,8 @@ export default function VideosPage() {
       const titulo = (v.titulo || "").toLowerCase();
       const descripcion = (v.descripcion || "").toLowerCase();
       
-      const isBeginner = nivel.includes("principiante");
-      const isKumite = titulo.includes("kumite") || descripcion.includes("kumite");
+      const isBeginner = nivel.includes("principiante") || nivel.includes("novato");
+      const isKumite = titulo.includes("lances") || descripcion.includes("lances") || titulo.includes("lucha") || descripcion.includes("lucha") || titulo.includes("llave") || descripcion.includes("llave");
       
       if (!isBeginner && !isKumite) return false;
     }
@@ -537,7 +537,7 @@ export default function VideosPage() {
           <p>
             {isSensei 
               ? "Sube y administra videos educativos para tus alumnos o el video de portada en la página de inicio." 
-              : "Entrenamiento técnico entre semana exclusivo para karatekas registrados."}
+              : "Entrenamiento técnico entre semana exclusivo para luchadores registrados."}
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem', marginRight: '8.5rem' }}>
@@ -718,7 +718,7 @@ export default function VideosPage() {
             <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
               <h2>Configurar Nuevo Video</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-                Rellena los detalles para subir o registrar un video de karate.
+                Rellena los detalles para subir o registrar un video de lucha libre.
               </p>
             </div>
 
@@ -734,12 +734,12 @@ export default function VideosPage() {
                 <div className={styles.formGroupFull}>
                   <label className={styles.label}>Título del Video</label>
                   <input 
-                    type="text" 
-                    className={styles.input} 
-                    placeholder="e.g. Pinan Shodan - Kata Completo y Detalles"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    required
+                     type="text" 
+                     className={styles.input} 
+                     placeholder="e.g. Toma de Campana y Derribe de Bombero"
+                     value={titulo}
+                     onChange={(e) => setTitulo(e.target.value)}
+                     required
                   />
                 </div>
 
@@ -747,7 +747,7 @@ export default function VideosPage() {
                   <label className={styles.label}>Descripción</label>
                   <textarea 
                     className={styles.textarea} 
-                    placeholder="Describe los aspectos técnicos, posiciones o ejercicios demostrados en el video..."
+                    placeholder="Describe las llaves, contrallaves, lances o ejercicios demostrados en el video..."
                     value={descripcion}
                     onChange={(e) => setDescripcion(e.target.value)}
                     rows={3}
@@ -790,10 +790,10 @@ export default function VideosPage() {
                     disabled={tipo === 'inicio'}
                   >
                     <option value="Todos los niveles">Todos los niveles</option>
-                    <option value="Principiantes">Principiantes</option>
-                    <option value="Intermedios">Intermedios</option>
-                    <option value="Avanzados">Avanzados</option>
-                    <option value="Cintas Negras">Cintas Negras</option>
+                    <option value="Principiantes">Principiantes (Novato / Preliminar)</option>
+                    <option value="Intermedios">Intermedios (Especial / Semifinal)</option>
+                    <option value="Avanzados">Avanzados (Estelar / Leyenda)</option>
+                    <option value="Cintas Negras">Estelares y Leyendas</option>
                   </select>
                 </div>
 
@@ -909,7 +909,7 @@ export default function VideosPage() {
                         <input 
                           type="text" 
                           className={styles.input} 
-                          placeholder="e.g. Bunkai Avanzado" 
+                          placeholder="e.g. Llaves Aéreas y Sumisiones" 
                           value={newCatName}
                           onChange={(e) => setNewCatName(e.target.value)}
                         />

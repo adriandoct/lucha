@@ -34,77 +34,77 @@ export default function EstructuraPage() {
   const [activeTab, setActiveTab] = useState<'horarios' | 'programa'>('horarios');
 
   const schedules: Schedule[] = [
-    { id: "s1", name: "Infantil Principiantes (Cintas Blancas y Amarillas)", days: "Lunes y Miércoles", time: "16:00 - 17:00", instructor: "Sempai Carlos Ruiz", group: "Niños 5-10 años" },
-    { id: "s2", name: "Infantil Intermedios (Cintas Naranjas y Verdes)", days: "Lunes y Miércoles", time: "17:00 - 18:00", instructor: "Sensei Carlos Martínez", group: "Niños 8-12 años" },
-    { id: "s3", name: "Juvenil y Adultos Avanzados (Cintas Azules a Negras)", days: "Martes y Jueves", time: "18:00 - 19:30", instructor: "Sensei Carlos Martínez", group: "13 años en adelante" },
-    { id: "s4", name: "Kumite Competitivo (Todos los niveles)", days: "Viernes", time: "17:00 - 19:00", instructor: "Sensei Carlos Martínez", group: "Selectivo del Dojo" },
-    { id: "s5", name: "Clase Especial de Katas (Fin de Semana)", days: "Sábados y Domingos", time: "10:00 - 12:00", instructor: "Sensei Carlos Martínez", group: "Todos los niveles (Entrenamiento Especial)" },
-    { id: "s6", name: "Videos Cortos de Entrenamiento Técnico", days: "Entre Semana", time: "Disponible 24/7 (Online)", instructor: "Sensei AI / Chatbot", group: "Solo Alumnos Registrados" },
+    { id: "s1", name: "Infantil Principiantes (Lonas Blanca y Amarilla - Novatos)", days: "Lunes y Miércoles", time: "16:00 - 17:00", instructor: "Entrenador Carlos Ruiz", group: "Niños 5-10 años" },
+    { id: "s2", name: "Infantil Intermedios (Lonas Naranja y Verde - Especiales)", days: "Lunes y Miércoles", time: "17:00 - 18:00", instructor: "Maestro Carlos Martínez", group: "Niños 8-12 años" },
+    { id: "s3", name: "Juvenil y Adultos Avanzados (Lonas Azul a Negra - Semifinal, Estelar y Leyenda)", days: "Martes y Jueves", time: "18:00 - 19:30", instructor: "Maestro Carlos Martínez", group: "13 años en adelante" },
+    { id: "s4", name: "Combate y Lucha Libre (Todos los niveles)", days: "Viernes", time: "17:00 - 19:00", instructor: "Maestro Carlos Martínez", group: "Selectivo de la Arena" },
+    { id: "s5", name: "Clase de Llaves y Acrobacia (Fin de Semana)", days: "Sábados y Domingos", time: "10:00 - 12:00", instructor: "Maestro Carlos Martínez", group: "Todos los niveles (Entrenamiento Especial)" },
+    { id: "s6", name: "Videos de Llaves y Sumisiones", days: "Entre Semana", time: "Disponible 24/7 (Online)", instructor: "Maestro AI / Chatbot", group: "Solo Luchadores Registrados" },
   ];
 
   const beltPrograms: BeltProgram[] = [
     { 
       belt: "Blanco", 
-      kyu: "10° y 9° Kyu", 
+      kyu: "Lona Inicial (Novato)", 
       colorHex: "#FFFFFF", 
       textColor: "#1E293B", 
-      katas: ["Kihon Kata I", "Kihon Kata II", "Pinan Nidan (Koryu)"], 
-      kumite: ["Gohon Kumite (Ataque/Defensa a 5 pasos)"],
-      requirements: "Posiciones básicas (Zenkutsu Dachi, Moto Dachi), defensas altas (Jodan Uke) y golpes directos (Oi Zuki)."
+      katas: ["Rodada al frente", "Rodada hacia atrás", "Toma de Fuerza"], 
+      kumite: ["Resistencia en lona (30s) y amarre"],
+      requirements: "Caídas básicas (de espaldas, lateral), paradas técnicas, llave de candado simple y derribe de hombro."
     },
     { 
       belt: "Amarillo", 
-      kyu: "8° Kyu", 
+      kyu: "Lona Básica (Preliminar)", 
       colorHex: "#FACC15", 
       textColor: "#000000", 
-      katas: ["Pinan Shodan"], 
-      kumite: ["Kihon Kumite I (Defensas básicas en contraataque)"],
-      requirements: "Posición Kokutsu Dachi, golpes de tajo (Shuto Uke) y patadas frontales (Mae Geri)."
+      katas: ["Tijeras al cuerpo", "Derribe de Bombero"], 
+      kumite: ["Llaveo simple y escape de candado"],
+      requirements: "Rodada de resorte, derribe de brazo, candado al cuello y sumisión de medio cangrejo."
     },
     { 
       belt: "Naranja", 
-      kyu: "7° Kyu", 
+      kyu: "Lona Intermedia (Especial)", 
       colorHex: "#FB923C", 
       textColor: "#000000", 
-      katas: ["Pinan Sandan"], 
-      kumite: ["Kihon Kumite II"],
-      requirements: "Defensa media (Uchi Uke), golpes de codo (Empi Uchi) y patada lateral (Yoko Geri)."
+      katas: ["Suplex de bandera", "Cruceta a las piernas"], 
+      kumite: ["Combate semi-libre a ras de lona"],
+      requirements: "Lanzamiento por encima del hombro, quebradora clásica y llave de tirabuzón básica."
     },
     { 
       belt: "Verde", 
-      kyu: "6° Kyu", 
+      kyu: "Lona Avanzada (Semifinal)", 
       colorHex: "#22C55E", 
       textColor: "#FFFFFF", 
-      katas: ["Pinan Yondan"], 
-      kumite: ["Jiyu Ippon Kumite (Combate semi-libre a un paso)"],
-      requirements: "Patada semicircular (Mawashi Geri), barridos ligeros y defensa a mano abierta."
+      katas: ["Palanca al brazo (Fujiwara)", "Tope suicida"], 
+      kumite: ["Combate libre a ras de lona con conteo de 3"],
+      requirements: "Resorte desde las cuerdas, salida de bandera, llave de a caballo (camello) y plancha simple."
     },
     { 
       belt: "Azul", 
-      kyu: "5° Kyu", 
+      kyu: "Lona Profesional (Especial Avanzado)", 
       colorHex: "#3B82F6", 
       textColor: "#FFFFFF", 
-      katas: ["Pinan Godan"], 
-      kumite: ["Jiyu Ippon Kumite Avanzado"],
-      requirements: "Esquivas laterales (Sabaki), contragolpes fluidos y combinación de patadas."
+      katas: ["Suplex Alemán", "Tijeras voladoras"], 
+      kumite: ["Lucha a ras de lona avanzada"],
+      requirements: "Dominio de lances fuera del ring, contrallave de tirabuzón y llave de la tapatía."
     },
     { 
       belt: "Marrón", 
-      kyu: "4° a 1° Kyu", 
+      kyu: "Pre-Estelar (Estelar)", 
       colorHex: "#8B4513", 
       textColor: "#FFFFFF", 
-      katas: ["Bassai Dai", "Kosokun Dai", "Seienchin"], 
-      kumite: ["Jiyu Kumite (Combate libre de práctica)"],
-      requirements: "Dominio absoluto del Kihon general, Katas Shitei oficiales y velocidad en combate libre."
+      katas: ["Piledriver (Tombstone)", "La de a caballo (Completa)", "Huracarrana"], 
+      kumite: ["Combate estelar libre (Lucha de exhibición)"],
+      requirements: "Dominio absoluto de la lucha olímpica, llaves de rendición complejas y lances de alto riesgo."
     },
     { 
       belt: "Negro", 
-      kyu: "1° Dan en adelante", 
+      kyu: "Lona Leyenda (Leyenda)", 
       colorHex: "#0F1216", 
       textColor: "#E11D48", 
-      katas: ["Nipaipo", "Tensho", "Suparinpei", "Kuru runfa"], 
-      kumite: ["Combate de Competencia WKF", "Arbitraje oficial"],
-      requirements: "Madurez marcial, liderazgo de clases (Sensei/Sempai), examen de tesis marcial y Katas superiores."
+      katas: ["La campana clásica", "Estrella voladora", "Tapatía con puente", "Lanza con giro"], 
+      kumite: ["Lucha de Campeonato (3 caídas)", "Arbitraje de lucha libre"],
+      requirements: "Consagración profesional, mentoría de luchadores (Maestro), diseño de coreografías seguras de combate y llaves de autoría propia."
     },
   ];
 
@@ -112,8 +112,8 @@ export default function EstructuraPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <h1>Horarios y Programa Técnico</h1>
-          <p>Planificación de entrenamientos y requisitos de exámenes Shito-Ryu.</p>
+          <h1>Horarios y Temario Técnico</h1>
+          <p>Planificación de entrenamientos y requisitos de evaluaciones Arena Raion.</p>
         </div>
       </div>
 
@@ -145,7 +145,7 @@ export default function EstructuraPage() {
             gap: '0.4rem'
           }}
         >
-          <Award size={18} /> Temario de Cinturones
+          <Award size={18} /> Temario de Rangos / Lonas
         </button>
       </div>
 
@@ -179,7 +179,7 @@ export default function EstructuraPage() {
         <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
           <h2>
             <BookOpenCheck size={20} style={{ color: 'var(--brand-gold)' }} />
-            Programa Oficial de Cintas (Shito-Ryu Karate Do)
+            Programa Oficial de Lonas y Categorías (Lucha Libre Arena Raion)
           </h2>
           
           <div className={styles.programList}>
@@ -196,19 +196,19 @@ export default function EstructuraPage() {
                       padding: '0.35rem 1rem'
                     }}
                   >
-                    Cinturón {p.belt} ({p.kyu})
+                    Lona {p.belt} ({p.kyu})
                   </span>
                 </div>
                 
                 <div className={styles.programContent}>
                   <p style={{ marginBottom: '0.4rem' }}>
-                    <strong>Katas Requeridos:</strong> {p.katas.join(" | ")}
+                    <strong>Llaves y Movimientos:</strong> {p.katas.join(" | ")}
                   </p>
                   <p style={{ marginBottom: '0.4rem' }}>
-                    <strong>Kumite (Defensa y Combate):</strong> {p.kumite.join(" | ")}
+                    <strong>Combate en el Ring:</strong> {p.kumite.join(" | ")}
                   </p>
                   <p>
-                    <strong>Fundamentos Técnicos:</strong> {p.requirements}
+                    <strong>Fundamentos y Acrobacia:</strong> {p.requirements}
                   </p>
                 </div>
               </div>

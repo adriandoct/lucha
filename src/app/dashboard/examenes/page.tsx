@@ -162,7 +162,7 @@ export default function ExamenesPage() {
               grado_solicitado: "6° Kyu",
               video_evidencia_url: "https://assets.mixkit.co/videos/preview/mixkit-karate-fighter-training-in-the-gym-40059-large.mp4",
               estado: "aprobado",
-              comentarios_sensei: "Excelente fluidez en el Pinan Sandan. Muy buena postura y fuerza en el Zenkutsu Dachi. ¡Oss!",
+              comentarios_sensei: "Excelente técnica en la sumisión de cruceta y suplex de bandera. Muy buena fuerza y caída limpia. ¡Al ring!",
               calificacion: 9.4,
               fecha_evaluacion: new Date().toISOString(),
               created_at: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
@@ -214,7 +214,7 @@ export default function ExamenesPage() {
       return;
     }
     if (!currentKarateka) {
-      alert("No se encontró tu perfil de Karateka.");
+      alert("No se encontró tu perfil de Luchador.");
       return;
     }
 
@@ -262,7 +262,7 @@ export default function ExamenesPage() {
       localStorage.setItem("dojo_exam_requests", JSON.stringify(updatedRequests));
 
       setVideoEvidenciaUrl("");
-      alert("¡Tu video de evidencia ha sido enviado con éxito! El Sensei lo evaluará pronto. ¡Oss!");
+      alert("¡Tu video de evidencia ha sido enviado con éxito! El Maestro lo evaluará pronto. ¡Al ring!");
     } catch (err) {
       console.error(err);
       alert("Ocurrió un error al enviar tu solicitud.");
@@ -275,7 +275,7 @@ export default function ExamenesPage() {
   const handleGradeRequest = async (status: 'aprobado' | 'rechazado') => {
     if (!selectedRequest) return;
     if (!comentariosSensei) {
-      alert("Por favor ingresa retroalimentación para el alumno.");
+      alert("Por favor ingresa retroalimentación para el luchador.");
       return;
     }
 
@@ -320,7 +320,7 @@ export default function ExamenesPage() {
             .eq("id", selectedRequest.karateka_id);
 
           // Generate Certificate
-          const certCode = `CERT-SHITO-${Date.now().toString().slice(-4)}-${selectedRequest.karateka_id.slice(0, 4).toUpperCase()}`;
+          const certCode = `CERT-LUCHA-${Date.now().toString().slice(-4)}-${selectedRequest.karateka_id.slice(0, 4).toUpperCase()}`;
           await supabase
             .from("certificados")
             .insert([{
@@ -329,7 +329,7 @@ export default function ExamenesPage() {
               codigo_certificado: certCode
             }]);
         } catch (dbErr) {
-          console.warn("Dojo promotion database updates failed. Performing LocalStorage fallback.", dbErr);
+          console.warn("Arena promotion database updates failed. Performing LocalStorage fallback.", dbErr);
         }
 
         // Local Storage Fallback: Promote Student in local list
@@ -352,7 +352,7 @@ export default function ExamenesPage() {
         }
 
         // Generate Certificate in LocalStorage
-        const certCode = `CERT-SHITO-${Date.now().toString().slice(-4)}-${selectedRequest.karateka_id.slice(0, 4).toUpperCase()}`;
+        const certCode = `CERT-LUCHA-${Date.now().toString().slice(-4)}-${selectedRequest.karateka_id.slice(0, 4).toUpperCase()}`;
         const localCerts = localStorage.getItem("dojo_certificados");
         const certList = localCerts ? JSON.parse(localCerts) : [];
         const newCert = {
@@ -385,12 +385,12 @@ export default function ExamenesPage() {
       setSelectedRequest(null);
       
       alert(status === 'aprobado' 
-        ? "🥋 ¡Examen autorizado con éxito! El alumno ha sido promovido de cinturón y se ha generado su certificado."
-        : "Se ha enviado la retroalimentación de corrección al alumno."
+        ? "🥋 ¡Evaluación autorizada con éxito! El luchador ha sido promovido de categoría y se ha generado su certificado."
+        : "Se ha enviado la retroalimentación de corrección al luchador."
       );
     } catch (err) {
       console.error(err);
-      alert("Error al calificar el examen.");
+      alert("Error al calificar la evaluación.");
     } finally {
       setGrading(false);
     }
@@ -421,12 +421,12 @@ export default function ExamenesPage() {
       <div className={styles.header}>
         <div>
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            {role === "sensei" ? "Revisión de Exámenes y Evidencias" : "Exámenes de Grado Shito-Ryu"}
+            {role === "sensei" ? "Revisión de Evaluaciones y Evidencias" : "Evaluaciones de Rango Arena Raion"}
           </h1>
           <p>
             {role === "sensei" 
-              ? "Revisa los videos de evidencia de tus alumnos, asígnale calificación y autoriza sus ascensos de cinturón." 
-              : "Envía evidencias en video de tus katas para que el Sensei autorice tu ascenso de grado."}
+              ? "Revisa los videos de evidencia de tus alumnos, asígnale calificación y autoriza sus ascensos de categoría." 
+              : "Envía evidencias en video de tus llaves o lances para que el Maestro autorice tu ascenso de categoría."}
           </p>
         </div>
       </div>
@@ -440,7 +440,7 @@ export default function ExamenesPage() {
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>
               <Video size={18} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: 'var(--brand-red)' }} />
-              Aplicar para Próximo Examen
+              Aplicar para Próxima Evaluación
             </h2>
 
             {currentKarateka && (
@@ -453,7 +453,15 @@ export default function ExamenesPage() {
                 <div>
                   <h4 style={{ fontSize: '0.9rem' }}>{currentKarateka.nombre}</h4>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                    Grado Actual: {currentKarateka.grado} ({currentKarateka.cinturon.toUpperCase()})
+                    Categoría Actual: {
+                      currentKarateka.grado === "10° Kyu" || currentKarateka.grado === "9° Kyu" ? "Novato" :
+                      currentKarateka.grado === "8° Kyu" ? "Preliminar" :
+                      currentKarateka.grado === "7° Kyu" ? "Especial" :
+                      currentKarateka.grado === "6° Kyu" ? "Semifinal" :
+                      currentKarateka.grado === "5° Kyu" ? "Especial Avanzado" :
+                      currentKarateka.grado === "2° Kyu" || currentKarateka.grado === "1° Kyu" ? "Estelar" :
+                      currentKarateka.grado === "1° Dan" ? "Leyenda" : currentKarateka.grado
+                    } ({currentKarateka.cinturon.toUpperCase()})
                   </p>
                 </div>
               </div>
@@ -464,14 +472,14 @@ export default function ExamenesPage() {
                 <Clock size={32} style={{ margin: '0.5rem auto' }} />
                 <h4 style={{ fontWeight: 'bold' }}>Solicitud en Revisión</h4>
                 <p style={{ fontSize: '0.85rem' }}>
-                  Ya tienes una solicitud de examen para cinturón <strong>{activeStudentRequest.cinturon_solicitado.toUpperCase()}</strong> en revisión. 
-                  El Sensei evaluará tu video pronto. ¡Oss!
+                  Ya tienes una solicitud de evaluación para lona <strong>{activeStudentRequest.cinturon_solicitado.toUpperCase()}</strong> en revisión. 
+                  El Maestro evaluará tu video pronto. ¡Al ring!
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmitRequest} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Cinturón Solicitado</label>
+                  <label className={styles.label}>Lona Solicitada</label>
                   <select 
                     className={styles.selectInput}
                     value={cinturonSolicitado}
@@ -484,21 +492,28 @@ export default function ExamenesPage() {
                       setGradoSolicitado(kyus[e.target.value] || "10° Kyu");
                     }}
                   >
-                    <option value="amarillo">Cinturón Amarillo</option>
-                    <option value="naranja">Cinturón Naranja</option>
-                    <option value="verde">Cinturón Verde</option>
-                    <option value="azul">Cinturón Azul</option>
-                    <option value="marron">Cinturón Marrón</option>
-                    <option value="negro">Cinturón Negro (1° Dan)</option>
+                    <option value="amarillo">Lona Amarilla (Preliminar)</option>
+                    <option value="naranja">Lona Naranja (Especial)</option>
+                    <option value="verde">Lona Verde (Semifinal)</option>
+                    <option value="azul">Lona Azul (Especial Avanzado)</option>
+                    <option value="marron">Lona Marrón (Estelar)</option>
+                    <option value="negro">Lona Negra (Leyenda)</option>
                   </select>
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Grado Solicitado</label>
+                  <label className={styles.label}>Categoría Solicitada</label>
                   <input 
                     type="text" 
                     className={styles.input} 
-                    value={gradoSolicitado}
+                    value={
+                      gradoSolicitado === "8° Kyu" ? "Preliminar" :
+                      gradoSolicitado === "7° Kyu" ? "Especial" :
+                      gradoSolicitado === "6° Kyu" ? "Semifinal" :
+                      gradoSolicitado === "5° Kyu" ? "Especial Avanzado" :
+                      gradoSolicitado === "2° Kyu" ? "Estelar" :
+                      gradoSolicitado === "1° Dan" ? "Leyenda" : gradoSolicitado
+                    }
                     disabled
                   />
                 </div>
@@ -514,7 +529,7 @@ export default function ExamenesPage() {
                     required
                   />
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                    Sube un video ejecutando la kata requerida para el grado y pega el enlace directo aquí.
+                    Sube un video ejecutando las llaves y lances requeridos para el grado y pega el enlace directo aquí.
                   </p>
                 </div>
 
@@ -523,7 +538,7 @@ export default function ExamenesPage() {
                   className={styles.submitBtn}
                   disabled={submitting}
                 >
-                  {submitting ? "Enviando..." : "Enviar Evidencia para Examen"}
+                  {submitting ? "Enviando..." : "Enviar Evidencia para Evaluación"}
                 </button>
               </form>
             )}
@@ -533,12 +548,12 @@ export default function ExamenesPage() {
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>
               <ClipboardCheck size={18} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: 'var(--brand-gold)' }} />
-              Historial de Exámenes
+              Historial de Evaluaciones
             </h2>
 
             {studentRequests.length === 0 ? (
               <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '2rem' }}>
-                Aún no has presentado solicitudes de exámenes de grado.
+                Aún no has presentado solicitudes de evaluaciones de rango.
               </p>
             ) : (
               <div className={styles.requestList}>
@@ -546,7 +561,14 @@ export default function ExamenesPage() {
                   <div key={r.id} style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span className={`belt-badge ${getBeltColorClass(r.cinturon_solicitado)}`}>
-                        Cinta: {r.cinturon_solicitado} ({r.grado_solicitado})
+                        Lona: {r.cinturon_solicitado.toUpperCase()} ({
+                          r.grado_solicitado === "8° Kyu" ? "Preliminar" :
+                          r.grado_solicitado === "7° Kyu" ? "Especial" :
+                          r.grado_solicitado === "6° Kyu" ? "Semifinal" :
+                          r.grado_solicitado === "5° Kyu" ? "Especial Avanzado" :
+                          r.grado_solicitado === "2° Kyu" ? "Estelar" :
+                          r.grado_solicitado === "1° Dan" ? "Leyenda" : r.grado_solicitado
+                        })
                       </span>
                       <span className={`${styles.statusBadge} ${r.estado === 'pendiente' ? styles.pending : r.estado === 'aprobado' ? styles.approved : styles.rejected}`}>
                         {r.estado === 'pendiente' ? 'Pendiente ⏳' : r.estado === 'aprobado' ? 'Aprobado ✓' : 'Corregir ❌'}
@@ -561,7 +583,7 @@ export default function ExamenesPage() {
                     {r.comentarios_sensei && (
                       <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', marginTop: '0.25rem' }}>
                         <p style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--brand-red)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                          <MessageSquare size={14} /> Retroalimentación del Sensei:
+                          <MessageSquare size={14} /> Retroalimentación del Maestro:
                         </p>
                         <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'var(--text-primary)', marginTop: '0.25rem' }}>
                           "{r.comentarios_sensei}"
@@ -606,7 +628,7 @@ export default function ExamenesPage() {
                     <div>
                       <h4 style={{ fontSize: '0.9rem', fontWeight: 600 }}>{r.karateka?.nombre}</h4>
                       <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                        Cinturón: {r.karateka?.cinturon?.toUpperCase()} ➡️ <strong>{r.cinturon_solicitado?.toUpperCase()}</strong>
+                        Lona: {r.karateka?.cinturon?.toUpperCase()} ➡️ <strong>{r.cinturon_solicitado?.toUpperCase()}</strong>
                       </p>
                     </div>
                   </div>
@@ -619,7 +641,7 @@ export default function ExamenesPage() {
 
               {requests.length === 0 && (
                 <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '2rem' }}>
-                  No hay exámenes pendientes para evaluar en este momento.
+                  No hay evaluaciones pendientes para evaluar en este momento.
                 </p>
               )}
             </div>
@@ -660,8 +682,23 @@ export default function ExamenesPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-                  <span>Grado actual: <strong>{selectedRequest.karateka?.grado}</strong></span>
-                  <span>Solicita: <strong style={{ color: 'var(--brand-red)' }}>{selectedRequest.grado_solicitado} ({selectedRequest.cinturon_solicitado.toUpperCase()})</strong></span>
+                  <span>Categoría actual: <strong>{
+                    selectedRequest.karateka?.grado === "10° Kyu" || selectedRequest.karateka?.grado === "9° Kyu" ? "Novato" :
+                    selectedRequest.karateka?.grado === "8° Kyu" ? "Preliminar" :
+                    selectedRequest.karateka?.grado === "7° Kyu" ? "Especial" :
+                    selectedRequest.karateka?.grado === "6° Kyu" ? "Semifinal" :
+                    selectedRequest.karateka?.grado === "5° Kyu" ? "Especial Avanzado" :
+                    selectedRequest.karateka?.grado === "2° Kyu" || selectedRequest.karateka?.grado === "1° Kyu" ? "Estelar" :
+                    selectedRequest.karateka?.grado === "1° Dan" ? "Leyenda" : selectedRequest.karateka?.grado
+                  } ({selectedRequest.karateka?.cinturon?.toUpperCase()})</strong></span>
+                  <span>Solicita: <strong style={{ color: 'var(--brand-red)' }}>{
+                    selectedRequest.grado_solicitado === "8° Kyu" ? "Preliminar" :
+                    selectedRequest.grado_solicitado === "7° Kyu" ? "Especial" :
+                    selectedRequest.grado_solicitado === "6° Kyu" ? "Semifinal" :
+                    selectedRequest.grado_solicitado === "5° Kyu" ? "Especial Avanzado" :
+                    selectedRequest.grado_solicitado === "2° Kyu" ? "Estelar" :
+                    selectedRequest.grado_solicitado === "1° Dan" ? "Leyenda" : selectedRequest.grado_solicitado
+                  } ({selectedRequest.cinturon_solicitado.toUpperCase()})</strong></span>
                 </div>
 
                 {selectedRequest.estado === 'pendiente' ? (
@@ -680,11 +717,11 @@ export default function ExamenesPage() {
                     </div>
 
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>Retroalimentación del Sensei</label>
+                      <label className={styles.label}>Retroalimentación del Maestro</label>
                       <textarea 
                         className={styles.textarea} 
                         rows={3} 
-                        placeholder="Escribe comentarios de corrección, posturas, fuerza o fluidez..."
+                        placeholder="Escribe comentarios de corrección, agarres, llaves o acrobacia..."
                         value={comentariosSensei} 
                         onChange={(e) => setComentariosSensei(e.target.value)} 
                       />
@@ -696,7 +733,7 @@ export default function ExamenesPage() {
                         className={styles.btnApprove}
                         disabled={grading}
                       >
-                        {grading ? "Procesando..." : "🥋 Autorizar Examen"}
+                        {grading ? "Procesando..." : "🥋 Autorizar Ascenso"}
                       </button>
                       <button 
                         onClick={() => handleGradeRequest('rechazado')}

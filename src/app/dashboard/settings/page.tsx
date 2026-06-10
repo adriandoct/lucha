@@ -39,17 +39,17 @@ interface SimulatedMessage {
 
 export default function SettingsPage() {
   const [config, setConfig] = useState<DojoConfig>({
-    dojo_name: "Raion Kai",
-    sensei_principal: "Sensei Carlos Martínez",
-    estilo: "Shito-Ryu",
+    dojo_name: "Arena Raion",
+    sensei_principal: "Maestro Carlos Martínez",
+    estilo: "Lucha Libre",
     whatsapp_provider: "mock",
     whatsapp_token: "",
     whatsapp_phone_number_id: "",
-    template_entrada: "🥋 *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el karateka:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🥋 ¡Oss!",
-    template_salida: "🥋 *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el karateka:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *SALIÓ* del Dojo.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🥋 ¡Oss!",
-    kata_semana: "Pinan Shodan",
+    template_entrada: "🤼‍♂️ *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el luchador:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🤼‍♂️ ¡Lucha!",
+    template_salida: "🤼‍♂️ *{dojo_name}*\n\nHola *{tutor}*,\n\nLe informamos que el luchador:\n👦 *{nombre}* ({cinturon} - {grado})\n\n✅ *SALIÓ* del Gimnasio.\n\n🕒 Hora: {hora}\n📅 Fecha: {fecha}\n\n🤼‍♂️ ¡Lucha!",
+    kata_semana: "La de a Caballo",
     video_semana_id: "",
-    recordatorio_sabado: "🥋 *Entrenamiento Especial de Sábado*\n\nHola *{tutor}*,\n\nTe recordamos que este sábado tenemos clase presencial en el dojo.\n\n📖 *Kata de la semana:* {kata_semana}\n🎥 *Video de estudio:* {video_url}\n\nPor favor, asegúrate de que *{nombre}* repase el video técnico antes del sábado para aprovechar al máximo la clase práctica. ¡Oss!"
+    recordatorio_sabado: "🤼‍♂️ *Entrenamiento Especial de Sábado*\n\nHola *{tutor}*,\n\nTe recordamos que este sábado tenemos clase presencial en el gimnasio.\n\n📖 *Llave de la semana:* {kata_semana}\n🎥 *Video de estudio:* {video_url}\n\nPor favor, asegúrate de que *{nombre}* repase el video técnico antes del sábado para aprovechar al máximo la clase práctica en el ring. ¡Lucha!"
   });
 
   const [videos, setVideos] = useState<any[]>([]);
@@ -98,7 +98,7 @@ export default function SettingsPage() {
           tutor: "Adriana López",
           telefono: "+5215512345678",
           nombre: "Mateo García López",
-          message: "🥋 *Raion Kai*\n\nHola *Adriana López*,\n\nLe informamos que el karateka:\n👦 *Mateo García López* (VERDE - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🥋 ¡Oss!",
+          message: "🤼‍♂️ *Arena Raion*\n\nHola *Adriana López*,\n\nLe informamos que el luchador:\n👦 *Mateo García López* (ESPECIAL - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🤼‍♂️ ¡Lucha!",
           timestamp: "17:12"
         }
       ]);
@@ -183,7 +183,7 @@ export default function SettingsPage() {
       }
       
       if (studentsList.length === 0) {
-        alert("No hay karatekas registrados para enviar recordatorios.");
+        alert("No hay luchadores registrados para enviar recordatorios.");
         return;
       }
 
@@ -220,7 +220,7 @@ export default function SettingsPage() {
       // Save config to db / local
       await handleSave();
       
-      alert(`¡Recordatorios Flipped Dojo enviados a ${studentsList.length} alumnos por WhatsApp con éxito!`);
+      alert(`¡Recordatorios Flipped Arena enviados a ${studentsList.length} alumnos por WhatsApp con éxito!`);
     } catch (err) {
       console.error(err);
       alert("Error al enviar recordatorios.");
@@ -247,12 +247,12 @@ export default function SettingsPage() {
           <div className={styles.card}>
             <h2>
               <Shield size={22} style={{ color: 'var(--brand-red)' }} />
-              Perfil del Dojo
+              Perfil de la Arena
             </h2>
             
             <div className={styles.formGrid}>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Nombre del Dojo</label>
+                <label className={styles.label}>Nombre de la Arena</label>
                 <input 
                   type="text" 
                   className={styles.input} 
@@ -262,7 +262,7 @@ export default function SettingsPage() {
               </div>
               
               <div className={styles.formGroup}>
-                <label className={styles.label}>Estilo de Karate</label>
+                <label className={styles.label}>Estilo de Lucha</label>
                 <input 
                   type="text" 
                   className={styles.input} 
@@ -272,7 +272,7 @@ export default function SettingsPage() {
               </div>
 
               <div className={styles.formGroupFull}>
-                <label className={styles.label}>Sensei Principal (Director/Administrador)</label>
+                <label className={styles.label}>Maestro Principal (Director/Administrador)</label>
                 <input 
                   type="text" 
                   className={styles.input} 
@@ -332,7 +332,7 @@ export default function SettingsPage() {
           <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
             <h2>
               <MessageSquare size={22} style={{ color: 'var(--brand-gold)' }} />
-              Dojo Invertido (Flipped Dojo) - Planificación del Sábado
+              Arena Invertida (Flipped Arena) - Planificación del Sábado
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
               Configura las asignaciones técnicas y envía automáticamente por WhatsApp el material de estudio para la clase presencial.
@@ -340,11 +340,11 @@ export default function SettingsPage() {
 
             <div className={styles.formGrid} style={{ marginTop: '1rem' }}>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Kata de la Semana</label>
+                <label className={styles.label}>Llave de la Semana</label>
                 <input 
                   type="text" 
                   className={styles.input} 
-                  placeholder="e.g. Pinan Shodan" 
+                  placeholder="e.g. La de a Caballo" 
                   value={config.kata_semana || ""}
                   onChange={(e) => handleInputChange("kata_semana", e.target.value)}
                 />
@@ -445,10 +445,10 @@ export default function SettingsPage() {
             <div className={styles.phoneNotch}></div>
             
             <div className={styles.phoneHeader}>
-              <div className={styles.phoneUserAvatar}>🥋</div>
+              <div className={styles.phoneUserAvatar}>🤼‍♂️</div>
               <div className={styles.phoneUserInfo}>
-                <h4>Dojo {config.dojo_name.split(" ").pop()}</h4>
-                <p>Online (Sensei Bot)</p>
+                <h4>Arena {config.dojo_name.split(" ").pop()}</h4>
+                <p>Online (Lucha Bot)</p>
               </div>
             </div>
 

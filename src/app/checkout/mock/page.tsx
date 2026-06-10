@@ -6,9 +6,9 @@ import styles from "./checkout.module.css";
 import { CreditCard, Calendar, Lock, User, Check, AlertCircle, ShieldCheck, HelpCircle } from "lucide-react";
 
 const PLANS = [
-  { id: "0", name: "Mensualidad Regular", price: 500, desc: "Acceso mensual completo al dojo" },
-  { id: "1", name: "Trimestre Raion Kai", price: 1400, desc: "Ahorro de $100 pesos de cuota" },
-  { id: "2", name: "Semestre Shito-Ryu", price: 2700, desc: "Ahorro de $300 pesos de cuota" },
+  { id: "0", name: "Mensualidad Regular", price: 500, desc: "Acceso mensual completo a la arena" },
+  { id: "1", name: "Trimestre Estelar", price: 1400, desc: "Ahorro de $100 pesos de cuota" },
+  { id: "2", name: "Semestre Leyenda", price: 2700, desc: "Ahorro de $300 pesos de cuota" },
 ];
 
 export default function CheckoutMockPage({
@@ -43,7 +43,7 @@ export default function CheckoutMockPage({
     setCardName("MATEO GARCIA LOPEZ");
     setCardExpiry("12/30");
     setCardCvv("123");
-    setEmail("alumno.prueba@dojoia.com");
+    setEmail("alumno.prueba@arenaraion.com");
   };
 
   const formatCardNumber = (value: string) => {
@@ -303,7 +303,7 @@ export default function CheckoutMockPage({
                 <div>
                   <h3 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '0.5rem' }}>¡Pago Aprobado!</h3>
                   <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-                    Suscripción activada con éxito. Redirigiendo al registro del dojo...
+                    Suscripción activada con éxito. Redirigiendo al registro de la arena...
                   </p>
                 </div>
               </>

@@ -58,7 +58,7 @@ export async function login(formData: FormData) {
             password: "12345678Cecyte",
             options: {
               data: {
-                full_name: "Sensei Carlos Martínez",
+                full_name: "Maestro Carlos Martínez",
                 role: "sensei",
               },
             },
@@ -76,7 +76,7 @@ export async function login(formData: FormData) {
     }
     cookieStore.set("dojoia_role", "sensei", { path: "/" });
     cookieStore.set("dojoia_email", "admin@admin.com", { path: "/" });
-    cookieStore.set("dojoia_name", "Sensei Carlos Martínez", { path: "/" });
+    cookieStore.set("dojoia_name", "Maestro Carlos Martínez", { path: "/" });
     return redirect("/dashboard");
   }
 
@@ -105,7 +105,7 @@ export async function login(formData: FormData) {
 
         if (matched) {
           if (matched.activo === false) {
-            return redirect("/login?error=Esta cuenta de alumno está desactivada. Contacta a tu Sensei.");
+            return redirect("/login?error=Esta cuenta de alumno está desactivada. Contacta a tu Maestro.");
           }
           cookieStore.set("dojoia_role", "karateka", { path: "/" });
           cookieStore.set("dojoia_email", email, { path: "/" });
@@ -140,7 +140,7 @@ export async function login(formData: FormData) {
     if (isMockSupabase && email && password) {
       const isStudent = email.includes("student") || email.includes("alumno") || password === "123456";
       const role = isStudent ? "karateka" : "sensei";
-      const name = isStudent ? "Mateo García López" : "Sensei Carlos Martínez";
+      const name = isStudent ? "Mateo García López" : "Maestro Carlos Martínez";
       
       cookieStore.set("dojoia_role", role, { path: "/" });
       cookieStore.set("dojoia_email", email, { path: "/" });

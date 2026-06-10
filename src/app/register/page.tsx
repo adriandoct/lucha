@@ -14,8 +14,8 @@ export default async function RegisterPage({
   const getPlanName = (pId: string | undefined) => {
     switch (pId) {
       case "0": return "Mensualidad Regular ($500 MXN)";
-      case "1": return "Trimestre Raion Kai ($1,400 MXN)";
-      case "2": return "Semestre Shito-Ryu ($2,700 MXN)";
+      case "1": return "Trimestre Estelar ($1,400 MXN)";
+      case "2": return "Semestre Leyenda ($2,700 MXN)";
       default: return "Mensualidad Regular ($500 MXN)";
     }
   };
@@ -23,8 +23,8 @@ export default async function RegisterPage({
   const getPlanShortName = (pId: string | undefined) => {
     switch (pId) {
       case "0": return "Mensualidad Regular";
-      case "1": return "Trimestre Raion Kai";
-      case "2": return "Semestre Shito-Ryu";
+      case "1": return "Trimestre Estelar";
+      case "2": return "Semestre Leyenda";
       default: return "Mensualidad Regular";
     }
   };
@@ -44,15 +44,15 @@ export default async function RegisterPage({
 
         <div className={styles.logoContainer}>
           <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.7rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-              Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+              Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
             </span>
           </div>
         </div>
         
         <h1 className={styles.title}>Comienza tu Camino</h1>
-        <p className={styles.subtitle}>Crea tu cuenta de acceso para la academia de Karate Shito-Ryu.</p>
+        <p className={styles.subtitle}>Crea tu cuenta de acceso para la escuela de Lucha Libre Arena Raion.</p>
 
         {error && <div className={styles.errorBox}>{error}</div>}
 
@@ -70,7 +70,7 @@ export default async function RegisterPage({
 
         {payment === "failure" && (
           <div className={styles.errorBox} style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid #ef4444', color: '#ef4444', marginBottom: '1.5rem' }}>
-            <strong>⚠️ Falla en el Pago:</strong> No pudimos procesar tu tarjeta. Puedes registrarte de todos modos y liquidar tu pago directamente en el dojo presencial.
+            <strong>⚠️ Falla en el Pago:</strong> No pudimos procesar tu tarjeta. Puedes registrarte de todos modos y liquidar tu pago directamente en el gimnasio presencial.
           </div>
         )}
 
@@ -92,7 +92,7 @@ export default async function RegisterPage({
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="role">Rol en el Dojo</label>
+            <label className={styles.label} htmlFor="role">Rol en la Escuela</label>
             <select 
               className={styles.input} 
               id="role" 
@@ -100,8 +100,8 @@ export default async function RegisterPage({
               style={{ width: '100%', cursor: 'pointer', appearance: 'none', background: 'var(--bg-tertiary) url("data:image/svg+xml;utf8,<svg fill=\'%23a1a1aa\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>") no-repeat right 12px center' }}
               required
             >
-              <option value="karateka">Estudiante / Karateka</option>
-              <option value="sensei">Sensei Administrador</option>
+              <option value="karateka">Luchador / Alumno</option>
+              <option value="sensei">Maestro Administrador</option>
             </select>
           </div>
 

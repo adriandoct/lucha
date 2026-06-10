@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Raion Kai - Control de Acceso Marcial",
-  description: "Plataforma Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
+  title: "Arena Raion - Control de Acceso Lucha Libre",
+  description: "Plataforma Inteligente de Asistencia Escolar con QR y WhatsApp para Escuelas de Lucha Libre.",
   manifest: "/manifest.json",
 };
 

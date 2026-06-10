@@ -59,9 +59,9 @@ export default async function DashboardLayout({
     <div className={styles.dashboardLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '3rem' }}>
-          <img src="/lion-kai-logo.png" alt="Raion Kai Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+          <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
           <span className="logo-script" style={{ fontSize: '2.4rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-            Raion <span style={{ color: 'var(--brand-red)' }}>Kai</span>
+            Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
           </span>
         </div>
         
@@ -75,11 +75,11 @@ export default async function DashboardLayout({
 
           {isSensei ? (
             <>
-              <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Gestión Dojo</div>
+              <div className={styles.navSectionTitle} style={{ marginTop: '1rem' }}>Gestión Arena</div>
               
               <Link href="/dashboard/alumnos" className={styles.navItem}>
                 <Users size={20} />
-                <span>Karatekas y Tutores</span>
+                <span>Luchadores y Tutores</span>
               </Link>
               
               <Link href="/dashboard/asistencia" className={styles.navItem}>
@@ -120,7 +120,7 @@ export default async function DashboardLayout({
 
               <Link href="/dashboard/videos" className={styles.navItem}>
                 <Video size={20} />
-                <span>Videoteca Shito-Ryu</span>
+                <span>Videoteca Lucha Libre</span>
               </Link>
               
               <Link href="/dashboard/estructura" className={styles.navItem}>
@@ -140,7 +140,7 @@ export default async function DashboardLayout({
 
               <Link href="/dashboard/ranking" className={styles.navItem}>
                 <Trophy size={20} />
-                <span>Ranking Dojo</span>
+                <span>Ranking Arena</span>
               </Link>
             </>
           )}
@@ -153,7 +153,7 @@ export default async function DashboardLayout({
               <h4 style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '130px' }}>
                 {name}
               </h4>
-              <p>{isSensei ? "Sensei Administrador" : "Karateka Estudiante"}</p>
+              <p>{isSensei ? "Maestro Administrador" : "Luchador Alumno"}</p>
             </div>
           </div>
           <form action="/auth/signout" method="post" style={{ marginTop: '1rem' }}>

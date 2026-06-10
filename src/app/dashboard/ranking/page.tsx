@@ -82,12 +82,12 @@ export default function RankingPage() {
         }
 
         let insignias: string[] = [];
-        if (k.matricula === "KA-2026-001") insignias = ["Asistencia Perfecta 🎖️", "Evidencia Aprobada 🥋", "Kihon Master 🤜"];
-        else if (k.matricula === "KA-2026-003") insignias = ["Cinta Negra 🥋", "Kumite Pro 🥊", "Líder Dojo 🏆"];
-        else if (k.matricula === "KA-2026-004") insignias = ["Katas Fluyentes 📖", "Disciplina Reigi 🤝"];
+        if (k.matricula === "KA-2026-001") insignias = ["Asistencia Perfecta 🎖️", "Evidencia Aprobada 🤼‍♂️", "Llaves Master 🤜"];
+        else if (k.matricula === "KA-2026-003") insignias = ["Luchador Leyenda 🤼‍♂️", "Combate Pro 🥊", "Líder de Arena 🏆"];
+        else if (k.matricula === "KA-2026-004") insignias = ["Llaves Fluyentes 📖", "Disciplina Deportiva 🤝"];
         else if (k.matricula === "KA-2026-002") insignias = ["Progreso Rápido ⚡", "Esfuerzo Constante 💪"];
-        else if (k.matricula === "KA-2026-005") insignias = ["Técnica Depurada 🌟", "Espíritu Budo 🕊️"];
-        else insignias = ["Estudiante Activo 🥋"];
+        else if (k.matricula === "KA-2026-005") insignias = ["Técnica Depurada 🌟", "Espíritu Deportivo 🕊️"];
+        else insignias = ["Luchador Activo 🤼‍♂️"];
 
         return {
           ...k,
@@ -149,7 +149,7 @@ export default function RankingPage() {
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Ranking de Alumnos
           </h1>
-          <p>Tabla de honor y gamificación técnica de la academia Raion Kai Shito-Ryu.</p>
+          <p>Tabla de honor y puntuación técnica de la Arena Raion Lucha Libre.</p>
         </div>
       </div>
 
@@ -168,7 +168,7 @@ export default function RankingPage() {
                   <div className={styles.podiumAvatar}>
                     {podium[1].foto_url ? (
                       <img src={podium[1].foto_url} alt={podium[1].nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : "🥋"}
+                    ) : "🤼‍♂️"}
                   </div>
                   <div>
                     <h4 style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{podium[1].nombre}</h4>
@@ -191,7 +191,7 @@ export default function RankingPage() {
                   <div className={styles.podiumAvatar} style={{ width: '80px', height: '80px', border: '3px solid var(--brand-gold)' }}>
                     {podium[0].foto_url ? (
                       <img src={podium[0].foto_url} alt={podium[0].nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : "🥋"}
+                    ) : "🤼‍♂️"}
                   </div>
                   <div>
                     <h3 style={{ fontWeight: 'bold', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'center' }}>
@@ -214,7 +214,7 @@ export default function RankingPage() {
                   <div className={styles.podiumAvatar}>
                     {podium[2].foto_url ? (
                       <img src={podium[2].foto_url} alt={podium[2].nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : "🥋"}
+                    ) : "🤼‍♂️"}
                   </div>
                   <div>
                     <h4 style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{podium[2].nombre}</h4>
@@ -249,11 +249,11 @@ export default function RankingPage() {
               <thead>
                 <tr>
                   <th style={{ width: '80px', textAlign: 'center' }}>Posición</th>
-                  <th>Karateka</th>
-                  <th>Cinturón</th>
-                  <th>Grado Kyu/Dan</th>
+                  <th>Luchador</th>
+                  <th>Categoría</th>
+                  <th>Nivel/Rango</th>
                   <th>Insignias y Logros</th>
-                  <th style={{ textAlign: 'right' }}>Puntuación Dojo</th>
+                  <th style={{ textAlign: 'right' }}>Puntuación Arena</th>
                 </tr>
               </thead>
               <tbody>
