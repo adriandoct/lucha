@@ -1,7 +1,7 @@
 {
-  "name": "Raion Kay - Control de Acceso Marcial",
-  "short_name": "Raion Kay",
-  "description": "Sistema Inteligente de Asistencia Escolar con QR y WhatsApp para Dojos de Karate.",
+  "name": "Lucha MEX - Control de Acceso Marcial",
+  "short_name": "Lucha MEX",
+  "description": "Sistema Inteligente de Asistencia Escolar con QR y WhatsApp para Escuelas de Lucha Libre.",
   "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#0B0E14",
@@ -9,13 +9,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/lion-kai-logo.png",
+      "src": "/lucha_mex_logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/lion-kai-logo.png",
+      "src": "/lucha_mex_logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

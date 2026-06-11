@@ -113,7 +113,7 @@ export default function EstructuraPage() {
       <div className={styles.header}>
         <div>
           <h1>Horarios y Temario Técnico</h1>
-          <p>Planificación de entrenamientos y requisitos de evaluaciones Arena Raion.</p>
+          <p>Planificación de entrenamientos y requisitos de evaluaciones Lucha MEX.</p>
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export default function EstructuraPage() {
         <div className={styles.card} style={{ borderLeft: '4px solid var(--brand-gold)' }}>
           <h2>
             <BookOpenCheck size={20} style={{ color: 'var(--brand-gold)' }} />
-            Programa Oficial de Lonas y Categorías (Lucha Libre Arena Raion)
+            Programa Oficial de Lonas y Categorías (Lucha Libre Lucha MEX)
           </h2>
           
           <div className={styles.programList}>

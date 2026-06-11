@@ -268,7 +268,7 @@ export default function CertificadosPage() {
               <div className={styles.diplomaWatermark}>LUCHA</div>
               
               <div className={styles.diplomaHeader}>
-                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '3rem', margin: 0 }}>Arena Raion</h2>
+                <h2 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '3rem', margin: 0 }}>Lucha MEX</h2>
                 <p>CERTIFICADO OFICIAL DE ASCENSO DE CATEGORÍA</p>
               </div>
 
@@ -285,7 +285,7 @@ export default function CertificadosPage() {
                 </h3>
 
                 <p className={styles.diplomaText} style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                  Dado en la Arena Raion en la fecha {selectedCert.fecha_emision}.
+                  Dado en la Lucha MEX en la fecha {selectedCert.fecha_emision}.
                 </p>
               </div>
 

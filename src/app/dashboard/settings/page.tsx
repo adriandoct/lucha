@@ -39,7 +39,7 @@ interface SimulatedMessage {
 
 export default function SettingsPage() {
   const [config, setConfig] = useState<DojoConfig>({
-    dojo_name: "Arena Raion",
+    dojo_name: "Lucha MEX",
     sensei_principal: "Maestro Carlos Martínez",
     estilo: "Lucha Libre",
     whatsapp_provider: "mock",
@@ -98,7 +98,7 @@ export default function SettingsPage() {
           tutor: "Adriana López",
           telefono: "+5215512345678",
           nombre: "Mateo García López",
-          message: "🤼‍♂️ *Arena Raion*\n\nHola *Adriana López*,\n\nLe informamos que el luchador:\n👦 *Mateo García López* (ESPECIAL - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🤼‍♂️ ¡Lucha!",
+          message: "🤼‍♂️ *Lucha MEX*\n\nHola *Adriana López*,\n\nLe informamos que el luchador:\n👦 *Mateo García López* (ESPECIAL - 6° Kyu)\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: 17:12\n📅 Fecha: 2026-05-31\n\n🤼‍♂️ ¡Lucha!",
           timestamp: "17:12"
         }
       ]);

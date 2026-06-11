@@ -378,8 +378,8 @@ export default function AsistenciaPage() {
     const list = wLogs ? JSON.parse(wLogs) : [];
     
     const messageTemplate = record.tipo === 'entrada' 
-      ? `🤼‍♂️ *Arena Raion*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`
-      : `🤼‍♂️ *Arena Raion*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Gimnasio.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`;
+      ? `🤼‍♂️ *Lucha MEX*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *ENTRÓ* a entrenar.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`
+      : `🤼‍♂️ *Lucha MEX*\n\nHola *${record.tutor}*,\n\nLe informamos que el luchador:\n👦 *${record.nombre}* (${record.cinturon.toUpperCase()} - ${record.grado})\n\n✅ *SALIÓ* del Gimnasio.\n\n🕒 Hora: ${record.hora.substring(0, 5)}\n📅 Fecha: ${record.fecha}\n\n🤼‍♂️ ¡Lucha!`;
 
     list.unshift({
       id: Math.random().toString(),

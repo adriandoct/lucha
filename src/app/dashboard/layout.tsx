@@ -59,9 +59,9 @@ export default async function DashboardLayout({
     <div className={styles.dashboardLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '3rem' }}>
-          <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+          <img src="/lucha_mex_logo.png" alt="Lucha MEX Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
           <span className="logo-script" style={{ fontSize: '2.4rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-            Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
+            Lucha <span style={{ color: 'var(--brand-red)' }}>MEX</span>
           </span>
         </div>
         

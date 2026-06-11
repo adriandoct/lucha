@@ -44,15 +44,15 @@ export default async function RegisterPage({
 
         <div className={styles.logoContainer}>
           <div className={styles.logo} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+            <img src="/lucha_mex_logo.png" alt="Lucha MEX Logo" style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.7rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-              Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
+              Lucha <span style={{ color: 'var(--brand-red)' }}>MEX</span>
             </span>
           </div>
         </div>
         
         <h1 className={styles.title}>Comienza tu Camino</h1>
-        <p className={styles.subtitle}>Crea tu cuenta de acceso para la escuela de Lucha Libre Arena Raion.</p>
+        <p className={styles.subtitle}>Crea tu cuenta de acceso para la escuela de Lucha Libre Lucha MEX.</p>
 
         {error && <div className={styles.errorBox}>{error}</div>}
 

@@ -130,7 +130,7 @@ export default function AlumnosPage() {
             return {
               ...k,
               tutor: credentials.tutor,
-              email: credentials.email || `${k.matricula.toLowerCase()}@arenaraion.com`,
+              email: credentials.email || `${k.matricula.toLowerCase()}@luchamex.com`,
               password: credentials.password || '123456'
             };
           });
@@ -188,7 +188,7 @@ export default function AlumnosPage() {
     setFormTelefono("");
     setFormFotoUrl("");
     // Generate defaults for email and password
-    setFormEmail(`${defaultMatricula.toLowerCase()}@arenaraion.com`);
+    setFormEmail(`${defaultMatricula.toLowerCase()}@luchamex.com`);
     setFormPassword("123456");
     setFormActivo(true);
     setIsFormOpen(true);
@@ -481,7 +481,7 @@ export default function AlumnosPage() {
       <div className={styles.header}>
         <div>
           <h1>Directorio de Luchadores</h1>
-          <p>Nómina de alumnos y credenciales de la Arena Raion.</p>
+          <p>Nómina de alumnos y credenciales de la Lucha MEX.</p>
         </div>
         <div className={styles.headerActions} style={{ marginRight: '8.5rem' }}>
           <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => setIsImportOpen(true)}>
@@ -681,7 +681,7 @@ export default function AlumnosPage() {
               <div className={styles.formGrid}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Correo de Acceso (Usuario)</label>
-                  <input type="email" className={styles.input} placeholder="alumno@arenaraion.com" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} required />
+                  <input type="email" className={styles.input} placeholder="alumno@luchamex.com" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} required />
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Contraseña de Acceso</label>
@@ -722,7 +722,7 @@ export default function AlumnosPage() {
             <div className="printArea">
               <div className={styles.licenseCard}>
                 <div className={styles.licenseHeader}>
-                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Arena Raion</h3>
+                  <h3 className="logo-script" style={{ textTransform: 'none', letterSpacing: 'normal', fontSize: '2.2rem', margin: 0 }}>Lucha MEX</h3>
                   <p>Lucha Libre Profesional</p>
                 </div>
                 <div className={styles.licenseBody}>

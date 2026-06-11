@@ -43,7 +43,7 @@ export default function CheckoutMockPage({
     setCardName("MATEO GARCIA LOPEZ");
     setCardExpiry("12/30");
     setCardCvv("123");
-    setEmail("alumno.prueba@arenaraion.com");
+    setEmail("alumno.prueba@luchamex.com");
   };
 
   const formatCardNumber = (value: string) => {

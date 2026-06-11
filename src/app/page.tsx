@@ -43,7 +43,7 @@ const getCookie = (name: string): string => {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [featuredVideo, setFeaturedVideo] = useState({
-    titulo: "Presentación de la Arena Raion",
+    titulo: "Presentación de la Lucha MEX",
     descripcion: "Una demostración de nuestro entrenamiento de lucha libre, que combina llaves clásicas, contrallaves, lances aéreos y combate espectacular adaptado para todas las edades.",
     url: "https://vjs.zencdn.net/v/oceans.mp4",
     thumbnail: "/karate-hero.png",
@@ -391,9 +391,9 @@ export default function Home() {
       <header className={styles.header} style={{ background: scrolled ? 'rgba(11, 14, 20, 0.95)' : 'transparent', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
         <div className={`container ${styles.headerContent}`}>
           <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <img src="/lucha_mex_logo.png" alt="Lucha MEX Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
             <span className="logo-script" style={{ fontSize: '2.4rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-              Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
+              Lucha <span style={{ color: 'var(--brand-red)' }}>MEX</span>
             </span>
           </div>
           <nav className={styles.nav}>
@@ -693,9 +693,9 @@ export default function Home() {
             <div className={styles.philImageCircle} style={{ borderColor: 'rgba(225, 29, 72, 0.3)' }}></div>
             <div className={styles.philImageCircleInner} style={{ borderColor: 'rgba(0, 240, 255, 0.3)' }}></div>
             <div className={styles.philLogo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
+              <img src="/lucha_mex_logo.png" alt="Lucha MEX Logo" style={{ width: '120px', height: '120px', objectFit: 'contain', animation: 'pulse-glow 3s infinite' }} />
               <span className="logo-script" style={{ fontSize: '5.5rem', color: 'var(--dojo-white)', textTransform: 'none' }}>
-                Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
+                Lucha <span style={{ color: 'var(--brand-red)' }}>MEX</span>
               </span>
             </div>
           </div>
@@ -703,7 +703,7 @@ export default function Home() {
           <div className={styles.philContent}>
             <h2>Cultura de Ring + <span style={{ color: 'var(--brand-accent)' }}>Control Digital</span></h2>
             <p>
-              La lucha libre une fuerza física, agilidad y espectáculo. Arena Raion une la disciplina tradicional 
+              La lucha libre une fuerza física, agilidad y espectáculo. Lucha MEX une la disciplina tradicional 
               del gimnasio con la velocidad y exactitud de las notificaciones de asistencia.
             </p>
             
@@ -782,16 +782,16 @@ export default function Home() {
           <div className={styles.footerGrid}>
             <div>
               <div className={styles.footerLogo} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <img src="/lion-kai-logo.png" alt="Arena Raion Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
+                <img src="/lucha_mex_logo.png" alt="Lucha MEX Logo" style={{ width: '35px', height: '35px', objectFit: 'contain' }} />
                 <span className="logo-script" style={{ fontSize: '2.1rem', color: 'var(--text-primary)', textTransform: 'none' }}>
-                  Arena <span style={{ color: 'var(--brand-red)' }}>Raion</span>
+                  Lucha <span style={{ color: 'var(--brand-red)' }}>MEX</span>
                 </span>
               </div>
               <p>Tecnología y espectáculo unidos para el control inteligente de asistencia de luchadores.</p>
             </div>
             
             <div className={styles.footerCol}>
-              <h4>Arena Raion</h4>
+              <h4>Lucha MEX</h4>
               <ul>
                 <li><Link href="#funciones">Funciones</Link></li>
                 <li><Link href="#como-funciona">Entrenamiento</Link></li>
@@ -818,7 +818,7 @@ export default function Home() {
           </div>
           
           <div className={styles.footerBottom}>
-            <p>&copy; {new Date().getFullYear()} Arena Raion Lucha Libre. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} Lucha MEX Lucha Libre. Todos los derechos reservados.</p>
             <p>¡Tercera Caída! 🤼‍♂️</p>
           </div>
         </div>

@@ -421,7 +421,7 @@ export default function ExamenesPage() {
       <div className={styles.header}>
         <div>
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            {role === "sensei" ? "Revisión de Evaluaciones y Evidencias" : "Evaluaciones de Rango Arena Raion"}
+            {role === "sensei" ? "Revisión de Evaluaciones y Evidencias" : "Evaluaciones de Rango Lucha MEX"}
           </h1>
           <p>
             {role === "sensei" 

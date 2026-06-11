@@ -302,7 +302,7 @@ export default function ProgresoPage() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--brand-red-light)', color: 'var(--brand-red)', padding: '0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, marginTop: '0.5rem' }}>
               <ShieldCheck size={16} />
-              <span>Rango validado oficialmente por la Arena Raion</span>
+              <span>Rango validado oficialmente por la Lucha MEX</span>
             </div>
           </div>
 

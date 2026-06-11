@@ -149,7 +149,7 @@ export default function RankingPage() {
           <h1 style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--brand-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Ranking de Alumnos
           </h1>
-          <p>Tabla de honor y puntuación técnica de la Arena Raion Lucha Libre.</p>
+          <p>Tabla de honor y puntuación técnica de la Lucha MEX Lucha Libre.</p>
         </div>
       </div>
 

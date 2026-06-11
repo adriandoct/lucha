@@ -460,7 +460,7 @@ export default function DashboardPage() {
                 Maestro AI Chatbot dice:
               </p>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
-                "¡Lucha, {userName}! Has asistido puntualmente a tus últimas 4 clases de Lucha Libre Arena Raion. 
+                "¡Lucha, {userName}! Has asistido puntualmente a tus últimas 4 clases de Lucha Libre Lucha MEX. 
                 Tu ejecución de la llave <strong>La de a Caballo</strong> ha mejorado sustancialmente en la fluidez del agarre. 
                 Tu rendimiento actual está al 92% para tu próximo debut. Sigue entrenando con constancia. ¡Lucha!"
               </p>
