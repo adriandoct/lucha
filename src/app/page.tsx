@@ -284,19 +284,19 @@ export default function Home() {
 
   const slides = [
     {
-      src: "/arena-hero.png",
-      tag: "🤼‍♂️ Lucha Libre Estelar",
-      title: "Lucha Libre Estelar",
-      desc: "Entrenamiento de llaves tradicionales a ras de lona, lances aéreos espectaculares y lucha profesional."
+      src: "/luchadores_famosos.png",
+      tag: "🤼‍♂️ Leyendas del Ring",
+      title: "Luchadores Famosos",
+      desc: "Entrena con el espíritu y estilo de los luchadores más famosos de la historia de la lucha libre mexicana."
     },
     {
-      src: "/arena-kata.png",
+      src: "/llave_sumision.png",
       tag: "🤼‍♂️ Llaves y Candados",
       title: "Llaves y Candados",
-      desc: "Perfecciona las sumisiones clásicas de la lucha libre mexicana, contrallaves y combate técnico."
+      desc: "Perfecciona las sumisiones clásicas de la lucha libre mexicana, contrallaves y combate técnico a ras de lona."
     },
     {
-      src: "/arena-kumite.png",
+      src: "/vuelo_acrobacia.png",
       tag: "🤼‍♂️ Vuelo y Acrobacia",
       title: "Vuelo y Acrobacia",
       desc: "Desarrolla velocidad, reflejos y técnicas de vuelo espectacular desde la tercera cuerda con total seguridad."
